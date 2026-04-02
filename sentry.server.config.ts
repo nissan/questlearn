@@ -1,0 +1,9 @@
+// sentry.server.config.ts
+// TODO: Set SENTRY_DSN in Vercel environment variables
+import * as Sentry from '@sentry/nextjs';
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  environment: process.env.NODE_ENV,
+  tracesSampleRate: 1.0,
+});
