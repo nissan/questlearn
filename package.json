@@ -6,7 +6,10 @@
     "dev": "node node_modules/next/dist/bin/next dev",
     "build": "node node_modules/next/dist/bin/next build",
     "start": "node node_modules/next/dist/bin/next start",
-    "db:init": "dotenv -e .env.local -- npx tsx scripts/init-db.ts"
+    "db:init": "dotenv -e .env.local -- npx tsx scripts/init-db.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:screenshots": "playwright test tests/screenshots.spec.ts",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -35,6 +38,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
