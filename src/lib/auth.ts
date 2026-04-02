@@ -12,7 +12,7 @@ export async function createSession(userId: string): Promise<string> {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
 
   await db.execute({
-    sql: 'INSERT INTO sessions (id, user_id, expires_at) VALUES (?, ?, ?)',
+    sql: 'INSERT INTO ql_sessions (id, user_id, expires_at) VALUES (?, ?, ?)',
     args: [sessionId, userId, expiresAt],
   });
 
@@ -38,21 +38,21 @@ export async function getSession(): Promise<{ sessionId: string; userId: string 
 
 export async function getUser(userId: string) {
   const db = getDb();
-  const result = await db.execute({ sql: 'SELECT * FROM users WHERE id = ?', args: [userId] });
+  const result = await db.execute({ sql: 'SELECT * FROM ql_users WHERE id = ?', args: [userId] });
   return result.rows[0] ?? null;
 }
 
 export async function upsertUser(email: string): Promise<string> {
   const db = getDb();
-  const existing = await db.execute({ sql: 'SELECT id FROM users WHERE email = ?', args: [email] });
+  const existing = await db.execute({ sql: 'SELECT id FROM ql_users WHERE email = ?', args: [email] });
   if (existing.rows.length > 0) {
     const uid = existing.rows[0].id as string;
-    await db.execute({ sql: "UPDATE users SET last_login_at = datetime('now') WHERE id = ?", args: [uid] });
+    await db.execute({ sql: "UPDATE ql_users SET last_login_at = datetime('now') WHERE id = ?", args: [uid] });
     return uid;
   }
   const id = uuidv4();
   await db.execute({
-    sql: "INSERT INTO users (id, email, role, onboarding_complete) VALUES (?, ?, 'student', 0)",
+    sql: "INSERT INTO ql_users (id, email, role, onboarding_complete) VALUES (?, ?, 'student', 0)",
     args: [id, email],
   });
   return id;

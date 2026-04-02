@@ -18,36 +18,46 @@ export default function AuthPage() {
   async function requestCode() {
     setLoading(true);
     setError('');
-    const res = await fetch('/api/auth/request-otc', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (!res.ok) {
-      if (data.error === 'cooldown') setCooldown(data.cooldownRemaining);
-      else setError(data.error);
-      return;
+    try {
+      const res = await fetch('/api/auth/request-otc', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      setLoading(false);
+      if (!res.ok) {
+        if (data.error === 'cooldown') setCooldown(data.cooldownRemaining);
+        else setError(data.error || 'Something went wrong. Please try again.');
+        return;
+      }
+      setStep('code');
+    } catch {
+      setLoading(false);
+      setError('Something went wrong. Please try again.');
     }
-    setStep('code');
   }
 
   async function verifyCode() {
     setLoading(true);
     setError('');
-    const res = await fetch('/api/auth/verify-otc', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, code }),
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (!res.ok) {
-      setError(data.error);
-      return;
+    try {
+      const res = await fetch('/api/auth/verify-otc', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code }),
+      });
+      const data = await res.json();
+      setLoading(false);
+      if (!res.ok) {
+        setError(data.error || 'Something went wrong. Please try again.');
+        return;
+      }
+      router.push(data.onboardingComplete ? '/learn' : '/onboarding');
+    } catch {
+      setLoading(false);
+      setError('Something went wrong. Please try again.');
     }
-    router.push(data.onboardingComplete ? '/learn' : '/onboarding');
   }
 
   return (

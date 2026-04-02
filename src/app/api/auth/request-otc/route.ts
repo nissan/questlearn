@@ -14,12 +14,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'cooldown', cooldownRemaining }, { status: 429 });
   }
 
-  await resend.emails.send({
-    from: 'QuestLearn <onboarding@resend.dev>',
-    to: email,
-    subject: `Your QuestLearn code: ${code}`,
-    text: `Your QuestLearn sign-in code is: ${code}\n\nThis code expires in 10 minutes.\n\nIf you didn't request this, you can ignore this email.`,
-  });
+  try {
+    await resend.emails.send({
+      from: 'QuestLearn <onboarding@resend.dev>',
+      to: email,
+      subject: `Your QuestLearn code: ${code}`,
+      text: `Your QuestLearn sign-in code is: ${code}\n\nThis code expires in 10 minutes.\n\nIf you didn't request this, you can ignore this email.`,
+    });
+  } catch (err) {
+    console.error('Resend error:', err);
+    return NextResponse.json({ error: 'Failed to send email. Please try again.' }, { status: 500 });
+  }
 
   return NextResponse.json({ success: true });
 }

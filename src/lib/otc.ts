@@ -11,7 +11,7 @@ export async function createOTC(email: string): Promise<{ code: string; cooldown
 
   // Check resend cooldown (60s)
   const existing = await db.execute({
-    sql: 'SELECT last_sent_at FROM otc_tokens WHERE email = ? AND used = 0 ORDER BY last_sent_at DESC LIMIT 1',
+    sql: 'SELECT last_sent_at FROM ql_otc_tokens WHERE email = ? AND used = 0 ORDER BY last_sent_at DESC LIMIT 1',
     args: [email],
   });
   if (existing.rows.length > 0) {
@@ -23,13 +23,13 @@ export async function createOTC(email: string): Promise<{ code: string; cooldown
   }
 
   // Invalidate old unused tokens for this email
-  await db.execute({ sql: 'UPDATE otc_tokens SET used = 1 WHERE email = ? AND used = 0', args: [email] });
+  await db.execute({ sql: 'UPDATE ql_otc_tokens SET used = 1 WHERE email = ? AND used = 0', args: [email] });
 
   const code = generateCode();
   const expiresAt = new Date(now.getTime() + 10 * 60 * 1000).toISOString();
 
   await db.execute({
-    sql: 'INSERT INTO otc_tokens (id, email, code, expires_at, attempts, last_sent_at, used) VALUES (?, ?, ?, ?, 0, ?, 0)',
+    sql: 'INSERT INTO ql_otc_tokens (id, email, code, expires_at, attempts, last_sent_at, used) VALUES (?, ?, ?, ?, 0, ?, 0)',
     args: [uuidv4(), email, code, expiresAt, now.toISOString()],
   });
 
@@ -41,7 +41,7 @@ export async function validateOTC(email: string, code: string): Promise<{ valid:
   const now = new Date().toISOString();
 
   const result = await db.execute({
-    sql: 'SELECT id, code, expires_at, attempts, used FROM otc_tokens WHERE email = ? AND used = 0 ORDER BY last_sent_at DESC LIMIT 1',
+    sql: 'SELECT id, code, expires_at, attempts, used FROM ql_otc_tokens WHERE email = ? AND used = 0 ORDER BY last_sent_at DESC LIMIT 1',
     args: [email],
   });
 
@@ -52,19 +52,19 @@ export async function validateOTC(email: string, code: string): Promise<{ valid:
   const attempts = (row.attempts as number) + 1;
 
   if ((row.expires_at as string) < now) {
-    await db.execute({ sql: 'UPDATE otc_tokens SET used = 1 WHERE id = ?', args: [tokenId] });
+    await db.execute({ sql: 'UPDATE ql_otc_tokens SET used = 1 WHERE id = ?', args: [tokenId] });
     return { valid: false, reason: 'expired' };
   }
 
   if (attempts >= 3 && row.code !== code) {
-    await db.execute({ sql: 'UPDATE otc_tokens SET used = 1, attempts = ? WHERE id = ?', args: [attempts, tokenId] });
+    await db.execute({ sql: 'UPDATE ql_otc_tokens SET used = 1, attempts = ? WHERE id = ?', args: [attempts, tokenId] });
     return { valid: false, reason: 'max_attempts' };
   }
 
-  await db.execute({ sql: 'UPDATE otc_tokens SET attempts = ? WHERE id = ?', args: [attempts, tokenId] });
+  await db.execute({ sql: 'UPDATE ql_otc_tokens SET attempts = ? WHERE id = ?', args: [attempts, tokenId] });
 
   if (row.code !== code) return { valid: false, reason: 'invalid_code' };
 
-  await db.execute({ sql: 'UPDATE otc_tokens SET used = 1 WHERE id = ?', args: [tokenId] });
+  await db.execute({ sql: 'UPDATE ql_otc_tokens SET used = 1 WHERE id = ?', args: [tokenId] });
   return { valid: true };
 }
