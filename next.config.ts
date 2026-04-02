@@ -10,13 +10,6 @@ export default withSentryConfig(nextConfig, {
   project: 'questlearn',
   silent: true,
   widenClientFileUpload: true,
-  sourcemaps: {
-    disable: false,
-  },
-  webpack: {
-    treeshake: {
-      removeDebugLogging: true,
-    },
-    automaticVercelMonitors: true,
-  },
+  sourcemaps: { disable: false },
+  webpack: { treeshake: { removeDebugLogging: true } },
 });

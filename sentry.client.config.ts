@@ -1,10 +1,7 @@
-// sentry.client.config.ts
-// TODO: Replace DSN — create free project at https://sentry.io
-// Then set NEXT_PUBLIC_SENTRY_DSN in Vercel environment variables
 import * as Sentry from '@sentry/nextjs';
 
 Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || '',
   environment: process.env.NODE_ENV,
   tracesSampleRate: 1.0,
   replaysSessionSampleRate: 0.1,
