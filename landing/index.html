@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuestLearn — Learn the Way You Think</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0a0a0f;
+      color: #f0f0f5;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background gradient orbs */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -200px; left: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(236,72,153,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* HEADER */
+    header {
+      padding: 48px 0 0;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.4);
+      color: #a5b4fc;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 8vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      font-size: clamp(16px, 3vw, 22px);
+      color: #94a3b8;
+      margin-bottom: 32px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .tagline strong {
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    /* PITCH */
+    .pitch {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin: 0 auto 48px;
+      max-width: 720px;
+      font-size: 17px;
+      line-height: 1.7;
+      color: #cbd5e1;
+      text-align: left;
+    }
+
+    .pitch p + p { margin-top: 14px; }
+
+    .pitch .highlight {
+      color: #a5b4fc;
+      font-weight: 600;
+    }
+
+    /* FORMATS */
+    .section-label {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+
+    .formats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 640px) {
+      .formats { grid-template-columns: repeat(3, 1fr); }
+      .formats .format:nth-child(4) { grid-column: 1; }
+      .formats .format:nth-child(5) { grid-column: 2; }
+    }
+
+    .format {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px 12px;
+      text-align: center;
+      transition: all 0.2s ease;
+      cursor: default;
+    }
+
+    .format:hover {
+      background: rgba(99,102,241,0.1);
+      border-color: rgba(99,102,241,0.4);
+      transform: translateY(-3px);
+    }
+
+    .format .emoji { font-size: 28px; display: block; margin-bottom: 8px; }
+    .format .name { font-size: 13px; font-weight: 700; color: #e2e8f0; display: block; margin-bottom: 4px; }
+    .format .type { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* HOW IT WORKS */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 640px) {
+      .steps { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .step {
+      text-align: center;
+      padding: 24px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      position: relative;
+    }
+
+    .step-num {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800;
+      margin: 0 auto 12px;
+      color: white;
+    }
+
+    .step h3 { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 6px; }
+    .step p { font-size: 12px; color: #64748b; line-height: 1.5; }
+
+    /* EQUITY CALLOUT */
+    .equity {
+      background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(168,85,247,0.1) 100%);
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (max-width: 640px) {
+      .equity { grid-template-columns: 1fr; padding: 28px 24px; }
+    }
+
+    .equity h2 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .equity p {
+      font-size: 15px;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    .equity-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 16px 20px;
+      border-left: 3px solid #6366f1;
+    }
+
+    .stat .num { font-size: 28px; font-weight: 800; color: #a5b4fc; line-height: 1; }
+    .stat .desc { font-size: 12px; color: #64748b; margin-top: 4px; }
+
+    /* PRINCIPLES */
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 640px) {
+      .principles { grid-template-columns: 1fr; }
+    }
+
+    .principle {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+    }
+
+    .principle .icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+    .principle h4 { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 4px; }
+    .principle p { font-size: 12px; color: #64748b; line-height: 1.5; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 32px 0 48px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .built-by {
+      font-size: 12px;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .hackathon-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #475569;
+    }
+
+    .dot { display: inline-block; width: 4px; height: 4px; background: #6366f1; border-radius: 50%; margin: 0 8px; vertical-align: middle; }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <div class="badge">Cambridge EduX Hackathon 2026 · Challenge 2</div>
+      <h1>Quest<span class="gradient-text">Learn</span></h1>
+      <p class="tagline">
+        AI-powered learning that meets students<br>
+        <strong>where their curiosity already lives.</strong>
+      </p>
+    </header>
+
+    <div class="pitch">
+      <p>A Year 9 student stuck on photosynthesis doesn't open a textbook. They pick a format — a <span class="highlight">meme</span>, a <span class="highlight">story</span>, a <span class="highlight">puzzle</span>, a <span class="highlight">game</span>, or a <span class="highlight">short film</span> — and our AI generates curriculum-aligned content in that format, instantly.</p>
+      <p>Then it asks them questions back. Not to test them. <strong>To make them think.</strong></p>
+      <p>A student in Bourke gets the same experience as a student in Bondi. A remote teacher finally sees which topics their class is struggling with — not at report card time, but right now.</p>
+    </div>
+
+    <!-- FORMATS -->
+    <p class="section-label">Pick your format</p>
+    <div class="formats">
+      <div class="format">
+        <span class="emoji">🎮</span>
+        <span class="name">Game</span>
+        <span class="type">Practice</span>
+      </div>
+      <div class="format">
+        <span class="emoji">📖</span>
+        <span class="name">Story</span>
+        <span class="type">Acquisition</span>
+      </div>
+      <div class="format">
+        <span class="emoji">😂</span>
+        <span class="name">Meme</span>
+        <span class="type">Production</span>
+      </div>
+      <div class="format">
+        <span class="emoji">🧩</span>
+        <span class="name">Puzzle</span>
+        <span class="type">Investigation</span>
+      </div>
+      <div class="format">
+        <span class="emoji">🎬</span>
+        <span class="name">Short Film</span>
+        <span class="type">Discussion</span>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <p class="section-label">How it works</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Pick a topic</h3>
+        <p>Student enters anything they're stuck on — any subject, any concept</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Choose a format</h3>
+        <p>Game, Story, Meme, Puzzle, or Short Film — student decides</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>AI generates</h3>
+        <p>Curriculum-aligned content delivered in the chosen format, instantly</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Socratic loop</h3>
+        <p>AI asks follow-up questions — never gives the answer, builds understanding</p>
+      </div>
+    </div>
+
+    <!-- EQUITY -->
+    <div class="equity">
+      <div>
+        <h2>Closing the gap,<br><span class="gradient-text">one quest at a time.</span></h2>
+        <p>Aboriginal students in remote Australia score up to 3 years behind urban peers by Year 9. QuestLearn is designed for the student who doesn't have a stable teacher, a great library, or a peer group who loves learning. The AI doesn't care where you live.</p>
+      </div>
+      <div class="equity-stats">
+        <div class="stat">
+          <div class="num">~3 yrs</div>
+          <div class="desc">Average NAPLAN gap between remote Aboriginal and urban students by Year 9</div>
+        </div>
+        <div class="stat">
+          <div class="num">40–60%</div>
+          <div class="desc">Annual teacher turnover in remote Australian schools</div>
+        </div>
+        <div class="stat">
+          <div class="num">$0</div>
+          <div class="desc">Cost difference between a Bourke student and a Bondi student on QuestLearn</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRINCIPLES -->
+    <p class="section-label">Design principles</p>
+    <div class="principles">
+      <div class="principle">
+        <span class="icon">🙅</span>
+        <div>
+          <h4>No leaderboards. Ever.</h4>
+          <p>Personal progress only. Competitive mechanics harm the students who need help most.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <span class="icon">😄</span>
+        <div>
+          <h4>Wrong answers get memes, not buzzers</h4>
+          <p>Encouragement + explanation on every wrong answer. Never a fail state.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <span class="icon">🧭</span>
+        <div>
+          <h4>Student agency is the feature</h4>
+          <p>We never assign a format. The student always chooses. Autonomy drives engagement.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <span class="icon">🔒</span>
+        <div>
+          <h4>Privacy by design</h4>
+          <p>No persistent student data. Teacher sees aggregated heatmap only — never individual surveillance.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="built-by">Built with CurricuLLM · Grounded in Laurillard's Conversational Framework</div>
+      <span class="hackathon-tag">Cambridge EduX 2026</span>
+      <span class="dot"></span>
+      <span class="hackathon-tag">AI & Personalised Learning</span>
+      <span class="dot"></span>
+      <span class="hackathon-tag">Challenge 2</span>
+    </footer>
+
+  </div>
+</body>
+</html>
