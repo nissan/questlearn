@@ -15,14 +15,20 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await resend.emails.send({
-      from: 'QuestLearn <onboarding@resend.dev>',
+    const { data, error: sendError } = await resend.emails.send({
+      from: 'QuestLearn <noreply@mail.alphaglow.app>',
       to: email,
       subject: `Your QuestLearn code: ${code}`,
       text: `Your QuestLearn sign-in code is: ${code}\n\nThis code expires in 10 minutes.\n\nIf you didn't request this, you can ignore this email.`,
+      html: `<p>Your QuestLearn sign-in code is: <strong>${code}</strong></p><p>This code expires in 10 minutes.</p><p>If you didn't request this, you can ignore this email.</p>`,
     });
+    if (sendError) {
+      console.error('Resend send error:', sendError);
+      return NextResponse.json({ error: 'Failed to send email. Please try again.', detail: sendError.message }, { status: 500 });
+    }
+    console.log('Email sent successfully, id:', data?.id);
   } catch (err) {
-    console.error('Resend error:', err);
+    console.error('Resend exception:', err);
     return NextResponse.json({ error: 'Failed to send email. Please try again.' }, { status: 500 });
   }
 
