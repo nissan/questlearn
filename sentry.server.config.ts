@@ -1,7 +1,12 @@
-import * as Sentry from '@sentry/nextjs';
+import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: process.env.SENTRY_DSN || '',
-  environment: process.env.NODE_ENV,
-  tracesSampleRate: 1.0,
+  dsn: process.env.SENTRY_DSN ?? "",
+
+  sendDefaultPii: true,
+  tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0.1,
+
+  includeLocalVariables: true,
+
+  enableLogs: true,
 });

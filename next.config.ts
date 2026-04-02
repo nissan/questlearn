@@ -1,15 +1,21 @@
 import type { NextConfig } from "next";
-import { withSentryConfig } from '@sentry/nextjs';
+import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
   /* config options here */
 };
 
 export default withSentryConfig(nextConfig, {
-  org: 'redditech',
-  project: 'questlearn',
-  silent: true,
+  org: "redditech",
+  project: "questlearn",
+
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+
   widenClientFileUpload: true,
-  sourcemaps: { disable: false },
-  webpack: { treeshake: { removeDebugLogging: true } },
+
+  // Proxy Sentry requests to bypass ad-blockers
+  tunnelRoute: "/monitoring",
+
+  // Suppress non-CI build output
+  silent: !process.env.CI,
 });
