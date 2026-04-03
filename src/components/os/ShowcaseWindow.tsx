@@ -4,6 +4,32 @@ import { Rnd } from 'react-rnd'
 import { useWindowManager } from './WindowManager'
 
 const VIDEOS = [
+  // ── Full Demos ──
+  {
+    id: 'a1',
+    label: 'QuestLearn — Cinematic',
+    subtitle: 'Full demo · 77s · Judges cut',
+    icon: '🎬',
+    color: '#f59e0b',
+    src: '/showcase/A-cinematic.mp4',
+  },
+  {
+    id: 'b1',
+    label: 'QuestLearn — Walkthrough',
+    subtitle: 'Full demo · 71s · General audience',
+    icon: '🎓',
+    color: '#34d399',
+    src: '/showcase/B-walkthrough.mp4',
+  },
+  {
+    id: 'c1',
+    label: 'QuestLearn — Explainer',
+    subtitle: 'Technical · 108s · Judges panel',
+    icon: '🔬',
+    color: '#60a5fa',
+    src: '/showcase/C-explainer.mp4',
+  },
+  // ── Student Personas ──
   {
     id: 's1',
     label: 'Zara Osei',
@@ -125,8 +151,19 @@ export function ShowcaseWindow({
               DEMO RECORDINGS
             </p>
 
+            {/* Full Demos */}
+            <p className="text-xs px-2 py-1" style={{ color: 'rgba(255,255,255,0.2)' }}>📽️ Full Demos</p>
+            {VIDEOS.filter(v => ['a1','b1','c1'].includes(v.id)).map((v) => (
+              <VideoListItem
+                key={v.id}
+                video={v}
+                isActive={activeVideo === v.id}
+                onClick={() => setActiveVideo(v.id)}
+              />
+            ))}
+
             {/* Students */}
-            <p className="text-xs px-2 py-1" style={{ color: 'rgba(255,255,255,0.2)' }}>Students</p>
+            <p className="text-xs px-2 py-1 mt-2" style={{ color: 'rgba(255,255,255,0.2)' }}>Students</p>
             {VIDEOS.filter(v => v.id.startsWith('s')).map((v) => (
               <VideoListItem
                 key={v.id}
