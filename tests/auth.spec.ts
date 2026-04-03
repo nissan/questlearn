@@ -1,6 +1,14 @@
+/**
+ * @legacy Legacy auth — superseded by Lumina OS login at /desktop
+ *
+ * The email OTC auth flow still exists at /auth but is no longer the
+ * primary entry point. Lumina OS uses its own login at /desktop.
+ * These tests are kept for regression coverage of the legacy flow.
+ * Run with: npx playwright test --grep @legacy
+ */
 import { test, expect } from '@playwright/test';
 
-test.describe('Auth — Email OTC Flow', () => {
+test.describe('@legacy Auth — Email OTC Flow (legacy)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/auth');
   });
