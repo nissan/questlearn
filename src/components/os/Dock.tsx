@@ -4,6 +4,7 @@ import { useWindowManager } from './WindowManager'
 const DOCK_APPS = [
   { id: 'questlearn' as const, icon: '🎓', label: 'QuestLearn', color: '#f59e0b' },
   { id: 'teacher' as const, icon: '📊', label: 'Teacher Hub', color: '#60a5fa' },
+  { id: 'showcase' as const, icon: '🎬', label: 'Showcase', color: '#a78bfa' },
 ]
 
 export function Dock() {
@@ -13,7 +14,7 @@ export function Dock() {
   const setLauncher = useWindowManager((s) => s.setLauncher)
   const activeWindow = useWindowManager((s) => s.activeWindow)
 
-  const handleAppClick = (id: 'questlearn' | 'teacher') => {
+  const handleAppClick = (id: 'questlearn' | 'teacher' | 'showcase') => {
     const win = windows.find((w) => w.id === id)
     if (!win) return
     if (win.open && win.minimised) {

@@ -54,6 +54,13 @@ export function Desktop({ children }: { children: React.ReactNode }) {
           defaultPosition={{ x: 0, y: 104 }}
           accentColor="#60a5fa"
         />
+        <DesktopIcon
+          id="showcase"
+          icon="🎬"
+          label="Showcase"
+          defaultPosition={{ x: 0, y: 208 }}
+          accentColor="#a78bfa"
+        />
       </div>
 
       {/* Windows layer */}
