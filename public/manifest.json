@@ -1,6 +1,6 @@
 {
-  "name": "Lumina OS",
-  "short_name": "Lumina",
+  "name": "QuestLearn",
+  "short_name": "QuestLearn",
   "description": "QuestLearn — AI-powered learning for Years 8–10. Browser desktop shell.",
   "start_url": "/desktop",
   "display": "standalone",

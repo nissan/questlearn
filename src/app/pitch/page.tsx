@@ -732,7 +732,7 @@ function Slide9() {
       items: [
         '🎓 QuestLearn — student learning journey',
         '📊 Teacher Hub — class comprehension heatmap',
-        'Lumina OS browser desktop shell',
+        'QuestLearn desktop OS shell',
         '5 AI-powered learning formats',
       ],
     },

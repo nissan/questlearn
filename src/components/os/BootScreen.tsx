@@ -31,7 +31,7 @@ export function BootScreen({ onComplete }: BootScreenProps) {
       style={{ background: '#000' }}
     >
       <div className="animate-pulse text-4xl mb-2">🌟</div>
-      <h1 className="text-amber-400 font-semibold text-2xl mb-1">Lumina OS</h1>
+      <h1 className="text-amber-400 font-semibold text-2xl mb-1">QuestLearn</h1>
       <p className="text-white/60 text-sm mb-8">Powering up your learning space...</p>
 
       {/* Progress bar */}

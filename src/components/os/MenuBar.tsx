@@ -26,7 +26,7 @@ export function MenuBar() {
     return () => clearInterval(id)
   }, [])
 
-  const activeTitle = windows.find((w) => w.id === activeWindow)?.title ?? 'Lumina OS'
+  const activeTitle = windows.find((w) => w.id === activeWindow)?.title ?? 'QuestLearn'
 
   return (
     <div
@@ -45,7 +45,7 @@ export function MenuBar() {
           onClick={() => setLauncher(true)}
           className="text-amber-400 font-semibold text-sm hover:text-amber-300 transition-colors"
         >
-          🌟 Lumina
+          🎓 QuestLearn
         </button>
         <span className="text-white text-sm font-medium">{activeTitle}</span>
         <span className="text-white/40 text-sm hidden md:inline">File</span>

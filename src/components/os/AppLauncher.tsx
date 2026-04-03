@@ -157,7 +157,7 @@ export function AppLauncher() {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-white font-semibold text-lg mb-3">🌟 Lumina OS Apps</h2>
+        <h2 className="text-white font-semibold text-lg mb-3">🎓 QuestLearn Apps</h2>
 
         {/* Search input */}
         <input

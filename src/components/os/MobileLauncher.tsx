@@ -82,7 +82,7 @@ export function MobileLauncher() {
     >
       {/* Status bar */}
       <div className="flex items-center justify-between px-4 pt-4 pb-2">
-        <span className="text-amber-400 font-semibold text-xs">🌟 Lumina OS</span>
+        <span className="text-amber-400 font-semibold text-xs">🎓 QuestLearn</span>
         <span className="text-white text-xs font-mono">{currentTime}</span>
       </div>
 

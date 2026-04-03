@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Lumina OS — QuestLearn",
-  description: "QuestLearn — AI-powered learning for Years 8–10. Powered by Lumina OS.",
+  title: "QuestLearn",
+  description: "QuestLearn — AI-powered learning for Years 8–10. Powered by CurricuLLM-AU.",
 };
 
 export default function RootLayout({
@@ -31,7 +31,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Lumina OS" />
+        <meta name="apple-mobile-web-app-title" content="QuestLearn" />
         <link rel="apple-touch-icon" href="/icons/lumina-192.png" />
         <meta name="theme-color" content="#f59e0b" />
       </head>

@@ -95,7 +95,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
         {/* Logo */}
         <div className="flex flex-col items-center gap-1 mb-2">
           <span className="text-4xl">🌟</span>
-          <h1 className="text-amber-400 font-semibold text-xl">Lumina OS</h1>
+          <h1 className="text-amber-400 font-semibold text-xl">QuestLearn</h1>
           <span className="text-white/40 text-xs">QuestLearn Edition</span>
         </div>
 
@@ -218,7 +218,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
             opacity: loading ? 0.7 : 1,
           }}
         >
-          {loading ? 'Setting up...' : 'Enter Lumina OS →'}
+          {loading ? 'Setting up...' : 'Enter QuestLearn →'}
         </button>
 
         <p className="text-white/30 text-center text-xs">
