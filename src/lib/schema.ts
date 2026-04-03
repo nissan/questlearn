@@ -7,16 +7,7 @@ export const SCHEMA_SQL = [
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     last_login_at TEXT
   )`,
-  `CREATE TABLE IF NOT EXISTS ql_otc_tokens (
-    id TEXT PRIMARY KEY,
-    email TEXT NOT NULL,
-    code TEXT NOT NULL,
-    expires_at TEXT NOT NULL,
-    attempts INTEGER NOT NULL DEFAULT 0,
-    last_sent_at TEXT NOT NULL,
-    used INTEGER NOT NULL DEFAULT 0
-  )`,
-  `CREATE TABLE IF NOT EXISTS ql_sessions (
+`CREATE TABLE IF NOT EXISTS ql_sessions (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
@@ -44,8 +35,7 @@ export const SCHEMA_SQL = [
     FOREIGN KEY (learning_session_id) REFERENCES learning_sessions(id),
     FOREIGN KEY (user_id) REFERENCES ql_users(id)
   )`,
-  `CREATE INDEX IF NOT EXISTS idx_otc_email ON ql_otc_tokens(email)`,
-  `CREATE INDEX IF NOT EXISTS idx_learning_user ON learning_sessions(user_id)`,
+`CREATE INDEX IF NOT EXISTS idx_learning_user ON learning_sessions(user_id)`,
   `CREATE INDEX IF NOT EXISTS idx_events_session ON engagement_events(learning_session_id)`,
   `CREATE INDEX IF NOT EXISTS idx_events_user ON engagement_events(user_id)`,
   // Lumina OS — OS-native registration (separate from email-based ql_users)

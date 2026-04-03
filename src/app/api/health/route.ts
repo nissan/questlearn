@@ -14,7 +14,6 @@ export async function GET() {
   }
 
   // Check env vars
-  checks.resend = process.env.RESEND_API_KEY ? 'configured' : 'missing';
   checks.jwt = process.env.JWT_SECRET ? 'configured' : 'missing';
   checks.turso = process.env.TURSO_DATABASE_URL ? 'configured' : 'missing';
 
