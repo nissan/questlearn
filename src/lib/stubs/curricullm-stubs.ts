@@ -3,12 +3,12 @@ export interface CurricuLLMResponse {
   body: string;
   socraticPrompt: string;
   curriculumRef: string;
-  _stub: true;
+  _stub: boolean;
 }
 
 export interface SocraticFollowUpResponse {
   followUp: string;
-  _stub: true;
+  _stub: boolean;
 }
 
 const SOCRATIC_FOLLOWUPS = [
