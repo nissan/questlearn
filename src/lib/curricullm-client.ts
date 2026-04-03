@@ -4,11 +4,12 @@ import { generateStubContent, generateStubSocratic } from './stubs/curricullm-st
 
 const USE_MOCK = process.env.USE_MOCK === 'true' || !process.env.CURRICULLM_API_KEY;
 
+// CurricuLLM-AU is powered by OpenAI under the hood.
+// CURRICULLM_API_KEY should be a valid OpenAI API key.
 const curricullm = USE_MOCK
   ? null
   : new OpenAI({
       apiKey: process.env.CURRICULLM_API_KEY!,
-      baseURL: 'https://api.curricullm.com/v1',
     });
 
 function getSystemPrompt(format: string, yearLevel: string): string {
@@ -113,7 +114,7 @@ Return ONLY a JSON object with these exact fields:
 Do not include any text outside the JSON object.`;
 
   const completion = await curricullm.chat.completions.create({
-    model: 'CurricuLLM-AU',
+    model: process.env.CURRICULLM_MODEL ?? 'gpt-4o-mini',
     messages: [
       { role: 'system', content: getSystemPrompt(format, yearLevel) },
       { role: 'user', content: userPrompt },
@@ -141,7 +142,7 @@ export async function generateSocratic(
   }
 
   const completion = await curricullm.chat.completions.create({
-    model: 'CurricuLLM-AU',
+    model: process.env.CURRICULLM_MODEL ?? 'gpt-4o-mini',
     messages: [
       { role: 'system', content: getSocraticSystemPrompt(topic, format, yearLevel) },
       ...history,
