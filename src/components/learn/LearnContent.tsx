@@ -123,7 +123,7 @@ export function LearnContent() {
                 <div className="flex items-start justify-between gap-2">
                   <CardTitle className="text-base leading-snug">{content.title}</CardTitle>
                   <div className="flex flex-col gap-1 items-end shrink-0">
-                    <StubBadge />
+                    {content._stub && <StubBadge />}
                     <Badge variant="secondary" className="text-xs">{content.curriculumRef}</Badge>
                   </div>
                 </div>

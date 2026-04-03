@@ -22,8 +22,8 @@ async function ensureTable() {
   `)
 }
 
-async function createLuminaJWT(userId: string): Promise<string> {
-  return new SignJWT({ sub: userId, uid: userId, lumina: true })
+async function createLuminaJWT(userId: string, role: string): Promise<string> {
+  return new SignJWT({ sub: userId, uid: userId, role, lumina: true })
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('7d')
     .sign(SECRET)
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
   // navigate directly to /learn and /teacher without hitting /auth
   let token: string | null = null
   try {
-    token = await createLuminaJWT(id)
+    token = await createLuminaJWT(id, role)
   } catch (err) {
     console.error('[lumina-register] JWT error:', err)
   }
