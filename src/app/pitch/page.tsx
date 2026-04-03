@@ -309,10 +309,36 @@ function Slide3() {
           ))}
         </div>
 
-        <p style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', color: '#94a3b8', lineHeight: 1.7, maxWidth: '650px' }}>
+        <p style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', color: '#94a3b8', lineHeight: 1.7, maxWidth: '650px', marginBottom: '2rem' }}>
           Different students learn the same concept in different ways. QuestLearn{' '}
           <span style={{ color: amber, fontWeight: 700 }}>gives them the choice.</span>
         </p>
+
+        {/* Psychology evidence row */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.85rem' }}>
+          {[
+            { label: 'Active Recall', detail: 'Retrieving knowledge yourself is 50% more effective than re-reading (Roediger & Karpicke, 2006)', icon: '🧠' },
+            { label: 'Metacognition', detail: 'Thinking about your own thinking — the Socratic loop forces students to monitor their own understanding', icon: '🔁' },
+            { label: 'Desirable Difficulty', detail: 'Making retrieval effortful improves long-term retention (Bjork, 1994)', icon: '💪' },
+            { label: "Bloom's Taxonomy", detail: 'Every Socratic prompt pushes past Remember → Understand into Analyse → Evaluate', icon: '📐' },
+          ].map((p, i) => (
+            <div key={i} style={{
+              backgroundColor: 'rgba(245,158,11,0.06)',
+              border: '1px solid rgba(245,158,11,0.2)',
+              borderRadius: '0.65rem',
+              padding: '0.9rem 1rem',
+              display: 'flex',
+              gap: '0.75rem',
+              alignItems: 'flex-start',
+            }}>
+              <span style={{ fontSize: '1.3rem', flexShrink: 0 }}>{p.icon}</span>
+              <div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: amber, marginBottom: '0.25rem' }}>{p.label}</div>
+                <div style={{ fontSize: '0.72rem', color: '#94a3b8', lineHeight: 1.5 }}>{p.detail}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
