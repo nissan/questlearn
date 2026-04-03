@@ -48,4 +48,16 @@ export const SCHEMA_SQL = [
   `CREATE INDEX IF NOT EXISTS idx_learning_user ON learning_sessions(user_id)`,
   `CREATE INDEX IF NOT EXISTS idx_events_session ON engagement_events(learning_session_id)`,
   `CREATE INDEX IF NOT EXISTS idx_events_user ON engagement_events(user_id)`,
+  // Lumina OS — OS-native registration (separate from email-based ql_users)
+  `CREATE TABLE IF NOT EXISTS lumina_users (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'student',
+    school_name TEXT,
+    school_location TEXT,
+    year_level TEXT,
+    teacher_id TEXT,
+    subject TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )`,
 ];

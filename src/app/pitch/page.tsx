@@ -727,19 +727,34 @@ function Slide8() {
 function Slide9() {
   const roadmap = [
     {
-      phase: 'Now — MVP',
+      phase: 'v1 — Live Now',
       color: green,
-      items: ['AI content generation', 'Socratic conversation loop', 'Teacher engagement heatmap', '5 learning formats'],
+      items: [
+        '🎓 QuestLearn — student learning journey',
+        '📊 Teacher Hub — class comprehension heatmap',
+        'Lumina OS browser desktop shell',
+        '5 AI-powered learning formats',
+      ],
     },
     {
-      phase: 'v2 — 30 days',
+      phase: 'v2 — Coming Soon',
       color: amber,
-      items: ['Study Rooms (peer groups)', 'Quiz Rooms (teacher-created)', 'AI moderation', 'Discussion + Collaboration types'],
+      items: [
+        '💬 Study Rooms — collaborative study sessions',
+        '🧩 Quiz Rooms — real-time quiz battles',
+        '🗂️ Open Threads — topic discussion boards',
+        '📚 Syllabus Browser — AC v9 curriculum tree',
+      ],
     },
     {
-      phase: 'v3 — 90 days',
+      phase: 'v3 — Future Vision',
       color: '#818cf8',
-      items: ['Cross-school matching', 'Regional equity layer', '"Bourke meets Bondi"', 'Full Laurillard 6-type framework'],
+      items: [
+        '🌏 Cross-School Match — study nationally',
+        '📍 Regional Insights — equity analytics',
+        'Full Laurillard 6-type framework',
+        '"Bourke meets Bondi" — bridging the divide',
+      ],
     },
   ];
 
