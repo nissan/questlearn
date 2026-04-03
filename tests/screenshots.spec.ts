@@ -1,7 +1,7 @@
 /**
- * Screenshot capture for demo/marketing — Lumina OS UX overhaul.
+ * Screenshot capture for demo/marketing — QuestLearn UX overhaul.
  *
- * Captures key states of the Lumina OS desktop shell and standalone routes.
+ * Captures key states of the QuestLearn desktop shell and standalone routes.
  * Screenshots are saved to tests/screenshots/.
  */
 import { test, expect } from '@playwright/test';
@@ -22,7 +22,7 @@ test.beforeAll(() => {
   fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true });
 });
 
-test.describe('Screenshot capture — Lumina OS', () => {
+test.describe('Screenshot capture — QuestLearn', () => {
   test('1. /desktop — boot screen (early capture)', async ({ page }) => {
     // Navigate and capture immediately — boot completes in ~750ms
     await page.goto('/desktop');
@@ -59,7 +59,7 @@ test.describe('Screenshot capture — Lumina OS', () => {
     await page.goto('/desktop');
     await page.waitForLoadState('networkidle');
     // Wait for the desktop to render (menu bar + dock)
-    await expect(page.getByText('🌟 Lumina')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('🌟 QuestLearn')).toBeVisible({ timeout: 5000 });
     await page.screenshot({
       path: path.join(SCREENSHOTS_DIR, 'lumina-3-desktop.png'),
       fullPage: true,
@@ -78,7 +78,7 @@ test.describe('Screenshot capture — Lumina OS', () => {
     });
     await page.goto('/desktop');
     await page.waitForLoadState('networkidle');
-    await expect(page.getByText('🌟 Lumina')).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText('🌟 QuestLearn')).toBeVisible({ timeout: 5000 });
     // Double-click on the QuestLearn desktop icon to open the window
     const questlearnIcon = page.getByText('QuestLearn').first();
     await questlearnIcon.dblclick().catch(() => {

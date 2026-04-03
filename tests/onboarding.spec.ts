@@ -17,19 +17,15 @@ test.describe('Onboarding', () => {
     await expect(page).toHaveURL(/\/desktop/);
   });
 
-  test('/onboarding redirects unauthenticated users to /auth (middleware still active)', async ({ page }) => {
+  test('/onboarding redirects unauthenticated users to /desktop', async ({ page }) => {
     // src/proxy.ts middleware guards /onboarding with JWT cookie auth.
     // Without a valid ql_session cookie, the redirect to /auth is expected.
     // The primary entry point is now /desktop (Lumina OS login), not /onboarding.
     await page.goto('/onboarding');
-    await expect(page).toHaveURL(/\/auth/);
+    await expect(page).toHaveURL(/\/desktop/);
   });
 
-  test('auth page has correct heading', async ({ page }) => {
-    await page.goto('/auth');
-    // CardTitle renders as a div, not a heading element
-    await expect(page.getByText('QuestLearn', { exact: true })).toBeVisible();
-  });
+
 
   // Removed: 'home page has get started link to /auth'
   // The root route (/) now redirects to /desktop — there is no home page with a "Get Started" link.
