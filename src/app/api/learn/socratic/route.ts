@@ -7,16 +7,25 @@ import { v4 as uuidv4 } from 'uuid';
 export async function POST(req: NextRequest) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  const { learningSessionId, studentResponse, turnIndex } = await req.json();
+  const { learningSessionId, studentResponse, turnIndex, topic, format, yearLevel, history } = await req.json();
   const db = getDb();
-  const followUp = generateSocratic(turnIndex);
+
+  const followUp = await generateSocratic(
+    topic ?? 'this topic',
+    format ?? 'story',
+    yearLevel ?? 'Year 9',
+    history ?? [],
+    turnIndex ?? 0
+  );
+
   await db.execute({
-    sql: `INSERT INTO engagement_events (id, learning_session_id, user_id, turn_index, student_response, ai_followup, timestamp) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`,
+    sql: `INSERT INTO engagement_events (id, learning_session_id, user_id, turn_index, student_response, ai_followup, timestamp) VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
     args: [uuidv4(), learningSessionId, session.userId, turnIndex, studentResponse, followUp.followUp],
   });
   await db.execute({
-    sql: `UPDATE learning_sessions SET turn_count = turn_count + 1, last_active_at = datetime('now') WHERE id = ?`,
+    sql: `UPDATE learning_sessions SET turn_count = turn_count + 1, last_active_at = CURRENT_TIMESTAMP WHERE id = ?`,
     args: [learningSessionId],
   });
+
   return NextResponse.json(followUp);
 }
