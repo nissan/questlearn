@@ -61,6 +61,13 @@ export async function POST(req: NextRequest) {
         subject ?? null,
       ],
     })
+
+    // Also insert into ql_users so learning_sessions FK constraint passes
+    const email = `lumina-${id}@questlearn.local`
+    await db.execute({
+      sql: `INSERT OR IGNORE INTO ql_users (id, email, role, onboarding_complete) VALUES (?, ?, ?, 1)`,
+      args: [id, email, role],
+    })
   } catch (err) {
     console.error('[lumina-register] DB error (graceful degradation):', err)
     // Continue — localStorage session still works even if DB write fails
