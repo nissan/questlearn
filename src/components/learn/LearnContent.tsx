@@ -219,10 +219,10 @@ export function LearnContent() {
         </div>
         <Button variant="outline" size="sm" onClick={() => router.push('/onboarding')}>New quest</Button>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 h-[calc(100vh-57px)]">
+      <div className="grid grid-cols-1 lg:grid-cols-2" style={{height: 'calc(100vh - var(--banner-offset, 57px))'}}>
         {/* Left: content card */}
-        <div className={`border-r p-4 ${format === 'meme' ? 'overflow-hidden flex flex-col gap-2 h-full' : 'overflow-auto space-y-4'}`}>
-          <div className="flex gap-2 flex-wrap">
+        <div className={`border-r flex flex-col overflow-hidden ${format === 'meme' ? '' : ''}`}>
+          <div className="flex gap-2 flex-wrap shrink-0 p-4 pb-2">
             {FORMATS.map(f => (
               <button key={f.id} onClick={() => setFormat(f.id)}
                 className={`text-xs px-3 py-1.5 rounded-full border transition-all ${format === f.id ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}>
@@ -231,7 +231,7 @@ export function LearnContent() {
             ))}
           </div>
           {format === 'meme' && !loadingContent && content ? (
-            <div className="flex flex-col flex-1 min-h-0 gap-2">
+            <div className="flex flex-col flex-1 min-h-0 px-4 pb-4 gap-2">
               <MemeCard
                 topText={memeTopText}
                 bottomText={memeBottomText}
@@ -239,29 +239,29 @@ export function LearnContent() {
                 topic={topic}
               />
               {content.body.match(/^CAPTION:\s*(.+)/im)?.[1] && (
-                <p className="text-xs text-muted-foreground text-center px-4">
+                <p className="text-xs text-muted-foreground text-center shrink-0">
                   {content.body.match(/^CAPTION:\s*(.+)/im)?.[1]}
                 </p>
               )}
             </div>
           ) : format === 'flashcards' ? (
-            <Card className="border-2 border-dashed border-amber-500/40 bg-amber-500/5">
+            <div className="flex-1 overflow-auto px-4 pb-4"><Card className="border-2 border-dashed border-amber-500/40 bg-amber-500/5">
               <CardContent className="pt-6 pb-6 flex flex-col items-center justify-center text-center gap-3">
                 <span className="text-4xl">🃏</span>
                 <p className="text-sm font-medium">Flashcard Mode</p>
                 <p className="text-xs text-muted-foreground">Your topic is loaded in the Cogniti panel →</p>
               </CardContent>
-            </Card>
+            </Card></div>
           ) : format === 'concept_map' ? (
-            <Card className="border-2 border-dashed border-emerald-500/40 bg-emerald-500/5">
+            <div className="flex-1 overflow-auto px-4 pb-4"><Card className="border-2 border-dashed border-emerald-500/40 bg-emerald-500/5">
               <CardContent className="pt-6 pb-6 flex flex-col items-center justify-center text-center gap-3">
                 <span className="text-4xl">🗺️</span>
                 <p className="text-sm font-medium">Concept Map Mode</p>
                 <p className="text-xs text-muted-foreground">Build your concept map in the Cogniti panel →</p>
               </CardContent>
-            </Card>
+            </Card></div>
           ) : format === 'meme' && loadingContent ? (
-            <div className="flex flex-col flex-1 min-h-0">
+            <div className="flex flex-col flex-1 min-h-0 px-4 pb-4">
               <MemeCard
                 topText=""
                 bottomText=""
@@ -271,12 +271,12 @@ export function LearnContent() {
               />
             </div>
           ) : loadingContent ? (
-            <Card><CardContent className="pt-6 space-y-3">
+            <div className="flex-1 overflow-auto px-4 pb-4"><Card><CardContent className="pt-6 space-y-3">
               <Skeleton className="h-6 w-3/4" /><Skeleton className="h-4 w-full" />
               <Skeleton className="h-4 w-full" /><Skeleton className="h-4 w-2/3" />
-            </CardContent></Card>
+            </CardContent></Card></div>
           ) : content ? (
-            <Card>
+            <div className="flex-1 overflow-auto px-4 pb-4"><Card>
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between gap-2">
                   <CardTitle className="text-base leading-snug">{content.title}</CardTitle>
@@ -289,7 +289,7 @@ export function LearnContent() {
               <CardContent>
                 <p className="text-sm leading-relaxed whitespace-pre-line">{content.body}</p>
               </CardContent>
-            </Card>
+            </Card></div>
           ) : null}
         </div>
 
