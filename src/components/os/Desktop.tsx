@@ -61,6 +61,13 @@ export function Desktop({ children }: { children: React.ReactNode }) {
           defaultPosition={{ x: 0, y: 208 }}
           accentColor="#a78bfa"
         />
+        <DesktopIcon
+          id="student-dashboard"
+          icon="🏠"
+          label="My Dashboard"
+          defaultPosition={{ x: 0, y: 312 }}
+          accentColor="#34d399"
+        />
       </div>
 
       {/* Windows layer */}

@@ -9,7 +9,7 @@ import { ShowcaseWindow } from '@/components/os/ShowcaseWindow'
 import { BootScreen } from '@/components/os/BootScreen'
 import { LoginScreen } from '@/components/os/LoginScreen'
 import { MobileLauncher } from '@/components/os/MobileLauncher'
-import { useWindowManager } from '@/components/os/WindowManager'
+import { WindowId, useWindowManager } from '@/components/os/WindowManager'
 
 type OSPhase = 'boot' | 'login' | 'desktop'
 
@@ -57,6 +57,7 @@ function WindowLayer() {
 export default function DesktopPage() {
   const isMobile = useIsMobile()
   const [phase, setPhase] = useState<OSPhase>('boot')
+  const openWindow = useWindowManager((s) => s.openWindow)
 
   useEffect(() => {
     // Skip boot + login if returning user
@@ -69,6 +70,24 @@ export default function DesktopPage() {
       // localStorage unavailable
     }
   }, [])
+
+  // Auto-open student dashboard when desktop phase begins
+  useEffect(() => {
+    if (phase === 'desktop') {
+      openWindow('student-dashboard')
+    }
+  }, [phase, openWindow])
+
+  // Listen for OPEN_WINDOW postMessage from iframes
+  useEffect(() => {
+    const handler = (e: MessageEvent) => {
+      if (e.data?.type === 'OPEN_WINDOW') {
+        openWindow(e.data.windowId as WindowId)
+      }
+    }
+    window.addEventListener('message', handler)
+    return () => window.removeEventListener('message', handler)
+  }, [openWindow])
 
   if (phase === 'boot') {
     return <BootScreen onComplete={() => setPhase('login')} />
