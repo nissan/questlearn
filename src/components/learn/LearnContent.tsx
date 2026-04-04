@@ -15,6 +15,7 @@ import { CognitiFlashcards } from '@/components/learn/CognitiFlashcards';
 import { CognitiConceptMap } from '@/components/learn/CognitiConceptMap';
 import { MemeCard } from '@/components/learn/MemeCard';
 import { pickMemeTemplate } from '@/lib/pick-meme-template';
+import { MEME_TEMPLATES } from '@/lib/meme-templates';
 import type { MemeTemplate } from '@/lib/meme-templates';
 
 const COGNITI_URL =
@@ -90,6 +91,25 @@ export function LearnContent() {
       setChat([{ role: 'ai', text: contentData.socraticPrompt }]);
       setLoadingContent(false);
       if (format === 'meme' && contentData?.body) {
+        // Attempt two-LLM meme: GPT-4o-mini picks template + writes humour
+        try {
+          const memeRes = await fetch('/api/generate/meme-text', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ topic, curriculumFact: contentData.body }),
+          });
+          const memeData = await memeRes.json();
+          if (memeData.templateId && memeData.topText && memeData.bottomText) {
+            const pickedTemplate = MEME_TEMPLATES.find((t) => t.id === memeData.templateId) ?? null;
+            setMemeTopText(memeData.topText);
+            setMemeBottomText(memeData.bottomText);
+            setMemeTemplate(pickedTemplate);
+            return;
+          }
+        } catch {
+          // Fall through to keyword-match fallback
+        }
+        // Fallback: keyword match + parse body
         const { topText, bottomText } = parseMemeBody(contentData.body);
         setMemeTopText(topText);
         setMemeBottomText(bottomText);
