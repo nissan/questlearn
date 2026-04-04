@@ -25,6 +25,27 @@ const LAUNCHER_APPS = [
     desc: 'Your learning overview',
     status: 'live' as const,
   },
+  {
+    id: 'pitch',
+    icon: '📋',
+    label: 'Pitch Deck',
+    desc: 'Project pitch and overview',
+    status: 'live' as const,
+  },
+  {
+    id: 'student-help',
+    icon: '🎒',
+    label: 'Student Guide',
+    desc: 'How to use QuestLearn',
+    status: 'live' as const,
+  },
+  {
+    id: 'teacher-help',
+    icon: '📖',
+    label: 'Teacher Guide',
+    desc: 'Pedagogy and classroom tips',
+    status: 'live' as const,
+  },
   // v2
   {
     id: 'study-rooms',
@@ -111,7 +132,7 @@ export function AppLauncher() {
         key={app.id}
         disabled={!isLive}
         onClick={() => {
-          if (isLive && (app.id === 'questlearn' || app.id === 'teacher' || app.id === 'student-dashboard')) {
+          if (isLive) {
             openWindow(app.id as WindowId)
             setLauncher(false)
           }
