@@ -221,8 +221,8 @@ export function LearnContent() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2" style={{height: 'calc(100vh - var(--banner-offset, 57px))'}}>
         {/* Left: content card */}
-        <div className={`border-r flex flex-col overflow-hidden ${format === 'meme' ? '' : ''}`}>
-          <div className="flex gap-2 flex-wrap shrink-0 p-4 pb-2">
+        <div className="border-r overflow-auto">
+          <div className="flex gap-2 flex-wrap p-4 pb-2">
             {FORMATS.map(f => (
               <button key={f.id} onClick={() => setFormat(f.id)}
                 className={`text-xs px-3 py-1.5 rounded-full border transition-all ${format === f.id ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}>
@@ -231,7 +231,7 @@ export function LearnContent() {
             ))}
           </div>
           {format === 'meme' && !loadingContent && content ? (
-            <div className="flex flex-col flex-1 min-h-0 px-4 pb-4 gap-2">
+            <div className="px-4 pb-4 space-y-3">
               <MemeCard
                 topText={memeTopText}
                 bottomText={memeBottomText}
@@ -239,13 +239,13 @@ export function LearnContent() {
                 topic={topic}
               />
               {content.body.match(/^CAPTION:\s*(.+)/im)?.[1] && (
-                <p className="text-xs text-muted-foreground text-center shrink-0">
+                <p className="text-xs text-muted-foreground text-center">
                   {content.body.match(/^CAPTION:\s*(.+)/im)?.[1]}
                 </p>
               )}
             </div>
           ) : format === 'flashcards' ? (
-            <div className="flex-1 overflow-auto px-4 pb-4"><Card className="border-2 border-dashed border-amber-500/40 bg-amber-500/5">
+            <div className="px-4 pb-4"><Card className="border-2 border-dashed border-amber-500/40 bg-amber-500/5">
               <CardContent className="pt-6 pb-6 flex flex-col items-center justify-center text-center gap-3">
                 <span className="text-4xl">🃏</span>
                 <p className="text-sm font-medium">Flashcard Mode</p>
@@ -253,7 +253,7 @@ export function LearnContent() {
               </CardContent>
             </Card></div>
           ) : format === 'concept_map' ? (
-            <div className="flex-1 overflow-auto px-4 pb-4"><Card className="border-2 border-dashed border-emerald-500/40 bg-emerald-500/5">
+            <div className="px-4 pb-4"><Card className="border-2 border-dashed border-emerald-500/40 bg-emerald-500/5">
               <CardContent className="pt-6 pb-6 flex flex-col items-center justify-center text-center gap-3">
                 <span className="text-4xl">🗺️</span>
                 <p className="text-sm font-medium">Concept Map Mode</p>
@@ -261,7 +261,7 @@ export function LearnContent() {
               </CardContent>
             </Card></div>
           ) : format === 'meme' && loadingContent ? (
-            <div className="flex flex-col flex-1 min-h-0 px-4 pb-4">
+            <div className="px-4 pb-4">
               <MemeCard
                 topText=""
                 bottomText=""
@@ -271,12 +271,12 @@ export function LearnContent() {
               />
             </div>
           ) : loadingContent ? (
-            <div className="flex-1 overflow-auto px-4 pb-4"><Card><CardContent className="pt-6 space-y-3">
+            <div className="px-4 pb-4"><Card><CardContent className="pt-6 space-y-3">
               <Skeleton className="h-6 w-3/4" /><Skeleton className="h-4 w-full" />
               <Skeleton className="h-4 w-full" /><Skeleton className="h-4 w-2/3" />
             </CardContent></Card></div>
           ) : content ? (
-            <div className="flex-1 overflow-auto px-4 pb-4"><Card>
+            <div className="px-4 pb-4"><Card>
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between gap-2">
                   <CardTitle className="text-base leading-snug">{content.title}</CardTitle>
