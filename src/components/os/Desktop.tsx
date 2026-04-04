@@ -68,6 +68,27 @@ export function Desktop({ children }: { children: React.ReactNode }) {
           defaultPosition={{ x: 0, y: 312 }}
           accentColor="#34d399"
         />
+        <DesktopIcon
+          id="pitch"
+          icon="📋"
+          label="Pitch Deck"
+          defaultPosition={{ x: 0, y: 416 }}
+          accentColor="#f59e0b"
+        />
+        <DesktopIcon
+          id="student-help"
+          icon="🎒"
+          label="Student Guide"
+          defaultPosition={{ x: 0, y: 520 }}
+          accentColor="#34d399"
+        />
+        <DesktopIcon
+          id="teacher-help"
+          icon="📖"
+          label="Teacher Guide"
+          defaultPosition={{ x: 0, y: 624 }}
+          accentColor="#60a5fa"
+        />
       </div>
 
       {/* Windows layer */}
