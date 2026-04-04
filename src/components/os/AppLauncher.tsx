@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useWindowManager } from './WindowManager'
+import { WindowId, useWindowManager } from './WindowManager'
 
 const LAUNCHER_APPS = [
   // Live
@@ -16,6 +16,13 @@ const LAUNCHER_APPS = [
     icon: '📊',
     label: 'Teacher Hub',
     desc: 'Class comprehension insights',
+    status: 'live' as const,
+  },
+  {
+    id: 'student-dashboard',
+    icon: '🏠',
+    label: 'My Dashboard',
+    desc: 'Your learning overview',
     status: 'live' as const,
   },
   // v2
@@ -104,8 +111,8 @@ export function AppLauncher() {
         key={app.id}
         disabled={!isLive}
         onClick={() => {
-          if (isLive && (app.id === 'questlearn' || app.id === 'teacher')) {
-            openWindow(app.id as 'questlearn' | 'teacher')
+          if (isLive && (app.id === 'questlearn' || app.id === 'teacher' || app.id === 'student-dashboard')) {
+            openWindow(app.id as WindowId)
             setLauncher(false)
           }
         }}
