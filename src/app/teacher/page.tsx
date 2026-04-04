@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { HeatmapCell } from '@/components/teacher/HeatmapCell';
 import { EmptyState } from '@/components/teacher/EmptyState';
+import { Separator } from '@/components/ui/separator';
+import { CognitiEngagement } from '@/components/teacher/CognitiEngagement';
 
 const FORMAT_LABELS: Record<string, string> = {
   game: '🎮 Game', story: '📖 Story', meme: '😂 Meme',
@@ -126,6 +128,10 @@ export default function TeacherDashboard() {
           </CardContent>
         </Card>
       )}
+
+      <Separator className="my-6" />
+      <h2 className="text-lg font-semibold mb-4">🃏 Cogniti Flashcard Engagement</h2>
+      <CognitiEngagement />
     </main>
   );
 }
