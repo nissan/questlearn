@@ -7,6 +7,8 @@ import { HeatmapCell } from '@/components/teacher/HeatmapCell';
 import { EmptyState } from '@/components/teacher/EmptyState';
 import { Separator } from '@/components/ui/separator';
 import { CognitiEngagement } from '@/components/teacher/CognitiEngagement';
+import { TodaysQuest } from '@/components/teacher/TodaysQuest';
+import { LiveActivity } from '@/components/teacher/LiveActivity';
 
 const FORMAT_LABELS: Record<string, string> = {
   game: '🎮 Game', story: '📖 Story', meme: '😂 Meme',
@@ -69,6 +71,9 @@ export default function TeacherDashboard() {
         </div>
         <Badge variant="outline">Year 9</Badge>
       </div>
+
+      <TodaysQuest />
+      <LiveActivity />
 
       {(!data || data.topics.length === 0) ? <EmptyState /> : (
         <Card>
