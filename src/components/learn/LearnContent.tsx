@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { StubBadge } from '@/components/StubBadge';
 import { FORMATS } from '@/lib/formats';
 import { CognitiFlashcards } from '@/components/learn/CognitiFlashcards';
+import { CognitiConceptMap } from '@/components/learn/CognitiConceptMap';
 
 const COGNITI_URL =
   process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ??
@@ -190,6 +191,14 @@ export function LearnContent() {
                 <p className="text-xs text-muted-foreground">Your topic is loaded in the Cogniti panel →</p>
               </CardContent>
             </Card>
+          ) : format === 'concept_map' ? (
+            <Card className="border-2 border-dashed border-emerald-500/40 bg-emerald-500/5">
+              <CardContent className="pt-6 pb-6 flex flex-col items-center justify-center text-center gap-3">
+                <span className="text-4xl">🗺️</span>
+                <p className="text-sm font-medium">Concept Map Mode</p>
+                <p className="text-xs text-muted-foreground">Build your concept map in the Cogniti panel →</p>
+              </CardContent>
+            </Card>
           ) : loadingContent ? (
             <Card><CardContent className="pt-6 space-y-3">
               <Skeleton className="h-6 w-3/4" /><Skeleton className="h-4 w-full" />
@@ -222,8 +231,15 @@ export function LearnContent() {
             </div>
           )}
 
-          {/* Standard tutor modes — hidden when flashcards active */}
-          {format !== 'flashcards' && (
+          {/* Concept Map format: full-panel Cogniti embed */}
+          {format === 'concept_map' && (
+            <div className="flex flex-col flex-1 min-h-0">
+              <CognitiConceptMap topic={topic} />
+            </div>
+          )}
+
+          {/* Standard tutor modes — hidden when flashcards or concept_map active */}
+          {format !== 'flashcards' && format !== 'concept_map' && (
             <>
               <div className="px-4 py-2 border-b flex items-center gap-2 shrink-0">
                 <span className="text-xs text-muted-foreground mr-1">Tutor:</span>
