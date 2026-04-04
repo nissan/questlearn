@@ -58,6 +58,7 @@ export default function DesktopPage() {
   const isMobile = useIsMobile()
   const [phase, setPhase] = useState<OSPhase>('boot')
   const openWindow = useWindowManager((s) => s.openWindow)
+  const openWindowWithSrc = useWindowManager((s) => s.openWindowWithSrc)
 
   useEffect(() => {
     // Skip boot + login if returning user
@@ -82,12 +83,18 @@ export default function DesktopPage() {
   useEffect(() => {
     const handler = (e: MessageEvent) => {
       if (e.data?.type === 'OPEN_WINDOW') {
-        openWindow(e.data.windowId as WindowId)
+        const id = e.data.windowId as WindowId
+        const { topic, format } = e.data
+        if (id === 'questlearn' && topic && format) {
+          openWindowWithSrc(id, `/learn?topic=${encodeURIComponent(topic)}&format=${encodeURIComponent(format)}`)
+        } else {
+          openWindow(id)
+        }
       }
     }
     window.addEventListener('message', handler)
     return () => window.removeEventListener('message', handler)
-  }, [openWindow])
+  }, [openWindow, openWindowWithSrc])
 
   if (phase === 'boot') {
     return <BootScreen onComplete={() => setPhase('login')} />
