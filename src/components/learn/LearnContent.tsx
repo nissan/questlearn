@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { StubBadge } from '@/components/StubBadge';
 import { FORMATS } from '@/lib/formats';
+import { QuestBanner } from '@/components/learn/QuestBanner';
 import { CognitiFlashcards } from '@/components/learn/CognitiFlashcards';
 import { CognitiConceptMap } from '@/components/learn/CognitiConceptMap';
 
@@ -162,6 +163,7 @@ export function LearnContent() {
 
   return (
     <main className="min-h-screen bg-background">
+      <QuestBanner />
       <div className="border-b px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="text-2xl">{currentFormat?.icon}</span>
