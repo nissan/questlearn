@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { StubBadge } from '@/components/StubBadge';
 import { FORMATS } from '@/lib/formats';
+import { CognitiFlashcards } from '@/components/learn/CognitiFlashcards';
 
 const COGNITI_URL =
   process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ??
@@ -181,7 +182,15 @@ export function LearnContent() {
               </button>
             ))}
           </div>
-          {loadingContent ? (
+          {format === 'flashcards' ? (
+            <Card className="border-2 border-dashed border-amber-500/40 bg-amber-500/5">
+              <CardContent className="pt-6 pb-6 flex flex-col items-center justify-center text-center gap-3">
+                <span className="text-4xl">🃏</span>
+                <p className="text-sm font-medium">Flashcard Mode</p>
+                <p className="text-xs text-muted-foreground">Your topic is loaded in the Cogniti panel →</p>
+              </CardContent>
+            </Card>
+          ) : loadingContent ? (
             <Card><CardContent className="pt-6 space-y-3">
               <Skeleton className="h-6 w-3/4" /><Skeleton className="h-4 w-full" />
               <Skeleton className="h-4 w-full" /><Skeleton className="h-4 w-2/3" />
@@ -206,54 +215,65 @@ export function LearnContent() {
 
         {/* Right: tutor panel */}
         <div className="flex flex-col h-full overflow-hidden">
-          {/* Tutor mode toggle */}
-          <div className="px-4 py-2 border-b flex items-center gap-2 shrink-0">
-            <span className="text-xs text-muted-foreground mr-1">Tutor:</span>
-            <button
-              onClick={() => setTutorMode('curricullm')}
-              className={`text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'curricullm' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
-            >
-              CurricuLLM
-            </button>
-            <button
-              onClick={() => setTutorMode('cogniti')}
-              className={`text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'cogniti' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
-            >
-              Cogniti
-            </button>
-            {/* "Both" button hidden on mobile */}
-            <button
-              onClick={() => setTutorMode('both')}
-              className={`hidden md:inline-flex text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'both' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
-            >
-              Both
-            </button>
-          </div>
-
-          {/* CurricuLLM only */}
-          {tutorMode === 'curricullm' && (
+          {/* Flashcards format: full-panel Cogniti embed */}
+          {format === 'flashcards' && (
             <div className="flex flex-col flex-1 min-h-0">
-              {curricuLLMInner}
+              <CognitiFlashcards topic={topic} />
             </div>
           )}
 
-          {/* Cogniti only */}
-          {tutorMode === 'cogniti' && (
-            <div className="flex flex-col flex-1 min-h-0">
-              {cognitiInner}
-            </div>
-          )}
+          {/* Standard tutor modes — hidden when flashcards active */}
+          {format !== 'flashcards' && (
+            <>
+              <div className="px-4 py-2 border-b flex items-center gap-2 shrink-0">
+                <span className="text-xs text-muted-foreground mr-1">Tutor:</span>
+                <button
+                  onClick={() => setTutorMode('curricullm')}
+                  className={`text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'curricullm' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
+                >
+                  CurricuLLM
+                </button>
+                <button
+                  onClick={() => setTutorMode('cogniti')}
+                  className={`text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'cogniti' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
+                >
+                  Cogniti
+                </button>
+                {/* "Both" button hidden on mobile */}
+                <button
+                  onClick={() => setTutorMode('both')}
+                  className={`hidden md:inline-flex text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'both' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
+                >
+                  Both
+                </button>
+              </div>
 
-          {/* Both: split 50/50 */}
-          {tutorMode === 'both' && (
-            <div className="grid grid-cols-2 flex-1 min-h-0 divide-x overflow-hidden">
-              <div className="flex flex-col overflow-hidden">
-                {curricuLLMInner}
-              </div>
-              <div className="flex flex-col overflow-hidden">
-                {cognitiInner}
-              </div>
-            </div>
+              {/* CurricuLLM only */}
+              {tutorMode === 'curricullm' && (
+                <div className="flex flex-col flex-1 min-h-0">
+                  {curricuLLMInner}
+                </div>
+              )}
+
+              {/* Cogniti only */}
+              {tutorMode === 'cogniti' && (
+                <div className="flex flex-col flex-1 min-h-0">
+                  {cognitiInner}
+                </div>
+              )}
+
+              {/* Both: split 50/50 */}
+              {tutorMode === 'both' && (
+                <div className="grid grid-cols-2 flex-1 min-h-0 divide-x overflow-hidden">
+                  <div className="flex flex-col overflow-hidden">
+                    {curricuLLMInner}
+                  </div>
+                  <div className="flex flex-col overflow-hidden">
+                    {cognitiInner}
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
