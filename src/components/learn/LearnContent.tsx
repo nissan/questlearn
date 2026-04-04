@@ -201,7 +201,7 @@ export function LearnContent() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 h-[calc(100vh-57px)]">
         {/* Left: content card */}
-        <div className="border-r overflow-auto p-4 space-y-4">
+        <div className={`border-r p-4 ${format === 'meme' ? 'overflow-hidden flex flex-col gap-2 h-full' : 'overflow-auto space-y-4'}`}>
           <div className="flex gap-2 flex-wrap">
             {FORMATS.map(f => (
               <button key={f.id} onClick={() => setFormat(f.id)}
@@ -211,7 +211,7 @@ export function LearnContent() {
             ))}
           </div>
           {format === 'meme' && !loadingContent && content ? (
-            <div className="space-y-4">
+            <div className="flex flex-col flex-1 min-h-0 gap-2">
               <MemeCard
                 topText={memeTopText}
                 bottomText={memeBottomText}
@@ -241,7 +241,7 @@ export function LearnContent() {
               </CardContent>
             </Card>
           ) : format === 'meme' && loadingContent ? (
-            <div className="space-y-4">
+            <div className="flex flex-col flex-1 min-h-0">
               <MemeCard
                 topText=""
                 bottomText=""
