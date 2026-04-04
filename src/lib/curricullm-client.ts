@@ -45,7 +45,10 @@ Rules:
 - The joke should relate to something students actually know (social media, gaming, sports, food)
 - The socraticPrompt should ask the student to explain the concept in their own words "in meme format"
 - Keep it clean and school-appropriate — funny but not edgy
-- Format the body as: "TITLE: [title]\\nPUNCHLINE: [punchline]\\nCAPTION: [caption]"
+- Format the body as EXACTLY: "TOP: [setup/question — 5-10 words]\\nBOTTOM: [punchline/learning point — 5-10 words]\\nCAPTION: [2-3 sentences explaining the concept behind the joke]"
+- The TOP line is the setup or question (think: top text of a classic meme)
+- The BOTTOM line is the punchline that reveals the concept (think: bottom text of a classic meme)
+- Both TOP and BOTTOM must be SHORT — they will be displayed as visual text overlays on an image
 Return ONLY a JSON object with fields: title, body, socraticPrompt, curriculumRef.`,
 
     puzzle: `You are QuestLearn's Puzzle Maker for Years 8–10 Australian students.
