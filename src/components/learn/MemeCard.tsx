@@ -1,21 +1,21 @@
 'use client';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import type { MemeTemplate } from '@/lib/meme-templates';
 
 interface MemeCardProps {
   topText: string;
   bottomText: string;
-  imageUrl: string | null;
+  template: MemeTemplate | null;
   topic: string;
   isLoading?: boolean;
 }
 
-export function MemeCard({ topText, bottomText, imageUrl, topic, isLoading }: MemeCardProps) {
+export function MemeCard({ topText, bottomText, template, topic, isLoading }: MemeCardProps) {
   const [copied, setCopied] = useState(false);
 
   function handleShare() {
-    if (!imageUrl) return;
-    navigator.clipboard.writeText(imageUrl).then(() => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
@@ -30,7 +30,7 @@ export function MemeCard({ topText, bottomText, imageUrl, topic, isLoading }: Me
   if (isLoading) {
     return (
       <div className="relative w-full max-w-sm mx-auto aspect-square bg-gray-800 rounded-xl flex items-center justify-center animate-pulse">
-        <span className="text-white text-sm opacity-60">Generating meme…</span>
+        <span className="text-white text-sm opacity-60">Loading meme…</span>
       </div>
     );
   }
@@ -38,15 +38,13 @@ export function MemeCard({ topText, bottomText, imageUrl, topic, isLoading }: Me
   return (
     <div className="flex flex-col items-center gap-3">
       <div className="relative w-full max-w-sm mx-auto aspect-square rounded-xl overflow-hidden bg-gray-900 shadow-2xl">
-        {imageUrl && (
+        {template ? (
           <img
-            src={imageUrl}
-            alt={`Meme about ${topic}`}
+            src={template.file}
+            alt={`${template.name} — meme about ${topic}`}
             className="absolute inset-0 w-full h-full object-cover"
           />
-        )}
-        {/* Dark overlay for text readability when no image */}
-        {!imageUrl && (
+        ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-950" />
         )}
         {/* Top text */}
@@ -62,7 +60,7 @@ export function MemeCard({ topText, bottomText, imageUrl, topic, isLoading }: Me
           </p>
         </div>
       </div>
-      {imageUrl && (
+      {template && (
         <Button variant="outline" size="sm" onClick={handleShare}>
           {copied ? '✅ Copied!' : '🔗 Share meme'}
         </Button>

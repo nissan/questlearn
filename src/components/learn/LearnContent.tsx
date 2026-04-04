@@ -14,6 +14,8 @@ import { QuestBanner } from '@/components/learn/QuestBanner';
 import { CognitiFlashcards } from '@/components/learn/CognitiFlashcards';
 import { CognitiConceptMap } from '@/components/learn/CognitiConceptMap';
 import { MemeCard } from '@/components/learn/MemeCard';
+import { pickMemeTemplate } from '@/lib/pick-meme-template';
+import type { MemeTemplate } from '@/lib/meme-templates';
 
 const COGNITI_URL =
   process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ??
@@ -48,10 +50,9 @@ export function LearnContent() {
   const [studentInput, setStudentInput] = useState('');
   const [sendingResponse, setSendingResponse] = useState(false);
   const [tutorMode, setTutorMode] = useState<TutorMode>('curricullm');
-  const [memeImageUrl, setMemeImageUrl] = useState<string | null>(null);
+  const [memeTemplate, setMemeTemplate] = useState<MemeTemplate | null>(null);
   const [memeTopText, setMemeTopText] = useState('');
   const [memeBottomText, setMemeBottomText] = useState('');
-  const [memeLoading, setMemeLoading] = useState(false);
   const chatBottomRef = useRef<HTMLDivElement>(null);
 
   function parseMemeBody(body: string): { topText: string; bottomText: string } {
@@ -63,30 +64,13 @@ export function LearnContent() {
     };
   }
 
-  async function generateMemeImage(topic: string, topText: string, bottomText: string) {
-    setMemeLoading(true);
-    setMemeImageUrl(null);
-    try {
-      const res = await fetch('/api/generate/meme', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic, topText, bottomText }),
-      });
-      const data = await res.json();
-      setMemeImageUrl(data.imageUrl ?? null);
-    } catch {
-      setMemeImageUrl(null);
-    } finally {
-      setMemeLoading(false);
-    }
-  }
 
   useEffect(() => {
     if (!topic) { router.push('/onboarding'); return; }
     async function load() {
       setLoadingContent(true);
       setChat([]);
-      setMemeImageUrl(null);
+      setMemeTemplate(null);
       setMemeTopText('');
       setMemeBottomText('');
       const sessionRes = await fetch('/api/learn/session', {
@@ -109,7 +93,7 @@ export function LearnContent() {
         const { topText, bottomText } = parseMemeBody(contentData.body);
         setMemeTopText(topText);
         setMemeBottomText(bottomText);
-        generateMemeImage(topic, topText, bottomText);
+        setMemeTemplate(pickMemeTemplate(topic, topText, bottomText));
       }
     }
     load();
@@ -231,9 +215,8 @@ export function LearnContent() {
               <MemeCard
                 topText={memeTopText}
                 bottomText={memeBottomText}
-                imageUrl={memeImageUrl}
+                template={memeTemplate}
                 topic={topic}
-                isLoading={memeLoading}
               />
               {content.body.match(/^CAPTION:\s*(.+)/im)?.[1] && (
                 <p className="text-xs text-muted-foreground text-center px-4">
@@ -262,7 +245,7 @@ export function LearnContent() {
               <MemeCard
                 topText=""
                 bottomText=""
-                imageUrl={null}
+                template={null}
                 topic={topic}
                 isLoading={true}
               />
