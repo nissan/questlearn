@@ -13,6 +13,7 @@ import { FORMATS } from '@/lib/formats';
 import { QuestBanner } from '@/components/learn/QuestBanner';
 import { CognitiFlashcards } from '@/components/learn/CognitiFlashcards';
 import { CognitiConceptMap } from '@/components/learn/CognitiConceptMap';
+import { MemeCard } from '@/components/learn/MemeCard';
 
 const COGNITI_URL =
   process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ??
@@ -47,13 +48,47 @@ export function LearnContent() {
   const [studentInput, setStudentInput] = useState('');
   const [sendingResponse, setSendingResponse] = useState(false);
   const [tutorMode, setTutorMode] = useState<TutorMode>('curricullm');
+  const [memeImageUrl, setMemeImageUrl] = useState<string | null>(null);
+  const [memeTopText, setMemeTopText] = useState('');
+  const [memeBottomText, setMemeBottomText] = useState('');
+  const [memeLoading, setMemeLoading] = useState(false);
   const chatBottomRef = useRef<HTMLDivElement>(null);
+
+  function parseMemeBody(body: string): { topText: string; bottomText: string } {
+    const topMatch = body.match(/^TOP:\s*(.+)/im);
+    const bottomMatch = body.match(/^BOTTOM:\s*(.+)/im);
+    return {
+      topText: topMatch?.[1]?.trim() ?? 'Did you know...',
+      bottomText: bottomMatch?.[1]?.trim() ?? '...it was actually this simple.',
+    };
+  }
+
+  async function generateMemeImage(topic: string, topText: string, bottomText: string) {
+    setMemeLoading(true);
+    setMemeImageUrl(null);
+    try {
+      const res = await fetch('/api/generate/meme', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic, topText, bottomText }),
+      });
+      const data = await res.json();
+      setMemeImageUrl(data.imageUrl ?? null);
+    } catch {
+      setMemeImageUrl(null);
+    } finally {
+      setMemeLoading(false);
+    }
+  }
 
   useEffect(() => {
     if (!topic) { router.push('/onboarding'); return; }
     async function load() {
       setLoadingContent(true);
       setChat([]);
+      setMemeImageUrl(null);
+      setMemeTopText('');
+      setMemeBottomText('');
       const sessionRes = await fetch('/api/learn/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -70,6 +105,12 @@ export function LearnContent() {
       setContent(contentData);
       setChat([{ role: 'ai', text: contentData.socraticPrompt }]);
       setLoadingContent(false);
+      if (format === 'meme' && contentData?.body) {
+        const { topText, bottomText } = parseMemeBody(contentData.body);
+        setMemeTopText(topText);
+        setMemeBottomText(bottomText);
+        generateMemeImage(topic, topText, bottomText);
+      }
     }
     load();
   }, [topic, format, router]);
@@ -185,7 +226,22 @@ export function LearnContent() {
               </button>
             ))}
           </div>
-          {format === 'flashcards' ? (
+          {format === 'meme' && !loadingContent && content ? (
+            <div className="space-y-4">
+              <MemeCard
+                topText={memeTopText}
+                bottomText={memeBottomText}
+                imageUrl={memeImageUrl}
+                topic={topic}
+                isLoading={memeLoading}
+              />
+              {content.body.match(/^CAPTION:\s*(.+)/im)?.[1] && (
+                <p className="text-xs text-muted-foreground text-center px-4">
+                  {content.body.match(/^CAPTION:\s*(.+)/im)?.[1]}
+                </p>
+              )}
+            </div>
+          ) : format === 'flashcards' ? (
             <Card className="border-2 border-dashed border-amber-500/40 bg-amber-500/5">
               <CardContent className="pt-6 pb-6 flex flex-col items-center justify-center text-center gap-3">
                 <span className="text-4xl">🃏</span>
@@ -201,6 +257,16 @@ export function LearnContent() {
                 <p className="text-xs text-muted-foreground">Build your concept map in the Cogniti panel →</p>
               </CardContent>
             </Card>
+          ) : format === 'meme' && loadingContent ? (
+            <div className="space-y-4">
+              <MemeCard
+                topText=""
+                bottomText=""
+                imageUrl={null}
+                topic={topic}
+                isLoading={true}
+              />
+            </div>
           ) : loadingContent ? (
             <Card><CardContent className="pt-6 space-y-3">
               <Skeleton className="h-6 w-3/4" /><Skeleton className="h-4 w-full" />
