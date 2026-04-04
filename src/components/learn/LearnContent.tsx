@@ -219,7 +219,7 @@ export function LearnContent() {
         </div>
         <Button variant="outline" size="sm" onClick={() => router.push('/onboarding')}>New quest</Button>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2" style={{height: 'calc(100vh - var(--banner-offset, 57px))'}}>
+      <div className="grid grid-cols-1 md:grid-cols-2" style={{height: 'calc(100vh - var(--banner-offset, 57px))'}}>
         {/* Left: content card */}
         <div className="border-r overflow-auto">
           <div className="flex gap-2 flex-wrap p-4 pb-2">
