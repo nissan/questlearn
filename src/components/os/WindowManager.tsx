@@ -25,6 +25,7 @@ interface OSState {
   focusWindow: (id: WindowId) => void
   setPosition: (id: WindowId, pos: { x: number; y: number }) => void
   setLauncher: (open: boolean) => void
+  openWindowWithSrc: (id: WindowId, src: string) => void
 }
 
 const INITIAL_WINDOWS: WindowState[] = [
@@ -127,4 +128,16 @@ export const useWindowManager = create<OSState>((set) => ({
     })),
 
   setLauncher: (open) => set({ launcherOpen: open }),
+
+  openWindowWithSrc: (id, src) =>
+    set((state) => {
+      const maxZ = Math.max(...state.windows.map((w) => w.zIndex), 10)
+      return {
+        windows: state.windows.map((w) =>
+          w.id === id ? { ...w, src, open: true, minimised: false, zIndex: maxZ + 1 } : w
+        ),
+        activeWindow: id,
+        launcherOpen: false,
+      }
+    }),
 }))
