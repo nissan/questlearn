@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { JsonLd } from "@/components/JsonLd";
+import { PostHogProvider } from "@/components/PostHogProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -117,7 +118,9 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <JsonLd />
-        {children}
+        <PostHogProvider>
+          {children}
+        </PostHogProvider>
       </body>
     </html>
   );

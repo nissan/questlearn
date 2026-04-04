@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
 
 export default withSentryConfig(nextConfig, {
   org: "redditech",
-  project: "questlearn",
+  project: "questlearn-nextjs",
 
   authToken: process.env.SENTRY_AUTH_TOKEN,
 
