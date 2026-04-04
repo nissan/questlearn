@@ -33,11 +33,19 @@ export default function TeacherDashboard() {
   const [data, setData] = useState<HeatmapData | null>(null);
   const [filter, setFilter] = useState('');
   const [loading, setLoading] = useState(true);
+  const [accessDenied, setAccessDenied] = useState(false);
 
   useEffect(() => {
     fetch('/api/teacher/heatmap')
-      .then(r => r.json())
-      .then(d => { setData(d); setLoading(false); });
+      .then(r => {
+        if (r.status === 401 || r.status === 403) {
+          setAccessDenied(true);
+          setLoading(false);
+          return null;
+        }
+        return r.json();
+      })
+      .then(d => { if (d) { setData(d); setLoading(false); } });
   }, []);
 
   const filteredTopics = data?.topics.filter(t =>
@@ -59,6 +67,17 @@ export default function TeacherDashboard() {
   if (loading) return (
     <main className="flex min-h-screen items-center justify-center">
       <p className="text-muted-foreground">Loading dashboard…</p>
+    </main>
+  );
+
+  if (accessDenied) return (
+    <main className="flex min-h-screen items-center justify-center">
+      <div className="text-center space-y-4 max-w-sm">
+        <div className="text-5xl">🔒</div>
+        <h2 className="text-xl font-bold">Teacher access only</h2>
+        <p className="text-muted-foreground text-sm">This dashboard is for teachers. If you&apos;re a student, head back to your learning quest.</p>
+        <a href="/desktop" className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors">← Back to desktop</a>
+      </div>
     </main>
   );
 
