@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import TopicsView from '@/components/student/TopicsView'
 
 // --- Types ---
 interface StudentStats {
@@ -31,15 +32,16 @@ interface ActiveQuest {
 
 // --- Sidebar nav items ---
 const NAV_ITEMS = [
-  { icon: '🏠', label: 'Dashboard', active: true, comingSoon: false },
+  { icon: '🏠', label: 'Dashboard', active: false, comingSoon: false, tab: 'dashboard' as const },
   { icon: '🧩', label: 'Quiz Rooms', active: false, comingSoon: true },
   { icon: '📚', label: 'Learn', active: false, comingSoon: false, action: 'learn' },
-  { icon: '🗂️', label: 'Topics', active: false, comingSoon: true },
+  { icon: '🗂️', label: 'Topics', active: false, comingSoon: false, tab: 'topics' as const },
   { icon: '💬', label: 'Discussions', active: false, comingSoon: true },
 ]
 
 // --- Component ---
 export default function StudentDashboardPage() {
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'topics'>('dashboard')
   const [name, setName] = useState<string>('')
   const [stats, setStats] = useState<StudentStats | null>(null)
   const [sessions, setSessions] = useState<StudentSession[]>([])
@@ -111,32 +113,45 @@ export default function StudentDashboardPage() {
           <span className="text-xl font-bold" style={{ color: '#f59e0b' }}>🎓 QuestLearn</span>
         </div>
 
-        {NAV_ITEMS.map((item) => (
-          <div key={item.label} className="relative group">
-            <button
-              disabled={item.comingSoon}
-              onClick={item.action === 'learn' ? handleLearnClick : undefined}
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-colors"
-              style={{
-                background: item.active ? 'rgba(245,158,11,0.15)' : 'transparent',
-                color: item.active ? '#f59e0b' : item.comingSoon ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.7)',
-                border: item.active ? '1px solid rgba(245,158,11,0.3)' : '1px solid transparent',
-                cursor: item.comingSoon ? 'not-allowed' : 'pointer',
-              }}
-            >
-              <span>{item.icon}</span>
-              <span>{item.label}</span>
-              {item.comingSoon && (
-                <span
-                  className="ml-auto text-xs px-1.5 py-0.5 rounded-full"
-                  style={{ background: 'rgba(245,158,11,0.1)', color: '#f59e0b', fontSize: '9px' }}
-                >
-                  Soon
-                </span>
-              )}
-            </button>
-          </div>
-        ))}
+        {NAV_ITEMS.map((item) => {
+          const isActive = 'tab' in item && item.tab !== undefined
+            ? activeTab === item.tab
+            : false
+          return (
+            <div key={item.label} className="relative group">
+              <button
+                disabled={item.comingSoon}
+                onClick={
+                  item.comingSoon
+                    ? undefined
+                    : item.action === 'learn'
+                    ? handleLearnClick
+                    : 'tab' in item && item.tab !== undefined
+                    ? () => setActiveTab(item.tab!)
+                    : undefined
+                }
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-colors"
+                style={{
+                  background: isActive ? 'rgba(245,158,11,0.15)' : 'transparent',
+                  color: isActive ? '#f59e0b' : item.comingSoon ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.7)',
+                  border: isActive ? '1px solid rgba(245,158,11,0.3)' : '1px solid transparent',
+                  cursor: item.comingSoon ? 'not-allowed' : 'pointer',
+                }}
+              >
+                <span>{item.icon}</span>
+                <span>{item.label}</span>
+                {item.comingSoon && (
+                  <span
+                    className="ml-auto text-xs px-1.5 py-0.5 rounded-full"
+                    style={{ background: 'rgba(245,158,11,0.1)', color: '#f59e0b', fontSize: '9px' }}
+                  >
+                    Soon
+                  </span>
+                )}
+              </button>
+            </div>
+          )
+        })}
 
         {/* Bottom: student info */}
         <div className="mt-auto px-3 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
@@ -181,7 +196,10 @@ export default function StudentDashboardPage() {
         </header>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto">
+        {activeTab === 'topics' ? (
+          <TopicsView name={name} />
+        ) : (<div className="p-6">
 
           {/* === STATS ROW === */}
           <div className="grid grid-cols-4 gap-4 mb-6">
@@ -365,6 +383,7 @@ export default function StudentDashboardPage() {
             </section>
 
           </div>
+        </div>)}
         </div>
       </main>
     </div>
