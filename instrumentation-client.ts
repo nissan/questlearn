@@ -1,4 +1,15 @@
+import posthog from 'posthog-js'
 import * as Sentry from "@sentry/nextjs";
+
+// PostHog — Next.js 15.3+ instrumentation-client pattern
+posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
+  api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com',
+  defaults: '2026-01-30',
+  // Mask all student inputs (answers) in session replay
+  session_recording: {
+    maskAllInputs: true,
+  },
+})
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN ?? "",

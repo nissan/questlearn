@@ -2,21 +2,31 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { getDb } from '@/lib/db';
 import { generateSocratic } from '@/lib/curricullm-client';
+import { posthogServer } from '@/lib/posthog';
+import { withLangfuseTrace } from '@/lib/langfuse';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   const { learningSessionId, studentResponse, turnIndex, topic, format, yearLevel, history } = await req.json();
   const db = getDb();
 
-  const followUp = await generateSocratic(
-    topic ?? 'this topic',
-    format ?? 'story',
-    yearLevel ?? 'Year 9',
-    history ?? [],
-    turnIndex ?? 0
-  );
+  const followUp = await withLangfuseTrace({
+    name: 'socratic-followup',
+    userId: session.userId,
+    sessionId: learningSessionId,
+    input: { topic, format, yearLevel, turnIndex, studentResponse },
+    metadata: { route: '/api/learn/socratic' },
+    fn: async () => generateSocratic(
+      topic ?? 'this topic',
+      format ?? 'story',
+      yearLevel ?? 'Year 9',
+      history ?? [],
+      turnIndex ?? 0
+    ),
+  });
 
   await db.execute({
     sql: `INSERT INTO engagement_events (id, learning_session_id, user_id, turn_index, student_response, ai_followup, timestamp) VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
@@ -25,6 +35,19 @@ export async function POST(req: NextRequest) {
   await db.execute({
     sql: `UPDATE learning_sessions SET turn_count = turn_count + 1, last_active_at = CURRENT_TIMESTAMP WHERE id = ?`,
     args: [learningSessionId],
+  });
+
+  // PostHog: track Socratic engagement
+  posthogServer.capture({
+    distinctId: session.userId,
+    event: 'socratic_turn_completed',
+    properties: {
+      topic,
+      format,
+      year_level: yearLevel ?? 'Year 9',
+      turn_index: turnIndex,
+      learning_session_id: learningSessionId,
+    },
   });
 
   return NextResponse.json(followUp);
