@@ -20,7 +20,7 @@ import type { MemeTemplate } from '@/lib/meme-templates';
 
 const COGNITI_URL =
   process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ??
-  'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat?k=oVlyYYj3ZTmtV06WBVEBxI6Cu6-s0tTtdxWtne6hAU0';
+  'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat?k=_dJhhHwkvb2wLQdZAKlCSzp45MjspMhjK9ZCsCNqlh4';
 
 type TutorMode = 'curricullm' | 'cogniti' | 'both';
 
