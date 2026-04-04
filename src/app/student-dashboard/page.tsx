@@ -283,7 +283,12 @@ export default function StudentDashboardPage() {
                       disabled={q.teacher_name === 'Coming Soon'}
                       onClick={() => {
                         try {
-                          window.parent.postMessage({ type: 'OPEN_WINDOW', windowId: 'questlearn' }, '*')
+                          window.parent.postMessage({
+                            type: 'OPEN_WINDOW',
+                            windowId: 'questlearn',
+                            topic: q.topic,
+                            format: q.format,
+                          }, '*')
                         } catch { /* ignore */ }
                       }}
                       className="w-full py-1.5 rounded-lg text-sm font-medium transition-opacity"
@@ -307,6 +312,41 @@ export default function StudentDashboardPage() {
               <h2 className="text-sm font-semibold mb-3" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 🗂️ Ongoing Issues
               </h2>
+              {/* Teacher quest alert — pinned quest appears here with a banner */}
+              {quest && quest.teacher_name !== 'Coming Soon' && (
+                <div
+                  className="rounded-xl p-4 mb-3 flex flex-col gap-2"
+                  style={{
+                    background: 'rgba(245,158,11,0.12)',
+                    border: '1px solid rgba(245,158,11,0.5)',
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: 'rgba(245,158,11,0.9)', color: '#0f172a' }}>📌 Assigned by Teacher</span>
+                    <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{quest.teacher_name}</span>
+                  </div>
+                  <p className="text-sm font-medium text-white">{quest.topic}</p>
+                  {quest.message && (
+                    <p className="text-xs italic" style={{ color: 'rgba(255,255,255,0.5)' }}>"{quest.message}"</p>
+                  )}
+                  <button
+                    onClick={() => {
+                      try {
+                        window.parent.postMessage({
+                          type: 'OPEN_WINDOW',
+                          windowId: 'questlearn',
+                          topic: quest.topic,
+                          format: quest.format,
+                        }, '*')
+                      } catch { /* ignore */ }
+                    }}
+                    className="w-full py-1.5 rounded-lg text-sm font-medium mt-1"
+                    style={{ background: 'rgba(245,158,11,0.9)', color: '#0f172a' }}
+                  >
+                    Start Quest →
+                  </button>
+                </div>
+              )}
               {loading ? (
                 <div className="flex flex-col gap-3">
                   {[1, 2, 3].map((i) => (
