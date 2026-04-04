@@ -11,6 +11,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { StubBadge } from '@/components/StubBadge';
 import { FORMATS } from '@/lib/formats';
 
+const COGNITI_URL =
+  process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ??
+  'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat?k=oVlyYYj3ZTmtV06WBVEBxI6Cu6-s0tTtdxWtne6hAU0';
+
+type TutorMode = 'curricullm' | 'cogniti' | 'both';
+
 interface ContentData {
   title: string;
   body: string;
@@ -37,6 +43,7 @@ export function LearnContent() {
   const [chat, setChat] = useState<ChatMessage[]>([]);
   const [studentInput, setStudentInput] = useState('');
   const [sendingResponse, setSendingResponse] = useState(false);
+  const [tutorMode, setTutorMode] = useState<TutorMode>('curricullm');
   const chatBottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -90,6 +97,67 @@ export function LearnContent() {
 
   const currentFormat = FORMATS.find(f => f.id === format);
 
+  /** Shared inner content for the CurricuLLM (Socratic chat) pane */
+  const curricuLLMInner = (
+    <>
+      <div className="px-4 py-3 border-b">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Socratic Dialogue</p>
+        <p className="text-xs text-muted-foreground">Think it through — the AI won&apos;t give you the answer 😉</p>
+      </div>
+      <ScrollArea className="flex-1 p-4">
+        <div className="space-y-3">
+          {chat.map((msg, i) => (
+            <div key={i} className={`flex ${msg.role === 'student' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${msg.role === 'ai' ? 'bg-muted text-foreground rounded-tl-sm' : 'bg-primary text-primary-foreground rounded-tr-sm'}`}>
+                {msg.text}
+              </div>
+            </div>
+          ))}
+          {sendingResponse && (
+            <div className="flex justify-start">
+              <div className="bg-muted rounded-2xl rounded-tl-sm px-4 py-2.5">
+                <span className="text-muted-foreground text-sm">thinking…</span>
+              </div>
+            </div>
+          )}
+          <div ref={chatBottomRef} />
+        </div>
+      </ScrollArea>
+      <Separator />
+      <div className="p-4 space-y-2">
+        <Textarea
+          placeholder="What do you think? Type your answer…"
+          value={studentInput}
+          onChange={e => setStudentInput(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
+          rows={3}
+          className="resize-none text-sm"
+        />
+        <Button className="w-full" onClick={handleSend} disabled={!studentInput.trim() || sendingResponse || loadingContent}>
+          {sendingResponse ? 'Thinking…' : 'Send response →'}
+        </Button>
+      </div>
+    </>
+  );
+
+  /** Shared inner content for the Cogniti AI Tutor pane */
+  const cognitiInner = (
+    <>
+      <div className="px-4 py-3 border-b">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Cogniti AI Tutor</p>
+        <p className="text-xs text-muted-foreground">Ask Cogniti anything about this topic</p>
+      </div>
+      <div className="flex-1 relative">
+        <iframe
+          src={COGNITI_URL}
+          className="absolute inset-0 w-full h-full border-0"
+          allow="microphone; camera"
+          title="Cogniti AI Tutor"
+        />
+      </div>
+    </>
+  );
+
   return (
     <main className="min-h-screen bg-background">
       <div className="border-b px-4 py-3 flex items-center justify-between">
@@ -103,6 +171,7 @@ export function LearnContent() {
         <Button variant="outline" size="sm" onClick={() => router.push('/onboarding')}>New quest</Button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 h-[calc(100vh-57px)]">
+        {/* Left: content card */}
         <div className="border-r overflow-auto p-4 space-y-4">
           <div className="flex gap-2 flex-wrap">
             {FORMATS.map(f => (
@@ -134,44 +203,58 @@ export function LearnContent() {
             </Card>
           ) : null}
         </div>
-        <div className="flex flex-col h-full">
-          <div className="px-4 py-3 border-b">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Socratic Dialogue</p>
-            <p className="text-xs text-muted-foreground">Think it through — the AI won&apos;t give you the answer 😉</p>
+
+        {/* Right: tutor panel */}
+        <div className="flex flex-col h-full overflow-hidden">
+          {/* Tutor mode toggle */}
+          <div className="px-4 py-2 border-b flex items-center gap-2 shrink-0">
+            <span className="text-xs text-muted-foreground mr-1">Tutor:</span>
+            <button
+              onClick={() => setTutorMode('curricullm')}
+              className={`text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'curricullm' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
+            >
+              CurricuLLM
+            </button>
+            <button
+              onClick={() => setTutorMode('cogniti')}
+              className={`text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'cogniti' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
+            >
+              Cogniti
+            </button>
+            {/* "Both" button hidden on mobile */}
+            <button
+              onClick={() => setTutorMode('both')}
+              className={`hidden md:inline-flex text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'both' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
+            >
+              Both
+            </button>
           </div>
-          <ScrollArea className="flex-1 p-4">
-            <div className="space-y-3">
-              {chat.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === 'student' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${msg.role === 'ai' ? 'bg-muted text-foreground rounded-tl-sm' : 'bg-primary text-primary-foreground rounded-tr-sm'}`}>
-                    {msg.text}
-                  </div>
-                </div>
-              ))}
-              {sendingResponse && (
-                <div className="flex justify-start">
-                  <div className="bg-muted rounded-2xl rounded-tl-sm px-4 py-2.5">
-                    <span className="text-muted-foreground text-sm">thinking…</span>
-                  </div>
-                </div>
-              )}
-              <div ref={chatBottomRef} />
+
+          {/* CurricuLLM only */}
+          {tutorMode === 'curricullm' && (
+            <div className="flex flex-col flex-1 min-h-0">
+              {curricuLLMInner}
             </div>
-          </ScrollArea>
-          <Separator />
-          <div className="p-4 space-y-2">
-            <Textarea
-              placeholder="What do you think? Type your answer…"
-              value={studentInput}
-              onChange={e => setStudentInput(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-              rows={3}
-              className="resize-none text-sm"
-            />
-            <Button className="w-full" onClick={handleSend} disabled={!studentInput.trim() || sendingResponse || loadingContent}>
-              {sendingResponse ? 'Thinking…' : 'Send response →'}
-            </Button>
-          </div>
+          )}
+
+          {/* Cogniti only */}
+          {tutorMode === 'cogniti' && (
+            <div className="flex flex-col flex-1 min-h-0">
+              {cognitiInner}
+            </div>
+          )}
+
+          {/* Both: split 50/50 */}
+          {tutorMode === 'both' && (
+            <div className="grid grid-cols-2 flex-1 min-h-0 divide-x overflow-hidden">
+              <div className="flex flex-col overflow-hidden">
+                {curricuLLMInner}
+              </div>
+              <div className="flex flex-col overflow-hidden">
+                {cognitiInner}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </main>
