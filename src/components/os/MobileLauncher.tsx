@@ -12,6 +12,23 @@ export function MobileLauncher() {
   const [activeView, setActiveView] = useState<MobileView>('home')
   const [currentTime, setCurrentTime] = useState('')
 
+  // Route directly based on role — skip the home grid
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('lumina_user')
+      if (stored) {
+        const user = JSON.parse(stored)
+        if (user?.role === 'teacher') {
+          setActiveView('teacher')
+        } else {
+          setActiveView('learn')
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, [])
+
   useEffect(() => {
     const tick = () => {
       setCurrentTime(
