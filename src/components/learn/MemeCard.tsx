@@ -29,15 +29,17 @@ export function MemeCard({ topText, bottomText, template, topic, isLoading }: Me
 
   if (isLoading) {
     return (
-      <div className="relative flex-1 min-h-0 w-full bg-gray-800 rounded-xl flex items-center justify-center animate-pulse">
-        <span className="text-white text-sm opacity-60">Loading meme…</span>
+      <div className="flex flex-col flex-1 min-h-0 items-center justify-center">
+        <div className="relative w-full max-w-sm aspect-square bg-gray-800 rounded-xl flex items-center justify-center animate-pulse">
+          <span className="text-white text-sm opacity-60">Loading meme…</span>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 gap-2">
-      <div className="relative flex-1 min-h-0 w-full rounded-xl overflow-hidden bg-gray-900 shadow-2xl">
+    <div className="flex flex-col flex-1 min-h-0 items-center gap-2">
+      <div className="relative w-full max-w-sm rounded-xl overflow-hidden bg-gray-900 shadow-2xl" style={{aspectRatio:'1/1', maxHeight:'100%'}}>
         {template ? (
           <img
             src={template.file}
