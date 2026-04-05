@@ -18,7 +18,18 @@ export function QuestBanner() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch('/api/teacher/quest')
+    let yearLevel = '';
+    try {
+      const stored = localStorage.getItem('lumina_user');
+      if (stored) {
+        const parsed = JSON.parse(stored) as { year_level?: string };
+        yearLevel = parsed.year_level ?? '';
+      }
+    } catch { /* ignore */ }
+    const url = yearLevel
+      ? `/api/teacher/quest?grade=${encodeURIComponent(yearLevel)}`
+      : '/api/teacher/quest';
+    fetch(url)
       .then(r => r.json())
       .then((data: { quest: Quest | null }) => setQuest(data.quest))
       .catch(() => {});

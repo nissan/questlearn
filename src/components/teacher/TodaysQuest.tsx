@@ -15,6 +15,7 @@ interface Quest {
   topic: string;
   format: string;
   message: string | null;
+  grade_level: string | null;
   created_at: string;
   active: number;
 }
@@ -32,6 +33,7 @@ export function TodaysQuest() {
   const [topic, setTopic] = useState('');
   const [format, setFormat] = useState<FormatId>('story');
   const [message, setMessage] = useState('');
+  const [gradeLevel, setGradeLevel] = useState('');  // '' = all grades
 
   const fetchQuest = useCallback(async () => {
     try {
@@ -59,7 +61,13 @@ export function TodaysQuest() {
       await fetch('/api/teacher/quest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ teacher_name: teacherName, topic, format, message }),
+        body: JSON.stringify({
+          teacher_name: teacherName,
+          topic,
+          format,
+          message,
+          grade_level: gradeLevel || null,
+        }),
       });
       setShowForm(false);
       setTopic('');
@@ -132,6 +140,23 @@ export function TodaysQuest() {
               </select>
             </div>
             <div className="space-y-1">
+              <Label htmlFor="ql-quest-grade" className="text-xs">Grade level</Label>
+              <select
+                id="ql-quest-grade"
+                value={gradeLevel}
+                onChange={e => setGradeLevel(e.target.value)}
+                className="w-full h-8 rounded-md border border-input bg-background px-2 text-sm"
+              >
+                <option value="">All grades</option>
+                <option value="Year 7">Year 7</option>
+                <option value="Year 8">Year 8</option>
+                <option value="Year 9">Year 9</option>
+                <option value="Year 10">Year 10</option>
+                <option value="Year 11">Year 11</option>
+                <option value="Year 12">Year 12</option>
+              </select>
+            </div>
+            <div className="space-y-1">
               <Label htmlFor="ql-quest-message" className="text-xs">Message (optional)</Label>
               <Textarea
                 id="ql-quest-message"
@@ -167,6 +192,11 @@ export function TodaysQuest() {
               {fmtInfo && (
                 <Badge variant="secondary" className="text-xs">
                   {fmtInfo.icon} {fmtInfo.label}
+                </Badge>
+              )}
+              {quest.grade_level && (
+                <Badge variant="outline" className="text-xs">
+                  {quest.grade_level}
                 </Badge>
               )}
               <span className="text-xs text-muted-foreground">pinned by {quest.teacher_name}</span>

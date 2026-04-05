@@ -43,6 +43,7 @@ const NAV_ITEMS = [
 export default function StudentDashboardPage() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'topics'>('dashboard')
   const [name, setName] = useState<string>('')
+  const [yearLevel, setYearLevel] = useState<string>('')
   const [stats, setStats] = useState<StudentStats | null>(null)
   const [sessions, setSessions] = useState<StudentSession[]>([])
   const [quest, setQuest] = useState<ActiveQuest | null>(null)
@@ -54,6 +55,7 @@ export default function StudentDashboardPage() {
       if (stored) {
         const parsed = JSON.parse(stored)
         setName(parsed.name ?? '')
+        setYearLevel(parsed.year_level ?? '')
       }
     } catch { /* ignore */ }
   }, [])
@@ -61,18 +63,21 @@ export default function StudentDashboardPage() {
   useEffect(() => {
     if (!name) return
     const encodedName = encodeURIComponent(name)
+    const questUrl = yearLevel
+      ? `/api/teacher/quest?grade=${encodeURIComponent(yearLevel)}`
+      : '/api/teacher/quest'
 
     Promise.all([
       fetch(`/api/student/stats?name=${encodedName}`).then(r => r.json()),
       fetch(`/api/student/sessions?name=${encodedName}`).then(r => r.json()),
-      fetch('/api/teacher/quest').then(r => r.json()),
+      fetch(questUrl).then(r => r.json()),
     ]).then(([statsData, sessionsData, questData]) => {
       setStats(statsData)
       setSessions(sessionsData.sessions ?? [])
       setQuest(questData.quest ?? null)
       setLoading(false)
     }).catch(() => setLoading(false))
-  }, [name])
+  }, [name, yearLevel])
 
   // Learn nav handler: postMessage to parent OS
   const handleLearnClick = () => {

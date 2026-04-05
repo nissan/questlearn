@@ -44,6 +44,7 @@ export function LearnContent() {
   const initialFormat = searchParams.get('format') ?? 'story';
   const [topic] = useState(initialTopic);
   const [format, setFormat] = useState(initialFormat);
+  const [yearLevel, setYearLevel] = useState('Year 9');
   const [content, setContent] = useState<ContentData | null>(null);
   const [loadingContent, setLoadingContent] = useState(true);
   const [learningSessionId, setLearningSessionId] = useState<string | null>(null);
@@ -55,6 +56,16 @@ export function LearnContent() {
   const [memeTopText, setMemeTopText] = useState('');
   const [memeBottomText, setMemeBottomText] = useState('');
   const chatBottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('lumina_user');
+      if (stored) {
+        const parsed = JSON.parse(stored) as { year_level?: string };
+        if (parsed.year_level) setYearLevel(parsed.year_level);
+      }
+    } catch { /* ignore */ }
+  }, []);
 
   function parseMemeBody(body: string): { topText: string; bottomText: string } {
     const topMatch = body.match(/^TOP:\s*(.+)/im);
@@ -136,6 +147,10 @@ export function LearnContent() {
         learningSessionId,
         studentResponse: msg,
         turnIndex: chat.filter(m => m.role === 'student').length,
+        topic,
+        format,
+        yearLevel,
+        history: chat.map(m => ({ role: m.role, text: m.text })),
       }),
     });
     const data = await res.json();
