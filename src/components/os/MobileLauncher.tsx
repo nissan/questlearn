@@ -149,7 +149,7 @@ export function MobileLauncher() {
                 <iframe
                   src={app.src}
                   title={app.title}
-                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
                   loading="lazy"
                   className="w-full flex-1 border-0 rounded-b-lg"
                   style={{
