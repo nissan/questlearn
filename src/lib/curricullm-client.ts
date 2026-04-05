@@ -116,21 +116,39 @@ Return ONLY a JSON object with these exact fields:
 }
 Do not include any text outside the JSON object.`;
 
-  const completion = await curricullm.chat.completions.create({
-    model: process.env.CURRICULLM_MODEL ?? 'gpt-4o-mini',
-    messages: [
-      { role: 'system', content: getSystemPrompt(format, yearLevel) },
-      { role: 'user', content: userPrompt },
-    ],
-    temperature: 0.8,
-    max_tokens: 800,
-  });
+  const model = process.env.CURRICULLM_MODEL ?? 'gpt-4o-mini';
 
-  const raw = completion.choices[0].message.content ?? '{}';
+  let completion;
+  try {
+    completion = await curricullm.chat.completions.create({
+      model,
+      messages: [
+        { role: 'system', content: getSystemPrompt(format, yearLevel) },
+        { role: 'user', content: userPrompt },
+      ],
+      temperature: 0.8,
+      max_tokens: 800,
+    });
+  } catch (err) {
+    console.error(`[CurricuLLM] generateContent failed (model=${model}):`, err);
+    return generateStubContent(topic, format);
+  }
+
+  const raw = completion.choices[0]?.message?.content ?? '';
+  if (!raw) {
+    console.error('[CurricuLLM] Empty response from model:', model);
+    return generateStubContent(topic, format);
+  }
+
   // Strip markdown code fences if present
   const cleaned = raw.replace(/^```json?\n?/i, '').replace(/\n?```$/i, '').trim();
-  const parsed = JSON.parse(cleaned);
-  return { ...parsed, _stub: false } as CurricuLLMResponse;
+  try {
+    const parsed = JSON.parse(cleaned);
+    return { ...parsed, _stub: false } as CurricuLLMResponse;
+  } catch (err) {
+    console.error('[CurricuLLM] JSON parse failed:', err, '\nRaw:', raw.slice(0, 200));
+    return generateStubContent(topic, format);
+  }
 }
 
 export async function generateSocratic(
@@ -144,18 +162,29 @@ export async function generateSocratic(
     return generateStubSocratic(turnIndex);
   }
 
-  const completion = await curricullm.chat.completions.create({
-    model: process.env.CURRICULLM_MODEL ?? 'gpt-4o-mini',
-    messages: [
-      { role: 'system', content: getSocraticSystemPrompt(topic, format, yearLevel) },
-      ...history,
-    ],
-    temperature: 0.7,
-    max_tokens: 300,
-  });
+  const model = process.env.CURRICULLM_MODEL ?? 'gpt-4o-mini';
 
-  return {
-    followUp: completion.choices[0].message.content ?? '',
-    _stub: false,
-  };
+  let completion;
+  try {
+    completion = await curricullm.chat.completions.create({
+      model,
+      messages: [
+        { role: 'system', content: getSocraticSystemPrompt(topic, format, yearLevel) },
+        ...history,
+      ],
+      temperature: 0.7,
+      max_tokens: 300,
+    });
+  } catch (err) {
+    console.error(`[CurricuLLM] generateSocratic failed (model=${model}):`, err);
+    return generateStubSocratic(turnIndex);
+  }
+
+  const text = completion.choices[0]?.message?.content ?? '';
+  if (!text) {
+    console.error('[CurricuLLM] Empty Socratic response from model:', model);
+    return generateStubSocratic(turnIndex);
+  }
+
+  return { followUp: text, _stub: false };
 }
