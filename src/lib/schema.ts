@@ -38,6 +38,21 @@ export const SCHEMA_SQL = [
 `CREATE INDEX IF NOT EXISTS idx_learning_user ON learning_sessions(user_id)`,
   `CREATE INDEX IF NOT EXISTS idx_events_session ON engagement_events(learning_session_id)`,
   `CREATE INDEX IF NOT EXISTS idx_events_user ON engagement_events(user_id)`,
+  // Content cache — reuse generated content for same topic+format combos
+  `CREATE TABLE IF NOT EXISTS content_cache (
+    id TEXT PRIMARY KEY,
+    topic TEXT NOT NULL,
+    format TEXT NOT NULL,
+    variant INTEGER NOT NULL DEFAULT 1,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL,
+    socratic_prompt TEXT NOT NULL,
+    curriculum_ref TEXT NOT NULL,
+    use_count INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    last_used_at TEXT
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_cache_topic_format ON content_cache(topic, format)`,
   // Lumina OS — OS-native registration (separate from email-based ql_users)
   `CREATE TABLE IF NOT EXISTS lumina_users (
     id TEXT PRIMARY KEY,
