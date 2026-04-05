@@ -1,7 +1,7 @@
 'use client'
 import { create } from 'zustand'
 
-export type WindowId = 'questlearn' | 'teacher' | 'showcase' | 'student-dashboard' | 'pitch' | 'student-help' | 'teacher-help'
+export type WindowId = 'questlearn' | 'teacher' | 'showcase' | 'student-dashboard' | 'pitch' | 'student-help' | 'teacher-help' | 'mini-apps'
 
 export interface WindowState {
   id: WindowId
@@ -98,6 +98,16 @@ const INITIAL_WINDOWS: WindowState[] = [
     zIndex: 10,
     position: { x: 160, y: 90 },
     size: { width: 860, height: 640 },
+  },
+  {
+    id: 'mini-apps',
+    title: 'Mini Apps',
+    src: '',
+    open: false,
+    minimised: false,
+    zIndex: 10,
+    position: { x: 100, y: 40 },
+    size: { width: 900, height: 640 },
   },
 ]
 
