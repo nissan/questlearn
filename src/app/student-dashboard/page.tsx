@@ -83,6 +83,18 @@ export default function StudentDashboardPage() {
     }
   }
 
+  // Today's Quest — pre-made meme lesson (rotates daily)
+  const TODAYS_QUESTS = [
+    { topic: 'Photosynthesis', format: 'meme', label: "Why do plants never go hungry?", emoji: '🌱' },
+    { topic: "Newton's Laws of Motion", format: 'meme', label: "When your homework hits different", emoji: '🚀' },
+    { topic: 'The Water Cycle', format: 'meme', label: "It's giving evaporation vibes", emoji: '💧' },
+    { topic: 'The French Revolution', format: 'meme', label: "Let them eat content", emoji: '🥐' },
+    { topic: 'Plate Tectonics', format: 'meme', label: "The earth said: not today", emoji: '🌍' },
+    { topic: 'Electricity and Circuits', format: 'meme', label: "Current mood: conducting", emoji: '⚡' },
+    { topic: 'DNA and Genetics', format: 'meme', label: "You got it from your genes", emoji: '🧬' },
+  ]
+  const todaysQuest = TODAYS_QUESTS[new Date().getDay() % TODAYS_QUESTS.length]
+
   // Placeholder quiz cards when no active quest
   const PLACEHOLDER_QUIZZES = [
     { topic: 'Year 10 Biology', format: 'Quiz', teacher_name: 'Coming Soon', created_at: '' },
@@ -247,6 +259,50 @@ export default function StudentDashboardPage() {
                 <p className="text-2xl font-bold" style={{ color: card.color }}>{card.value}</p>
               </div>
             ))}
+          </div>
+
+          {/* === TODAY'S QUEST BANNER === */}
+          <div
+            className="rounded-xl p-4 mb-6 flex items-center justify-between gap-4"
+            style={{
+              background: 'linear-gradient(135deg, rgba(245,158,11,0.18) 0%, rgba(251,191,36,0.08) 100%)',
+              border: '1px solid rgba(245,158,11,0.4)',
+            }}
+          >
+            <div className="flex items-center gap-4">
+              <span className="text-3xl">{todaysQuest.emoji}</span>
+              <div>
+                <p className="text-xs font-semibold mb-0.5" style={{ color: '#f59e0b' }}>✨ Today&apos;s Quest</p>
+                <p className="text-sm font-medium text-white">{todaysQuest.topic}</p>
+                <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.45)' }}>&ldquo;{todaysQuest.label}&rdquo;</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <span
+                className="text-xs px-2 py-1 rounded-full font-medium"
+                style={{ background: 'rgba(245,158,11,0.2)', color: '#f59e0b' }}
+              >
+                😂 Meme
+              </span>
+              <button
+                onClick={() => {
+                  try {
+                    window.parent.postMessage({
+                      type: 'OPEN_WINDOW',
+                      windowId: 'questlearn',
+                      topic: todaysQuest.topic,
+                      format: todaysQuest.format,
+                    }, '*')
+                  } catch {
+                    window.location.href = `/learn?topic=${encodeURIComponent(todaysQuest.topic)}&format=${todaysQuest.format}`
+                  }
+                }}
+                className="px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+                style={{ background: '#f59e0b', color: '#0f172a' }}
+              >
+                Start Now →
+              </button>
+            </div>
           </div>
 
           {/* === TWO-COLUMN CONTENT === */}
