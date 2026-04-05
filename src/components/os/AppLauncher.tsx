@@ -46,6 +46,13 @@ const LAUNCHER_APPS = [
     desc: 'Pedagogy and classroom tips',
     status: 'live' as const,
   },
+  {
+    id: 'mini-apps',
+    icon: '🧩',
+    label: 'Mini Apps',
+    desc: 'Cogniti interactive learning modules',
+    status: 'live' as const,
+  },
   // v2
   {
     id: 'study-rooms',

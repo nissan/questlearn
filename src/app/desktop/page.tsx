@@ -6,6 +6,7 @@ import { Dock } from '@/components/os/Dock'
 import { AppLauncher } from '@/components/os/AppLauncher'
 import { Window } from '@/components/os/Window'
 import { ShowcaseWindow } from '@/components/os/ShowcaseWindow'
+import { MiniAppsWindow } from '@/components/os/MiniAppsWindow'
 import { BootScreen } from '@/components/os/BootScreen'
 import { LoginScreen } from '@/components/os/LoginScreen'
 import { MobileLauncher } from '@/components/os/MobileLauncher'
@@ -31,7 +32,14 @@ function WindowLayer() {
       {windows
         .filter((w) => w.open && !w.minimised)
         .map((w) => (
-          w.id === 'showcase' ? (
+          w.id === 'mini-apps' ? (
+            <MiniAppsWindow
+              key={w.id}
+              zIndex={w.zIndex}
+              position={w.position}
+              size={w.size}
+            />
+          ) : w.id === 'showcase' ? (
             <ShowcaseWindow
               key={w.id}
               zIndex={w.zIndex}
