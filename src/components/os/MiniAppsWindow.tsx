@@ -127,7 +127,7 @@ function MiniAppCard({ app }: { app: (typeof MINI_APPS)[0] }) {
           key={srcKey}
           src={iframeSrc}
           title={app.title}
-          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
           loading="lazy"
           onLoad={handleLoad}
           className="w-full h-full border-0 rounded-b-xl"
