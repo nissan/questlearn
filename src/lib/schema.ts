@@ -31,10 +31,13 @@ export const SCHEMA_SQL = [
     turn_index INTEGER NOT NULL,
     student_response TEXT,
     ai_followup TEXT,
+    format TEXT,
     timestamp TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (learning_session_id) REFERENCES learning_sessions(id),
     FOREIGN KEY (user_id) REFERENCES ql_users(id)
   )`,
+  // Migration: add format column to existing engagement_events tables
+  `ALTER TABLE engagement_events ADD COLUMN format TEXT`,
 `CREATE INDEX IF NOT EXISTS idx_learning_user ON learning_sessions(user_id)`,
   `CREATE INDEX IF NOT EXISTS idx_events_session ON engagement_events(learning_session_id)`,
   `CREATE INDEX IF NOT EXISTS idx_events_user ON engagement_events(user_id)`,

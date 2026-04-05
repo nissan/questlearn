@@ -15,14 +15,29 @@ async function ensureTable() {
       active INTEGER NOT NULL DEFAULT 1
     )
   `);
+  // Migration: add grade_level column if it doesn't exist yet
+  try {
+    await db.execute(`ALTER TABLE teacher_quests ADD COLUMN grade_level TEXT`);
+  } catch {
+    // Column already exists — ignore
+  }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   await ensureTable();
   const db = getDb();
-  const result = await db.execute(
-    `SELECT * FROM teacher_quests WHERE active=1 ORDER BY created_at DESC LIMIT 1`
-  );
+  const grade = req.nextUrl.searchParams.get('grade');
+  let result;
+  if (grade) {
+    result = await db.execute({
+      sql: `SELECT * FROM teacher_quests WHERE active=1 AND (grade_level IS NULL OR grade_level=?) ORDER BY created_at DESC LIMIT 1`,
+      args: [grade],
+    });
+  } else {
+    result = await db.execute(
+      `SELECT * FROM teacher_quests WHERE active=1 ORDER BY created_at DESC LIMIT 1`
+    );
+  }
   const quest = result.rows[0] ?? null;
   return NextResponse.json({ quest });
 }
@@ -37,7 +52,13 @@ export async function POST(req: NextRequest) {
     message?: string;
   };
 
-  const { teacher_name, topic, format, message } = body;
+  const { teacher_name, topic, format, message, grade_level } = body as {
+    teacher_name: string;
+    topic: string;
+    format: string;
+    message?: string;
+    grade_level?: string;
+  };
   if (!teacher_name || !topic || !format) {
     return NextResponse.json({ error: 'teacher_name, topic and format are required' }, { status: 400 });
   }
@@ -48,9 +69,9 @@ export async function POST(req: NextRequest) {
   // Insert new quest
   const id = randomUUID();
   await db.execute({
-    sql: `INSERT INTO teacher_quests (id, teacher_name, topic, format, message, active)
-          VALUES (?, ?, ?, ?, ?, 1)`,
-    args: [id, teacher_name, topic, format, message ?? null],
+    sql: `INSERT INTO teacher_quests (id, teacher_name, topic, format, message, grade_level, active)
+          VALUES (?, ?, ?, ?, ?, ?, 1)`,
+    args: [id, teacher_name, topic, format, message ?? null, grade_level ?? null],
   });
 
   const result = await db.execute({
