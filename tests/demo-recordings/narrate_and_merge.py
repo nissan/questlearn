@@ -70,9 +70,10 @@ NARRATIONS = {
         'script': [
             ("Meet Priya. Year 8, Strathfield Girls High School.", 0.4),
             ("She picks Meme format for the Water Cycle — because she speaks in memes and that is completely valid.", 0.6),
-            ("CurricuLLM generates a title line, a punchline, and a caption that explains exactly why the joke works.", 0.6),
+            ("Under the hood, two AIs collaborate. CurricuLLM-AU anchors the content to the Australian Curriculum. Then GPT-5.4-mini reads the curriculum fact and writes the actual joke — picking the perfect meme template from a library of one hundred classics.", 0.7),
+            ("The result: a curriculum-aligned meme. Evaporation has never been this relatable.", 0.6),
             ("The concept is embedded in something she'll actually remember.", 0.5),
-            ("When the tutor asks her to explain the water cycle in her own words, she nails it — in Gen Z.", 0.6),
+            ("When the Cogniti tutor asks her to explain the water cycle in her own words, she nails it — in Gen Z.", 0.6),
             ("Five formats. Every learning style. Every student.", 0.9),
         ],
     },
