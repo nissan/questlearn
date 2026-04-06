@@ -36,8 +36,8 @@ const INITIAL_WINDOWS: WindowState[] = [
     open: false,
     minimised: false,
     zIndex: 10,
-    position: { x: 120, y: 60 },
-    size: { width: 1000, height: 650 },
+    position: { x: 120, y: 40 },
+    size: { width: 1000, height: 720 },
   },
   {
     id: 'teacher',
