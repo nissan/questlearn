@@ -74,7 +74,6 @@ export function Flashcards({ topic, cards }: FlashcardsProps) {
     fetchCards();
   }, [topic, cards]);
 
-  const current = flashcards[currentIndex];
   const progress = flashcards.length > 0 ? Math.round(((currentIndex) / flashcards.length) * 100) : 0;
 
   if (loadingCards) {
@@ -104,6 +103,8 @@ export function Flashcards({ topic, cards }: FlashcardsProps) {
       </div>
     );
   }
+
+  const current = flashcards[currentIndex];
 
   const handleFlip = () => {
     setIsFlipped(f => !f);
