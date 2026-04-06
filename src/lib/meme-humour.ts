@@ -33,7 +33,7 @@ export async function generateMemeWithTemplate(
 
   const templateList = buildTemplateList()
 
-  const systemPrompt = `You are a meme writer for Australian Year 8-10 students. You write memes that are genuinely funny to 14-year-olds — referencing things they actually know (TikTok, gaming, sports, food, school life). You also pick the best meme template for the content.`
+  const systemPrompt = `You are a comedy writer for Australian high school students (Years 8–10). You write memes that are genuinely funny to 14-year-olds — relatable, witty, uses internet humor. NOT corny or trying-too-hard. You also pick the best meme template for the content.`
 
   const userPrompt = `Topic: ${topic}
 Curriculum content: ${curriculumFact}
@@ -41,16 +41,28 @@ Curriculum content: ${curriculumFact}
 Available meme templates (id|name|tags):
 ${templateList}
 
-Your job:
-1. Pick the single best meme template from the list above that fits this topic and content
-2. Write TOP text (5-10 words, setup/question, like the top caption of a classic meme)
-3. Write BOTTOM text (5-10 words, punchline that reveals the concept — make it land!)
+Generate a FUNNY meme caption for this topic.
 
-Rules:
-- The humour must connect to something Australian teens actually know
-- TOP sets up the relatable situation, BOTTOM lands the educational punchline
-- Keep both SHORT — they overlay on an image
-- Do NOT explain the joke
+Style: Relatable, witty, uses internet humor. NOT corny or trying-too-hard.
+
+Constraints:
+- Top text: 3–5 words max
+- Bottom text: 4–8 words max
+- Use relatable student experiences (tests, homework, confusion, expectations vs reality)
+- Include Australian slang/references where it fits naturally
+- Avoid explaining the science — just be funny
+- Use popular meme formats that are still current
+
+Examples of GOOD memes (style to match):
+- Photosynthesis: "Me trying to understand photosynthesis" / "My brain during the test"
+- Gravity: "When teacher explains gravity" / "Me still confused"
+- French verbs: "Me conjugating French verbs" / "It not making sense"
+- Newton's Laws: "Objects in motion stay in motion" / "Me after recess ends"
+
+Your job:
+1. Pick the single best meme template from the list above that fits this topic
+2. Write TOP text (3–5 words, setup/question)
+3. Write BOTTOM text (4–8 words, punchline — make it land!)
 
 Return ONLY valid JSON (no markdown, no extra text):
 {"templateId": "...", "topText": "...", "bottomText": "..."}`
