@@ -1,40 +1,44 @@
 'use client'
 
-import { useWindowManager } from '@/components/os/WindowManager'
-
 const assets = [
   {
     id: 'judge-cheatsheet',
+    href: '/judge-cheatsheet',
     icon: '📖',
     title: 'The QuestLearn Story',
     description: 'One-pager: problem, solution, differentiators, team, stats',
   },
   {
     id: 'demo-script',
+    href: '/demo-script',
     icon: '🎬',
     title: 'Demo Guide',
     description: '7-min walkthrough with time markers and talking points',
   },
   {
     id: 'value-prop',
+    href: '/value-prop',
     icon: '💡',
     title: 'Why QuestLearn',
     description: 'Teacher-first value prop, student outcomes, school ROI',
   },
   {
     id: 'student-journey',
+    href: '/student-journey',
     icon: '🚀',
     title: 'Student Journey',
     description: 'Topic input → format → AI generation → mastery (Bloom\'s aligned)',
   },
   {
     id: 'judge-faq',
+    href: '/judge-faq',
     icon: '❓',
     title: 'Judge FAQ',
     description: 'Pre-armed answers: AI bias, outcomes, monetization, tech stack',
   },
   {
     id: 'backup-demo',
+    href: '/backup-demo',
     icon: '🆘',
     title: 'Backup Demo',
     description: 'Fallback instructions + pre-recorded video if live demo breaks',
@@ -42,8 +46,6 @@ const assets = [
 ]
 
 export default function DemoAssets() {
-  const openWindow = useWindowManager((s) => s.openWindow)
-
   return (
     <div style={{
       minHeight: '100vh',
@@ -86,7 +88,9 @@ export default function DemoAssets() {
         {assets.map((asset) => (
           <button
             key={asset.id}
-            onClick={() => openWindow(asset.id as any)}
+            onClick={() => {
+              window.location.href = asset.href
+            }}
             style={{
               backgroundColor: 'rgba(30,41,59,0.8)',
               border: '1px solid rgba(245,158,11,0.2)',
@@ -139,7 +143,7 @@ export default function DemoAssets() {
         paddingTop: '1rem',
         borderTop: '1px solid rgba(148,163,184,0.1)',
       }}>
-        Double-click to open an asset. Click or drag the window to move around.
+Click any card to open the full asset.
       </div>
     </div>
   )
