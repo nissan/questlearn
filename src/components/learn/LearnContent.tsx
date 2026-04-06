@@ -363,6 +363,7 @@ export function LearnContent() {
           {/* Standard tutor modes — hidden when flashcards, concept_map, or debate active */}
           {format !== 'flashcards' && format !== 'concept_map' && format !== 'debate' && (
             <>
+              {/* Tutor toggle — Cogniti hidden until embed auth is resolved */}
               <div className="px-4 py-2 border-b flex items-center gap-2 shrink-0">
                 <span className="text-xs text-muted-foreground mr-1">Tutor:</span>
                 <button
@@ -370,19 +371,6 @@ export function LearnContent() {
                   className={`text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'curricullm' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
                 >
                   CurricuLLM
-                </button>
-                <button
-                  onClick={() => setTutorMode('cogniti')}
-                  className={`text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'cogniti' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
-                >
-                  Cogniti
-                </button>
-                {/* "Both" button hidden on mobile */}
-                <button
-                  onClick={() => setTutorMode('both')}
-                  className={`hidden md:inline-flex text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'both' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
-                >
-                  Both
                 </button>
               </div>
 
