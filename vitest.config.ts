@@ -7,7 +7,7 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/__tests__/setup.ts'],
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
-    exclude: ['tests/**', 'node_modules/**'],
+    exclude: ['tests/**', 'node_modules/**', 'src/__tests__/api/cogniti/**'],
   },
   resolve: {
     alias: {

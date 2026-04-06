@@ -1,179 +1,95 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-
 /**
- * AppLauncher Role-Based Filtering Tests
- * 
- * Tests that students and teachers see only their relevant apps
+ * AppLauncher Role-Based Filtering — Unit Tests
+ * Tests the filtering logic, not DOM/localStorage directly
  */
+import { describe, it, expect } from 'vitest'
 
-describe('AppLauncher Role-Based Filtering', () => {
-  beforeEach(() => {
-    // Clear localStorage before each test
-    localStorage.clear()
-    vi.clearAllMocks()
+type AppId = string
+type AppStatus = 'live' | 'v2' | 'v3'
+interface App { id: AppId; status: AppStatus }
+
+const LAUNCHER_APPS: App[] = [
+  { id: 'questlearn', status: 'live' },
+  { id: 'teacher', status: 'live' },
+  { id: 'student-dashboard', status: 'live' },
+  { id: 'pitch', status: 'live' },
+  { id: 'student-help', status: 'live' },
+  { id: 'teacher-help', status: 'live' },
+  { id: 'mini-apps', status: 'live' },
+  { id: 'study-rooms', status: 'v2' },
+  { id: 'quiz-rooms', status: 'v2' },
+  { id: 'open-threads', status: 'v2' },
+  { id: 'syllabus', status: 'v2' },
+  { id: 'cross-school', status: 'v3' },
+  { id: 'regional', status: 'v3' },
+]
+
+function filterAppsByRole(role: 'student' | 'teacher' | null): App[] {
+  return LAUNCHER_APPS.filter((app) => {
+    if (app.status !== 'live') return true
+    if (role === 'student') {
+      return ['questlearn', 'student-dashboard', 'student-help', 'mini-apps', 'pitch'].includes(app.id)
+    }
+    if (role === 'teacher') {
+      return ['teacher', 'teacher-help', 'pitch'].includes(app.id)
+    }
+    return true
   })
+}
 
-  afterEach(() => {
-    localStorage.clear()
-  })
+describe('AppLauncher Role Filtering Logic', () => {
+  describe('Student role', () => {
+    const apps = filterAppsByRole('student')
+    const liveIds = apps.filter(a => a.status === 'live').map(a => a.id)
 
-  describe('Student Role', () => {
-    beforeEach(() => {
-      localStorage.setItem('lumina_user', JSON.stringify({ name: 'Alice', role: 'student' }))
-    })
-
-    it('should show QuestLearn app for students', () => {
-      const stored = localStorage.getItem('lumina_user')
-      const user = JSON.parse(stored!)
-      expect(user.role).toBe('student')
-    })
-
-    it('should allow students to access student dashboard', () => {
-      const stored = localStorage.getItem('lumina_user')
-      const user = JSON.parse(stored!)
-      expect(user.role).toBe('student')
-      // AppLauncher filters to show: questlearn, student-dashboard, student-help, mini-apps, pitch
-      const studentVisibleApps = ['questlearn', 'student-dashboard', 'student-help', 'mini-apps', 'pitch']
-      expect(studentVisibleApps).toContain('student-dashboard')
-    })
-
-    it('should hide teacher hub from students', () => {
-      const stored = localStorage.getItem('lumina_user')
-      const user = JSON.parse(stored!)
-      expect(user.role).toBe('student')
-      // AppLauncher filters OUT: teacher, teacher-help
-      const studentVisibleApps = ['questlearn', 'student-dashboard', 'student-help', 'mini-apps', 'pitch']
-      expect(studentVisibleApps).not.toContain('teacher')
-      expect(studentVisibleApps).not.toContain('teacher-help')
-    })
-
-    it('should show mini-apps for students', () => {
-      const stored = localStorage.getItem('lumina_user')
-      const user = JSON.parse(stored!)
-      const studentVisibleApps = ['questlearn', 'student-dashboard', 'student-help', 'mini-apps', 'pitch']
-      expect(studentVisibleApps).toContain('mini-apps')
-    })
-
-    it('should show pitch deck for students', () => {
-      const stored = localStorage.getItem('lumina_user')
-      const user = JSON.parse(stored!)
-      const studentVisibleApps = ['questlearn', 'student-dashboard', 'student-help', 'mini-apps', 'pitch']
-      expect(studentVisibleApps).toContain('pitch')
+    it('shows QuestLearn', () => expect(liveIds).toContain('questlearn'))
+    it('shows student dashboard', () => expect(liveIds).toContain('student-dashboard'))
+    it('shows student guide', () => expect(liveIds).toContain('student-help'))
+    it('shows mini apps', () => expect(liveIds).toContain('mini-apps'))
+    it('shows pitch deck', () => expect(liveIds).toContain('pitch'))
+    it('hides teacher hub', () => expect(liveIds).not.toContain('teacher'))
+    it('hides teacher guide', () => expect(liveIds).not.toContain('teacher-help'))
+    it('still shows v2/v3 apps (coming soon)', () => {
+      const v2 = apps.filter(a => a.status === 'v2')
+      expect(v2.length).toBeGreaterThan(0)
     })
   })
 
-  describe('Teacher Role', () => {
-    beforeEach(() => {
-      localStorage.setItem('lumina_user', JSON.stringify({ name: 'Mrs Johnson', role: 'teacher' }))
-    })
+  describe('Teacher role', () => {
+    const apps = filterAppsByRole('teacher')
+    const liveIds = apps.filter(a => a.status === 'live').map(a => a.id)
 
-    it('should show Teacher Hub app for teachers', () => {
-      const stored = localStorage.getItem('lumina_user')
-      const user = JSON.parse(stored!)
-      expect(user.role).toBe('teacher')
-    })
-
-    it('should allow teachers to access teacher hub', () => {
-      const stored = localStorage.getItem('lumina_user')
-      const user = JSON.parse(stored!)
-      expect(user.role).toBe('teacher')
-      // AppLauncher filters to show: teacher, teacher-help, pitch
-      const teacherVisibleApps = ['teacher', 'teacher-help', 'pitch']
-      expect(teacherVisibleApps).toContain('teacher')
-    })
-
-    it('should hide student dashboard from teachers', () => {
-      const stored = localStorage.getItem('lumina_user')
-      const user = JSON.parse(stored!)
-      const teacherVisibleApps = ['teacher', 'teacher-help', 'pitch']
-      expect(teacherVisibleApps).not.toContain('student-dashboard')
-      expect(teacherVisibleApps).not.toContain('questlearn')
-    })
-
-    it('should hide student guide from teachers', () => {
-      const stored = localStorage.getItem('lumina_user')
-      const user = JSON.parse(stored!)
-      const teacherVisibleApps = ['teacher', 'teacher-help', 'pitch']
-      expect(teacherVisibleApps).not.toContain('student-help')
-      expect(teacherVisibleApps).not.toContain('mini-apps')
-    })
-
-    it('should show pitch deck for teachers', () => {
-      const stored = localStorage.getItem('lumina_user')
-      const user = JSON.parse(stored!)
-      const teacherVisibleApps = ['teacher', 'teacher-help', 'pitch']
-      expect(teacherVisibleApps).toContain('pitch')
+    it('shows teacher hub', () => expect(liveIds).toContain('teacher'))
+    it('shows teacher guide', () => expect(liveIds).toContain('teacher-help'))
+    it('shows pitch deck', () => expect(liveIds).toContain('pitch'))
+    it('hides QuestLearn', () => expect(liveIds).not.toContain('questlearn'))
+    it('hides student dashboard', () => expect(liveIds).not.toContain('student-dashboard'))
+    it('hides student guide', () => expect(liveIds).not.toContain('student-help'))
+    it('hides mini apps', () => expect(liveIds).not.toContain('mini-apps'))
+    it('still shows v2/v3 apps (coming soon)', () => {
+      const v2 = apps.filter(a => a.status === 'v2')
+      expect(v2.length).toBeGreaterThan(0)
     })
   })
 
-  describe('No Role / Unauthenticated', () => {
-    it('should handle missing role gracefully', () => {
-      localStorage.removeItem('lumina_user')
-      const stored = localStorage.getItem('lumina_user')
-      expect(stored).toBeNull()
-      // Fallback: show all apps
-    })
+  describe('No role (unauthenticated)', () => {
+    const apps = filterAppsByRole(null)
+    const liveIds = apps.filter(a => a.status === 'live').map(a => a.id)
 
-    it('should handle malformed localStorage data', () => {
-      localStorage.setItem('lumina_user', 'invalid json')
-      const stored = localStorage.getItem('lumina_user')
-      expect(stored).toBe('invalid json')
-      // Should catch JSON.parse error and return null role
-    })
-
-    it('should handle missing role property', () => {
-      localStorage.setItem('lumina_user', JSON.stringify({ name: 'Unknown' }))
-      const stored = localStorage.getItem('lumina_user')
-      const user = JSON.parse(stored!)
-      expect(user.role).toBeUndefined()
-      // Should treat as null and show all apps
+    it('shows all live apps as fallback', () => {
+      expect(liveIds).toContain('questlearn')
+      expect(liveIds).toContain('teacher')
+      expect(liveIds).toContain('student-dashboard')
     })
   })
 
-  describe('App Visibility Contracts', () => {
-    it('student should ALWAYS see these apps', () => {
-      const studentApps = ['questlearn', 'student-dashboard', 'student-help', 'mini-apps', 'pitch']
-      expect(studentApps).toHaveLength(5)
-      expect(studentApps).toContain('questlearn')
-      expect(studentApps).toContain('student-dashboard')
-      expect(studentApps).toContain('student-help')
-      expect(studentApps).toContain('mini-apps')
-      expect(studentApps).toContain('pitch')
-    })
-
-    it('student should NEVER see these apps', () => {
-      const studentApps = ['questlearn', 'student-dashboard', 'student-help', 'mini-apps', 'pitch']
-      expect(studentApps).not.toContain('teacher')
-      expect(studentApps).not.toContain('teacher-help')
-    })
-
-    it('teacher should ALWAYS see these apps', () => {
-      const teacherApps = ['teacher', 'teacher-help', 'pitch']
-      expect(teacherApps).toHaveLength(3)
-      expect(teacherApps).toContain('teacher')
-      expect(teacherApps).toContain('teacher-help')
-      expect(teacherApps).toContain('pitch')
-    })
-
-    it('teacher should NEVER see these apps', () => {
-      const teacherApps = ['teacher', 'teacher-help', 'pitch']
-      expect(teacherApps).not.toContain('questlearn')
-      expect(teacherApps).not.toContain('student-dashboard')
-      expect(teacherApps).not.toContain('student-help')
-      expect(teacherApps).not.toContain('mini-apps')
-    })
-
-    it('both roles should see pitch deck', () => {
-      const studentApps = ['questlearn', 'student-dashboard', 'student-help', 'mini-apps', 'pitch']
-      const teacherApps = ['teacher', 'teacher-help', 'pitch']
-      expect(studentApps).toContain('pitch')
-      expect(teacherApps).toContain('pitch')
-    })
-
-    it('both roles should see v2/v3 apps (greyed out)', () => {
-      // v2/v3 apps shown to all roles with "Coming soon" / "Future" badges
-      const v2v3Apps = ['study-rooms', 'quiz-rooms', 'open-threads', 'syllabus', 'cross-school', 'regional']
-      expect(v2v3Apps.length).toBeGreaterThan(0)
+  describe('Contracts', () => {
+    it('pitch deck is visible to all roles', () => {
+      const roles: Array<'student' | 'teacher' | null> = ['student', 'teacher', null]
+      for (const role of roles) {
+        const ids = filterAppsByRole(role).filter(a => a.status === 'live').map(a => a.id)
+        expect(ids).toContain('pitch')
+      }
     })
   })
 })
