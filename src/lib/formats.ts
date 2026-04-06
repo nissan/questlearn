@@ -6,6 +6,7 @@ export const FORMATS = [
   { id: 'short_film', label: 'Short Film', icon: '🎬', description: 'Watch a cinematic micro-scene' },
   { id: 'flashcards',   label: 'Flashcards',   icon: '🃏', description: 'Test your recall with AI-powered flashcards' },
   { id: 'concept_map',  label: 'Concept Map',  icon: '🗺️', description: 'Build visual connections between ideas with AI feedback' },
+  { id: 'debate',       label: 'Debate',       icon: '⚖️', description: 'Argue your point against an AI opponent' },
 ] as const;
 
 export type FormatId = typeof FORMATS[number]['id'];

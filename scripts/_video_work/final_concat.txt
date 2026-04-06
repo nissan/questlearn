@@ -1,0 +1,8 @@
+file '/Users/loki/projects/questlearn/scripts/_video_work/seg00_title.mp4'
+file '/Users/loki/projects/questlearn/scripts/_video_work/seg01_scene1.mp4'
+file '/Users/loki/projects/questlearn/scripts/_video_work/seg02_scene2.mp4'
+file '/Users/loki/projects/questlearn/scripts/_video_work/seg03_scene3.mp4'
+file '/Users/loki/projects/questlearn/scripts/_video_work/seg04_scene4.mp4'
+file '/Users/loki/projects/questlearn/scripts/_video_work/seg05_scene5.mp4'
+file '/Users/loki/projects/questlearn/scripts/_video_work/seg06a_scene6.mp4'
+file '/Users/loki/projects/questlearn/scripts/_video_work/seg06b_closing.mp4'
