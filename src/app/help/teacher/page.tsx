@@ -49,9 +49,24 @@ export default function TeacherHelpPage() {
         <section style={{ marginBottom: '3rem' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#60a5fa', marginBottom: '1rem' }}>What Students See</h2>
           <p style={{ fontSize: '0.9375rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.85)', marginBottom: '1rem' }}>
-            Students pick a topic, then choose a learning format — quiz, flashcard, story, meme, or debate. Each format generates AI-powered content tailored to their input.
+            Students pick a topic, then choose a learning format. QuestLearn currently offers eight formats:
           </p>
-          <img src="/format-selector.png" alt="Student format selector screen" style={{ width: '100%', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', marginBottom: '1rem' }} />
+          {[
+            { label: 'Meme', text: 'Compress the concept into something memorable and funny — forces real understanding.' },
+            { label: 'Game', text: 'Topic becomes a playable scenario with decisions and consequences.' },
+            { label: 'Story', text: 'Narrative framing makes cause-and-effect visible and sticky.' },
+            { label: 'Puzzle', text: 'Students reconstruct the concept by solving it piece by piece.' },
+            { label: 'Short Film', text: 'Cinematic micro-scene brings abstract ideas to life visually.' },
+            { label: 'Flashcards', text: 'AI-powered cards with confidence tracking and accuracy data. After 3 attempts, the answer is revealed.' },
+            { label: 'Concept Map', text: 'Students build a visual web of connected ideas with AI feedback.' },
+            { label: 'Debate', text: 'Students argue a position against an AI opponent, building analytical depth.' },
+          ].map(({ label, text }) => (
+            <div key={label} style={{ background: 'rgba(96,165,250,0.04)', border: '1px solid rgba(96,165,250,0.12)', borderRadius: '10px', padding: '0.875rem 1.25rem', marginBottom: '0.5rem' }}>
+              <span style={{ color: '#60a5fa', fontWeight: 600, fontSize: '0.9375rem' }}>{label}</span>
+              <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9375rem' }}> — {text}</span>
+            </div>
+          ))}
+          <img src="/format-selector.png" alt="Student format selector screen" style={{ width: '100%', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', margin: '1.5rem 0 1rem' }} />
           <p style={{ fontSize: '0.9375rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.85)', marginBottom: '1rem' }}>
             Once content loads, the Socratic tutor engages them in a back-and-forth. The AI asks questions, students answer, and the AI responds — encouraging them to go further, reconsider, or connect ideas.
           </p>
@@ -65,20 +80,37 @@ export default function TeacherHelpPage() {
 
         <section style={{ marginBottom: '3rem' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#60a5fa', marginBottom: '1rem' }}>Your Dashboard</h2>
+
+          <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'rgba(255,255,255,0.9)', marginBottom: '0.5rem' }}>📌 Today&apos;s Quest</h3>
+          <p style={{ fontSize: '0.9375rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.85)', marginBottom: '1.25rem' }}>
+            Pin a topic and format for your class. Students see your quest when they open QuestLearn, giving the session direction without removing their choice. You can include a message and target a specific year level. Clear it when the session is done.
+          </p>
+
+          <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'rgba(255,255,255,0.9)', marginBottom: '0.5rem' }}>🟡 Live Activity</h3>
+          <p style={{ fontSize: '0.9375rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.85)', marginBottom: '1.25rem' }}>
+            A real-time feed of what students are doing right now — topics chosen, formats selected, sessions started. Not individual answers. Just the pulse of the room.
+          </p>
+
+          <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'rgba(255,255,255,0.9)', marginBottom: '0.5rem' }}>🟥 Engagement Heatmap</h3>
           <p style={{ fontSize: '0.9375rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.85)', marginBottom: '1rem' }}>
-            The heatmap gives you a real-time picture of class engagement — which topics students are exploring, how frequently, and where energy is clustering.
+            A matrix of topics × formats × depth. At a glance you can see which combinations are lighting up the class, where energy is clustering, and which areas haven&apos;t been touched.
           </p>
           <img src="/teacher-heatmap.png" alt="Teacher heatmap dashboard" style={{ width: '100%', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', marginBottom: '1.5rem' }} />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.5rem' }}>
             <div style={{ background: 'rgba(52,211,153,0.06)', border: '1px solid rgba(52,211,153,0.15)', borderRadius: '10px', padding: '1rem' }}>
               <p style={{ color: '#34d399', fontWeight: 600, fontSize: '0.875rem', marginBottom: '0.5rem' }}>✓ What it shows</p>
-              <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.875rem', margin: 0, lineHeight: 1.6 }}>Topic distribution, session frequency, and engagement patterns across the class.</p>
+              <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.875rem', margin: 0, lineHeight: 1.6 }}>Topic distribution, format choices, session frequency, and engagement patterns across the class.</p>
             </div>
             <div style={{ background: 'rgba(248,113,113,0.06)', border: '1px solid rgba(248,113,113,0.15)', borderRadius: '10px', padding: '1rem' }}>
               <p style={{ color: '#f87171', fontWeight: 600, fontSize: '0.875rem', marginBottom: '0.5rem' }}>✗ What it doesn&apos;t show</p>
               <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.875rem', margin: 0, lineHeight: 1.6 }}>Individual student answers, typed responses, or personal performance data.</p>
             </div>
           </div>
+
+          <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'rgba(255,255,255,0.9)', marginBottom: '0.5rem' }}>🧠 AI Insights (Cogniti Flashcard Analytics)</h3>
+          <p style={{ fontSize: '0.9375rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.85)' }}>
+            When students use the Flashcards format, they rate their confidence after each card and answer questions the AI generates. The AI Insights panel shows you, by topic: which topics are getting the most card flips, average confidence ratings (colour-coded red/yellow/green), and answer accuracy percentages. A topic flagged with ⚠️ is below 50% accuracy — a signal that the class may need revisiting.
+          </p>
         </section>
 
         <hr style={{ borderColor: 'rgba(255,255,255,0.06)', marginBottom: '3rem' }} />
