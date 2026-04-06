@@ -15,13 +15,13 @@ function getMemeCardRenderMode(
 describe('MemeCard Component Integration', () => {
   describe('rendering mode selection', () => {
     it('renders imageUrl mode when imageUrl is provided', () => {
-      const mode = getMemeCardRenderMode('https://i.imgflip.com/abc123.jpg', null);
+      const mode = getMemeCardRenderMode('/images/memes/drake.jpg', null);
       expect(mode).toBe('imageUrl');
     });
 
     it('img src attribute matches imageUrl prop', () => {
-      const imageUrl = 'https://i.imgflip.com/abc123.jpg';
-      expect(imageUrl).toMatch(/^https:\/\/i\.imgflip\.com\//);
+      const imageUrl = '/images/memes/drake.jpg';
+      expect(imageUrl).toMatch(/^\/images\/memes\//);
     });
 
     it('alt text is non-empty', () => {
@@ -46,14 +46,14 @@ describe('MemeCard Component Integration', () => {
     });
 
     it('imageUrl takes precedence over template', () => {
-      const mode = getMemeCardRenderMode('https://i.imgflip.com/abc.jpg', { file: '/memes/xyz.jpg' });
+      const mode = getMemeCardRenderMode('/images/memes/drake.jpg', { file: '/memes/xyz.jpg' });
       expect(mode).toBe('imageUrl');
     });
   });
 
   describe('share button visibility', () => {
     it('shows share button when imageUrl is present', () => {
-      const imageUrl = 'https://i.imgflip.com/abc.jpg';
+      const imageUrl = '/images/memes/drake.jpg';
       const template = null;
       const shouldShow = !!(template || imageUrl);
       expect(shouldShow).toBe(true);
