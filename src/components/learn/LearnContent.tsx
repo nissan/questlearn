@@ -208,19 +208,19 @@ export function LearnContent() {
     </>
   );
 
-  /** Cogniti AI Tutor — opens in popup (Google OAuth blocked in iframes) */
+  /** Cogniti AI Tutor — opens in popup with disclosure note */
   const cognitiInner = (
     <>
       <div className="px-4 py-3 border-b">
         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Cogniti AI Tutor</p>
-        <p className="text-xs text-muted-foreground">Ask Cogniti anything about this topic</p>
+        <p className="text-xs text-muted-foreground">Socratic AI tutor powered by Cogniti</p>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6 text-center">
         <span className="text-5xl">🤖</span>
-        <div>
-          <p className="text-sm font-medium mb-1">Cogniti AI Tutor</p>
-          <p className="text-xs text-muted-foreground max-w-[220px]">
-            Opens in a new window — sign in once with Google, then chat freely.
+        <div className="space-y-2">
+          <p className="text-sm font-medium">Cogniti AI Tutor</p>
+          <p className="text-xs text-muted-foreground max-w-[240px]">
+            Opens in a new window. Sign in with Google to start chatting.
           </p>
         </div>
         <button
@@ -229,9 +229,15 @@ export function LearnContent() {
         >
           Open Cogniti Tutor →
         </button>
-        <p className="text-xs text-muted-foreground opacity-60">
-          Tip: Sign in once and the window stays open for the session.
-        </p>
+        {/* Disclosure — public access requires Cogniti Pro plan */}
+        <div className="mt-2 px-4 py-3 rounded-lg border border-amber-500/20 bg-amber-500/5 max-w-[260px]">
+          <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mb-1">⚠️ Access Note
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Public (no-login) access requires a Cogniti Pro plan which we don&apos;t currently have.
+            Sign in with your Google account to access the tutor.
+          </p>
+        </div>
       </div>
     </>
   );
