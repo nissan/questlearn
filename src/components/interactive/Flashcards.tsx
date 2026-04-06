@@ -1,7 +1,7 @@
-// Based on Cogniti Interactive. Refactored for QuestLearn.
+// Built upon Cogniti Interactive source code. Refactored for QuestLearn.
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
@@ -33,7 +33,8 @@ const DEFAULT_CARDS: Flashcard[] = [
 ];
 
 export function Flashcards({ topic, cards }: FlashcardsProps) {
-  const flashcards = cards ?? DEFAULT_CARDS;
+  const [flashcards, setFlashcards] = useState<Flashcard[]>(cards ?? []);
+  const [loadingCards, setLoadingCards] = useState(!cards);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [showExplain, setShowExplain] = useState(false);
@@ -43,8 +44,66 @@ export function Flashcards({ topic, cards }: FlashcardsProps) {
   const [ratings, setRatings] = useState<Record<number, ConfidenceLevel>>({});
   const [completed, setCompleted] = useState(false);
 
+  // Fetch generated flashcards on mount if not provided
+  useEffect(() => {
+    if (cards) {
+      setFlashcards(cards);
+      setLoadingCards(false);
+      return;
+    }
+
+    const fetchCards = async () => {
+      try {
+        const res = await fetch('/api/questlearn/flashcards/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic }),
+        });
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        const generatedCards = data.cards ?? [];
+        setFlashcards(generatedCards.length > 0 ? generatedCards : DEFAULT_CARDS);
+      } catch {
+        // Fall back to default cards on error
+        setFlashcards(DEFAULT_CARDS);
+      } finally {
+        setLoadingCards(false);
+      }
+    };
+
+    fetchCards();
+  }, [topic, cards]);
+
   const current = flashcards[currentIndex];
-  const progress = Math.round(((currentIndex) / flashcards.length) * 100);
+  const progress = flashcards.length > 0 ? Math.round(((currentIndex) / flashcards.length) * 100) : 0;
+
+  if (loadingCards) {
+    return (
+      <div className="flex flex-col h-full">
+        <div className="px-4 py-3 border-b flex items-center gap-2">
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Flashcards</span>
+          <Badge className="text-xs bg-amber-500/20 text-amber-400 border-0">AI-Powered</Badge>
+        </div>
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6">
+          <div className="text-lg text-muted-foreground animate-pulse">Generating flashcards…</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (flashcards.length === 0) {
+    return (
+      <div className="flex flex-col h-full">
+        <div className="px-4 py-3 border-b flex items-center gap-2">
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Flashcards</span>
+          <Badge className="text-xs bg-amber-500/20 text-amber-400 border-0">AI-Powered</Badge>
+        </div>
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6">
+          <div className="text-sm text-muted-foreground">No flashcards available for this topic.</div>
+        </div>
+      </div>
+    );
+  }
 
   const handleFlip = () => {
     setIsFlipped(f => !f);
@@ -219,6 +278,15 @@ export function Flashcards({ topic, cards }: FlashcardsProps) {
             </div>
           </div>
         )}
+      </div>
+      <div className="px-4 py-2 border-t text-center">
+        <p className="text-xs text-muted-foreground opacity-50">
+          Built upon{' '}
+          <a href="https://cogniti.ai" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">
+            Cogniti
+          </a>{' '}
+          interactive source code
+        </p>
       </div>
     </div>
   );

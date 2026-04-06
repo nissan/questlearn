@@ -1,4 +1,4 @@
-// Based on Cogniti Interactive. Refactored for QuestLearn.
+// Built upon Cogniti Interactive source code. Refactored for QuestLearn.
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -43,11 +43,27 @@ export function Debate({ topic: propTopic }: DebateProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [verdict, setVerdict] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loadingMotion, setLoadingMotion] = useState(!!propTopic);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, verdict]);
+
+  // Generate a topic-relevant debate motion when propTopic is provided
+  useEffect(() => {
+    if (!propTopic) return;
+    setLoadingMotion(true);
+    fetch('/api/questlearn/debate/generate-motion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic: propTopic }),
+    })
+      .then(r => r.json())
+      .then(data => { if (data.motion) setTopic(data.motion); })
+      .catch(() => { setTopic(propTopic); })
+      .finally(() => setLoadingMotion(false));
+  }, [propTopic]);
 
   const handleStart = async (position: Position) => {
     if (!topic.trim()) return;
@@ -162,29 +178,44 @@ export function Debate({ topic: propTopic }: DebateProps) {
 
           {/* Topic selection */}
           <div className="w-full max-w-md space-y-3">
-            <label className="text-sm font-medium">Choose a topic:</label>
-            <div className="grid grid-cols-1 gap-2">
-              {DEBATE_TOPICS.map(t => (
-                <button
-                  key={t}
-                  onClick={() => setTopic(t)}
-                  className={`text-left text-sm px-3 py-2 rounded-lg border transition-all ${
-                    topic === t
-                      ? 'border-purple-500 bg-purple-500/10 text-foreground'
-                      : 'border-border text-muted-foreground hover:border-purple-500/50'
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-            <div className="text-xs text-muted-foreground text-center">or</div>
-            <input
-              className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background focus:outline-none focus:ring-1 focus:ring-purple-500"
-              placeholder="Type your own debate topic…"
-              value={DEBATE_TOPICS.includes(topic) ? '' : topic}
-              onChange={e => setTopic(e.target.value)}
-            />
+            {propTopic ? (
+              // When a curriculum topic is provided, show AI-generated motion
+              loadingMotion ? (
+                <p className="text-sm text-center text-muted-foreground animate-pulse">Generating debate motion for &ldquo;{propTopic}&rdquo;…</p>
+              ) : (
+                <div className="rounded-xl border-2 border-purple-500/40 bg-purple-500/10 px-4 py-3 text-center">
+                  <p className="text-xs text-purple-400 font-semibold uppercase tracking-wide mb-1">Debate Motion</p>
+                  <p className="text-sm font-medium">&ldquo;{topic}&rdquo;</p>
+                </div>
+              )
+            ) : (
+              // No curriculum topic — show generic topic picker
+              <>
+                <label className="text-sm font-medium">Choose a topic:</label>
+                <div className="grid grid-cols-1 gap-2">
+                  {DEBATE_TOPICS.map(t => (
+                    <button
+                      key={t}
+                      onClick={() => setTopic(t)}
+                      className={`text-left text-sm px-3 py-2 rounded-lg border transition-all ${
+                        topic === t
+                          ? 'border-purple-500 bg-purple-500/10 text-foreground'
+                          : 'border-border text-muted-foreground hover:border-purple-500/50'
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+                <div className="text-xs text-muted-foreground text-center">or</div>
+                <input
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  placeholder="Type your own debate topic…"
+                  value={DEBATE_TOPICS.includes(topic) ? '' : topic}
+                  onChange={e => setTopic(e.target.value)}
+                />
+              </>
+            )}
           </div>
 
           {/* Position selection */}
@@ -310,6 +341,13 @@ export function Debate({ topic: propTopic }: DebateProps) {
           </Button>
         </div>
       )}
+      <div className="px-4 py-2 border-t text-center shrink-0">
+        <p className="text-xs text-muted-foreground opacity-50">
+          Built upon{' '}
+          <a href="https://cogniti.ai" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">Cogniti</a>{' '}
+          interactive source code
+        </p>
+      </div>
     </div>
   );
 }

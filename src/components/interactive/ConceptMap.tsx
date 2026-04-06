@@ -1,4 +1,4 @@
-// Based on Cogniti Interactive. Refactored for QuestLearn.
+// Built upon Cogniti Interactive source code. Refactored for QuestLearn.
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
@@ -23,28 +23,43 @@ interface ConceptMapProps {
   topic: string;
 }
 
-const STARTER_CONCEPTS: Record<string, string[]> = {
-  default: ['Main Concept', 'Key Idea 1', 'Key Idea 2', 'Supporting Detail'],
-};
-
-function getStarterConcepts(topic: string): string[] {
-  return STARTER_CONCEPTS[topic.toLowerCase()] ?? [topic, 'Concept 1', 'Concept 2', 'Concept 3'];
-}
-
 let idCounter = 100;
 function genId() { return `n${++idCounter}`; }
 
 const CANVAS_W = 800;
 const CANVAS_H = 520;
 
+const FALLBACK_CONCEPTS = (topic: string) => [topic, 'Concept 1', 'Concept 2', 'Concept 3'];
+
 export function ConceptMap({ topic }: ConceptMapProps) {
-  const starters = getStarterConcepts(topic);
-  const [concepts, setConcepts] = useState<Concept[]>(() => starters.map((label, i) => ({
-    id: genId(),
-    label,
-    x: 100 + (i % 2) * 300,
-    y: 80 + Math.floor(i / 2) * 200,
-  })));
+  const [concepts, setConcepts] = useState<Concept[]>([]);
+  const [loadingConcepts, setLoadingConcepts] = useState(true);
+
+  useEffect(() => {
+    setLoadingConcepts(true);
+    fetch('/api/questlearn/concept-map/generate-concepts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        const labels: string[] = data.concepts ?? FALLBACK_CONCEPTS(topic);
+        setConcepts(labels.map((label, i) => ({
+          id: genId(), label,
+          x: 100 + (i % 2) * 300,
+          y: 80 + Math.floor(i / 2) * 180,
+        })));
+      })
+      .catch(() => {
+        setConcepts(FALLBACK_CONCEPTS(topic).map((label, i) => ({
+          id: genId(), label,
+          x: 100 + (i % 2) * 300,
+          y: 80 + Math.floor(i / 2) * 200,
+        })));
+      })
+      .finally(() => setLoadingConcepts(false));
+  }, [topic]);
   const [connections, setConnections] = useState<Connection[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [connecting, setConnecting] = useState<string | null>(null);
@@ -64,6 +79,7 @@ export function ConceptMap({ topic }: ConceptMapProps) {
   // ── Drag handling ─────────────────────────────────────────────────────────
   const handleNodeMouseDown = (e: React.MouseEvent, id: string) => {
     if (connecting) {
+      e.stopPropagation();
       // If connecting mode, clicking a node completes the connection
       if (connecting !== id) {
         setPendingConnection({ source: connecting, target: id });
@@ -231,6 +247,11 @@ export function ConceptMap({ topic }: ConceptMapProps) {
 
       {/* SVG Canvas */}
       <div className="flex-1 relative overflow-hidden bg-muted/20">
+        {loadingConcepts && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
+            <p className="text-sm text-muted-foreground animate-pulse">Generating concepts for {topic}…</p>
+          </div>
+        )}
         <svg
           ref={svgRef}
           width="100%"
@@ -333,6 +354,13 @@ export function ConceptMap({ topic }: ConceptMapProps) {
           }
         </div>
       )}
+      <div className="px-4 py-2 border-t text-center shrink-0">
+        <p className="text-xs text-muted-foreground opacity-50">
+          Built upon{' '}
+          <a href="https://cogniti.ai" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">Cogniti</a>{' '}
+          interactive source code
+        </p>
+      </div>
     </div>
   );
 }
