@@ -55,7 +55,7 @@ export function LearnContent() {
   const [memeTemplate, setMemeTemplate] = useState<MemeTemplate | null>(null);
   const [memeTopText, setMemeTopText] = useState('');
   const [memeBottomText, setMemeBottomText] = useState('');
-  const [memeImageUrl, setMemeImageUrl] = useState<string | undefined>(undefined);
+  const [memeImageUrl, setMemeImageUrl] = useState<string | null>(null);
   const chatBottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export function LearnContent() {
       setMemeTemplate(null);
       setMemeTopText('');
       setMemeBottomText('');
-      setMemeImageUrl(undefined);
+      setMemeImageUrl(null);
       const sessionRes = await fetch('/api/learn/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -112,8 +112,10 @@ export function LearnContent() {
             body: JSON.stringify({ topic, curriculumFact: contentData.body }),
           });
           const memeData = await memeRes.json();
-          if (memeData.templateId && memeData.topText && memeData.bottomText) {
-            const pickedTemplate = MEME_TEMPLATES.find((t) => t.id === memeData.templateId) ?? null;
+          if (memeData.topText && memeData.bottomText) {
+            const pickedTemplate = memeData.templateId
+              ? (MEME_TEMPLATES.find((t) => t.id === memeData.templateId) ?? null)
+              : null;
             setMemeTopText(memeData.topText);
             setMemeBottomText(memeData.bottomText);
             setMemeTemplate(pickedTemplate);
@@ -255,7 +257,7 @@ export function LearnContent() {
                 bottomText={memeBottomText}
                 template={memeTemplate}
                 topic={topic}
-                imageUrl={memeImageUrl}
+                imageUrl={memeImageUrl ?? undefined}
               />
               {content.body.match(/^CAPTION:\s*(.+)/im)?.[1] && (
                 <p className="text-xs text-muted-foreground text-center">

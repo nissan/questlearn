@@ -12,9 +12,9 @@ export interface SocraticFollowUpResponse {
 }
 
 const SOCRATIC_FOLLOWUPS = [
-  "Right. What form though — is it like electricity, heat, or something else?",
-  "Yeah, good. So why would it need that process — like what does it actually get out of it?",
-  "Exactly. What do you reckon would break down first if that stopped happening?",
+  "Right. What form do you think it stores in — like electricity, sugar, or heat?",
+  "Exactly. So why does it need to store it at all? What's using it up?",
+  "Good. Now flip it — what would happen to everything downstream if that process stopped?",
 ];
 
 export function generateStubContent(topic: string, format: string): CurricuLLMResponse {
