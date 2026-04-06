@@ -71,7 +71,7 @@ export function Desktop({ children }: { children: React.ReactNode }) {
             <DesktopIcon id="questlearn"        icon="🎓" label="QuestLearn"    defaultPosition={{ x: 0,   y: 0   }} accentColor="#f59e0b" />
             <DesktopIcon id="student-dashboard" icon="🏠" label="My Dashboard"  defaultPosition={{ x: 0,   y: 128 }} accentColor="#34d399" />
             <DesktopIcon id="student-help"      icon="🎒" label="Student Guide" defaultPosition={{ x: 0,   y: 256 }} accentColor="#34d399" />
-            <DesktopIcon id="mini-apps"         icon="🧩" label="Mini Apps"     defaultPosition={{ x: 0,   y: 384 }} accentColor="#a78bfa" />
+            <DesktopIcon id="mini-apps"         icon="🧩" label="Mini Apps"     defaultPosition={{ x: 0,   y: 384 }} accentColor="#a78bfa" disabled badge="Coming Soon" />
             {/* Col 2 — secondary */}
             <DesktopIcon id="pitch"             icon="📋" label="Pitch Deck"    defaultPosition={{ x: 120, y: 0   }} accentColor="#f59e0b" />
             <DesktopIcon id="showcase"          icon="🎬" label="Showcase"      defaultPosition={{ x: 120, y: 128 }} accentColor="#a78bfa" />
