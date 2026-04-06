@@ -68,13 +68,13 @@ export function Desktop({ children }: { children: React.ReactNode }) {
         {(role === 'student' || role === null) && (
           <>
             {/* Col 1 — primary */}
-            <DesktopIcon id="questlearn"       icon="🎓" label="QuestLearn"    defaultPosition={{ x: 0,   y: 0   }} accentColor="#f59e0b" />
-            <DesktopIcon id="student-dashboard" icon="🏠" label="My Dashboard" defaultPosition={{ x: 0,   y: 104 }} accentColor="#34d399" />
-            <DesktopIcon id="student-help"      icon="🎒" label="Student Guide" defaultPosition={{ x: 0,   y: 208 }} accentColor="#34d399" />
-            <DesktopIcon id="mini-apps"         icon="🧩" label="Mini Apps"     defaultPosition={{ x: 0,   y: 312 }} accentColor="#a78bfa" />
+            <DesktopIcon id="questlearn"        icon="🎓" label="QuestLearn"    defaultPosition={{ x: 0,   y: 0   }} accentColor="#f59e0b" />
+            <DesktopIcon id="student-dashboard" icon="🏠" label="My Dashboard"  defaultPosition={{ x: 0,   y: 128 }} accentColor="#34d399" />
+            <DesktopIcon id="student-help"      icon="🎒" label="Student Guide" defaultPosition={{ x: 0,   y: 256 }} accentColor="#34d399" />
+            <DesktopIcon id="mini-apps"         icon="🧩" label="Mini Apps"     defaultPosition={{ x: 0,   y: 384 }} accentColor="#a78bfa" />
             {/* Col 2 — secondary */}
-            <DesktopIcon id="pitch"             icon="📋" label="Pitch Deck"   defaultPosition={{ x: 104, y: 0   }} accentColor="#f59e0b" />
-            <DesktopIcon id="showcase"          icon="🎬" label="Showcase"     defaultPosition={{ x: 104, y: 104 }} accentColor="#a78bfa" />
+            <DesktopIcon id="pitch"             icon="📋" label="Pitch Deck"    defaultPosition={{ x: 120, y: 0   }} accentColor="#f59e0b" />
+            <DesktopIcon id="showcase"          icon="🎬" label="Showcase"      defaultPosition={{ x: 120, y: 128 }} accentColor="#a78bfa" />
           </>
         )}
 
@@ -83,10 +83,10 @@ export function Desktop({ children }: { children: React.ReactNode }) {
           <>
             {/* Col 1 — primary */}
             <DesktopIcon id="teacher"      icon="📊" label="Teacher Hub"   defaultPosition={{ x: 0,   y: 0   }} accentColor="#60a5fa" />
-            <DesktopIcon id="teacher-help" icon="📖" label="Teacher Guide" defaultPosition={{ x: 0,   y: 104 }} accentColor="#60a5fa" />
+            <DesktopIcon id="teacher-help" icon="📖" label="Teacher Guide" defaultPosition={{ x: 0,   y: 128 }} accentColor="#60a5fa" />
             {/* Col 2 — secondary */}
-            <DesktopIcon id="pitch"        icon="📋" label="Pitch Deck"    defaultPosition={{ x: 104, y: 0   }} accentColor="#f59e0b" />
-            <DesktopIcon id="showcase"     icon="🎬" label="Showcase"      defaultPosition={{ x: 104, y: 104 }} accentColor="#a78bfa" />
+            <DesktopIcon id="pitch"        icon="📋" label="Pitch Deck"    defaultPosition={{ x: 120, y: 0   }} accentColor="#f59e0b" />
+            <DesktopIcon id="showcase"     icon="🎬" label="Showcase"      defaultPosition={{ x: 120, y: 128 }} accentColor="#a78bfa" />
           </>
         )}
 
