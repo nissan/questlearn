@@ -9,10 +9,10 @@ export default function ValueProp() {
   ]
 
   const schoolValue = [
-    { metric: 'Retention', current: '40%', with: '65%', lift: '+25%' },
-    { metric: 'Teacher Time', current: '8h/week', with: '3h/week', lift: '-5h/week' },
-    { metric: 'Equity', current: 'Gap grows', with: 'Gap closes', lift: 'Measured' },
-    { metric: 'PII Risk', current: 'High (LMS)', with: 'Zero', lift: 'Private' },
+    { metric: 'Retention', current: '40%', with: '65% (target)', lift: 'Goal: +25%' },
+    { metric: 'Teacher Time', current: '8h/week', with: '3h/week (target)', lift: 'Goal: -5h/week' },
+    { metric: 'Equity', current: 'Gap grows', with: 'Gap closes (target)', lift: 'Goal: measurable reduction' },
+    { metric: 'PII Risk', current: 'High (LMS)', with: 'Zero', lift: 'Design objective' },
   ]
 
   return (
@@ -109,7 +109,7 @@ export default function ValueProp() {
                   <th style={{ textAlign: 'left', padding: '0.75rem', color: '#f59e0b', fontWeight: 700 }}>Metric</th>
                   <th style={{ textAlign: 'center', padding: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>Without QuestLearn</th>
                   <th style={{ textAlign: 'center', padding: '0.75rem', color: '#22c55e', fontWeight: 600 }}>With QuestLearn</th>
-                  <th style={{ textAlign: 'center', padding: '0.75rem', color: '#f59e0b', fontWeight: 700 }}>Lift</th>
+                  <th style={{ textAlign: 'center', padding: '0.75rem', color: '#f59e0b', fontWeight: 700 }}>Expected Lift (Goal)</th>
                 </tr>
               </thead>
               <tbody>
@@ -125,6 +125,10 @@ export default function ValueProp() {
             </table>
           </div>
         </section>
+
+        <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: '0 0 1.5rem', lineHeight: 1.6 }}>
+          Note: Retention and teacher-time lift values are expected targets for pilot validation, not yet proven outcomes.
+        </p>
 
         {/* Addressing Concerns */}
         <section style={{
