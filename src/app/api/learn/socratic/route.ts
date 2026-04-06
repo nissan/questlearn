@@ -23,6 +23,13 @@ export async function POST(req: NextRequest) {
   const db = getDb();
   await ensureEngagementEventsFormat();
 
+  // Map frontend history format (role: 'ai'|'student', text: string)
+  // to OpenAI format (role: 'user'|'assistant', content: string)
+  const mappedHistory = (history ?? []).map((m: { role: string; text?: string; content?: string }) => ({
+    role: m.role === 'ai' ? 'assistant' : m.role === 'student' ? 'user' : m.role,
+    content: m.text ?? m.content ?? '',
+  })) as Array<{ role: 'user' | 'assistant'; content: string }>;
+
   const followUp = await withLangfuseTrace({
     name: 'socratic-followup',
     userId: session.userId,
@@ -33,7 +40,7 @@ export async function POST(req: NextRequest) {
       topic ?? 'this topic',
       format ?? 'story',
       yearLevel ?? 'Year 9',
-      history ?? [],
+      mappedHistory,
       turnIndex ?? 0
     ),
   });
