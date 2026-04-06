@@ -6,6 +6,7 @@ const DOCK_APPS = [
   { id: 'teacher' as const, icon: '📊', label: 'Teacher Hub', color: '#60a5fa' },
   { id: 'showcase' as const, icon: '🎬', label: 'Showcase', color: '#a78bfa' },
   { id: 'student-dashboard' as const, icon: '🏠', label: 'My Dashboard', color: '#34d399' },
+  { id: 'mini-apps' as const, icon: '🧩', label: 'Mini Apps', color: '#ec4899' },
   { id: 'pitch' as const, icon: '📋', label: 'Pitch Deck', color: '#f59e0b' },
   { id: 'student-help' as const, icon: '🎒', label: 'Student Guide', color: '#34d399' },
   { id: 'teacher-help' as const, icon: '📖', label: 'Teacher Guide', color: '#60a5fa' },
