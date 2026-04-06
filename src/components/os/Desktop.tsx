@@ -1,7 +1,27 @@
 'use client'
+import { useEffect, useState } from 'react'
 import { DesktopIcon } from './DesktopIcon'
 
+function getUserRole(): 'student' | 'teacher' | null {
+  try {
+    const stored = localStorage.getItem('lumina_user')
+    if (stored) {
+      const user = JSON.parse(stored)
+      return user.role ?? null
+    }
+  } catch {
+    return null
+  }
+  return null
+}
+
 export function Desktop({ children }: { children: React.ReactNode }) {
+  const [role, setRole] = useState<'student' | 'teacher' | null>(null)
+
+  useEffect(() => {
+    setRole(getUserRole())
+  }, [])
+
   return (
     <div
       className="fixed inset-0 overflow-hidden"
@@ -38,57 +58,38 @@ export function Desktop({ children }: { children: React.ReactNode }) {
         }}
       />
 
-      {/* Desktop icons area */}
+      {/* Desktop icons — role-based
+          Column 1 (x=0):   primary apps for the role
+          Column 2 (x=104): secondary apps (Pitch Deck, Showcase) for all roles
+      */}
       <div className="absolute top-12 left-6">
-        <DesktopIcon
-          id="questlearn"
-          icon="🎓"
-          label="QuestLearn"
-          defaultPosition={{ x: 0, y: 0 }}
-          accentColor="#f59e0b"
-        />
-        <DesktopIcon
-          id="teacher"
-          icon="📊"
-          label="Teacher Hub"
-          defaultPosition={{ x: 0, y: 104 }}
-          accentColor="#60a5fa"
-        />
-        <DesktopIcon
-          id="showcase"
-          icon="🎬"
-          label="Showcase"
-          defaultPosition={{ x: 0, y: 208 }}
-          accentColor="#a78bfa"
-        />
-        <DesktopIcon
-          id="student-dashboard"
-          icon="🏠"
-          label="My Dashboard"
-          defaultPosition={{ x: 0, y: 312 }}
-          accentColor="#34d399"
-        />
-        <DesktopIcon
-          id="pitch"
-          icon="📋"
-          label="Pitch Deck"
-          defaultPosition={{ x: 0, y: 416 }}
-          accentColor="#f59e0b"
-        />
-        <DesktopIcon
-          id="student-help"
-          icon="🎒"
-          label="Student Guide"
-          defaultPosition={{ x: 0, y: 520 }}
-          accentColor="#34d399"
-        />
-        <DesktopIcon
-          id="teacher-help"
-          icon="📖"
-          label="Teacher Guide"
-          defaultPosition={{ x: 0, y: 624 }}
-          accentColor="#60a5fa"
-        />
+
+        {/* ── STUDENT ── */}
+        {(role === 'student' || role === null) && (
+          <>
+            {/* Col 1 — primary */}
+            <DesktopIcon id="questlearn"       icon="🎓" label="QuestLearn"    defaultPosition={{ x: 0,   y: 0   }} accentColor="#f59e0b" />
+            <DesktopIcon id="student-dashboard" icon="🏠" label="My Dashboard" defaultPosition={{ x: 0,   y: 104 }} accentColor="#34d399" />
+            <DesktopIcon id="student-help"      icon="🎒" label="Student Guide" defaultPosition={{ x: 0,   y: 208 }} accentColor="#34d399" />
+            <DesktopIcon id="mini-apps"         icon="🧩" label="Mini Apps"     defaultPosition={{ x: 0,   y: 312 }} accentColor="#a78bfa" />
+            {/* Col 2 — secondary */}
+            <DesktopIcon id="pitch"             icon="📋" label="Pitch Deck"   defaultPosition={{ x: 104, y: 0   }} accentColor="#f59e0b" />
+            <DesktopIcon id="showcase"          icon="🎬" label="Showcase"     defaultPosition={{ x: 104, y: 104 }} accentColor="#a78bfa" />
+          </>
+        )}
+
+        {/* ── TEACHER ── */}
+        {role === 'teacher' && (
+          <>
+            {/* Col 1 — primary */}
+            <DesktopIcon id="teacher"      icon="📊" label="Teacher Hub"   defaultPosition={{ x: 0,   y: 0   }} accentColor="#60a5fa" />
+            <DesktopIcon id="teacher-help" icon="📖" label="Teacher Guide" defaultPosition={{ x: 0,   y: 104 }} accentColor="#60a5fa" />
+            {/* Col 2 — secondary */}
+            <DesktopIcon id="pitch"        icon="📋" label="Pitch Deck"    defaultPosition={{ x: 104, y: 0   }} accentColor="#f59e0b" />
+            <DesktopIcon id="showcase"     icon="🎬" label="Showcase"      defaultPosition={{ x: 104, y: 104 }} accentColor="#a78bfa" />
+          </>
+        )}
+
       </div>
 
       {/* Windows layer */}
