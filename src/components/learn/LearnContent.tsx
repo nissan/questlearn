@@ -242,13 +242,28 @@ export function LearnContent() {
       <div className="grid grid-cols-1 md:grid-cols-2" style={{height: 'calc(100vh - var(--banner-offset, 57px))'}}>
         {/* Left: content card */}
         <div className="border-r overflow-auto">
-          <div className="flex gap-2 flex-wrap p-4 pb-2">
-            {FORMATS.map(f => (
-              <button key={f.id} onClick={() => setFormat(f.id)}
-                className={`text-xs px-3 py-1.5 rounded-full border transition-all ${format === f.id ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}>
-                {f.icon} {f.label}
-              </button>
-            ))}
+          <div className="p-4 pb-2 space-y-3">
+            {/* Primary formats - always visible, no scroll */}
+            <div className="flex gap-2 flex-wrap">
+              {FORMATS.filter(f => f.tier === 'primary').map(f => (
+                <button key={f.id} onClick={() => setFormat(f.id)}
+                  className={`text-sm px-4 py-2 rounded-full border font-medium transition-all ${format === f.id ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-foreground'}`}>
+                  {f.icon} {f.label}
+                </button>
+              ))}
+            </div>
+            {/* Secondary formats - smaller, with "Coming Soon" note */}
+            <div className="border-t pt-2">
+              <p className="text-xs text-muted-foreground mb-2 font-medium">Coming Soon</p>
+              <div className="flex gap-1.5 flex-wrap">
+                {FORMATS.filter(f => f.tier === 'secondary').map(f => (
+                  <button key={f.id} disabled
+                    className="text-xs px-2 py-1 rounded-full border border-dashed border-muted-foreground/30 text-muted-foreground opacity-50 cursor-not-allowed">
+                    {f.icon} {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
           {format === 'meme' && !loadingContent && content ? (
             <div className="px-4 pb-4 space-y-3">
