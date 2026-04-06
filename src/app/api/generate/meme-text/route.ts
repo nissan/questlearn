@@ -22,12 +22,17 @@ export async function POST(req: NextRequest) {
     const topicMemes = memeLibrary[normalizedTopic as keyof typeof memeLibrary];
 
     if (!topicMemes || topicMemes.length === 0) {
-      // Fallback to generic meme if topic not in library
+      // Fallback: pick a random meme from the full library pool so we always
+      // return a real imageUrl (templateId 'drake' is not a valid numeric ID
+      // in MEME_TEMPLATES, and omitting imageUrl leaves MemeCard with no image).
+      const allMemes = Object.values(memeLibrary).flat();
+      const fallbackMeme = allMemes[Math.floor(Math.random() * allMemes.length)];
       return NextResponse.json({
-        templateId: 'drake',
+        templateId: fallbackMeme.template,
         topText: `Understanding ${topic}`,
-        bottomText: 'Like a boss',
-        source: 'Fallback Drake meme'
+        bottomText: fallbackMeme.bottomText,
+        imageUrl: fallbackMeme.imageUrl,
+        source: fallbackMeme.source
       });
     }
 
