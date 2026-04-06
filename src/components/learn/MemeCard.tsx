@@ -9,9 +9,10 @@ interface MemeCardProps {
   template: MemeTemplate | null;
   topic: string;
   isLoading?: boolean;
+  imageUrl?: string;
 }
 
-export function MemeCard({ topText, bottomText, template, topic, isLoading }: MemeCardProps) {
+export function MemeCard({ topText, bottomText, template, topic, isLoading, imageUrl }: MemeCardProps) {
   const [copied, setCopied] = useState(false);
 
   function handleShare() {
@@ -38,7 +39,13 @@ export function MemeCard({ topText, bottomText, template, topic, isLoading }: Me
   return (
     <div className="flex flex-col gap-2">
       <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-gray-900 shadow-2xl">
-        {template ? (
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={`Meme about ${topic}`}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : template ? (
           <img
             src={template.file}
             alt={`${template.name} — meme about ${topic}`}
@@ -60,7 +67,7 @@ export function MemeCard({ topText, bottomText, template, topic, isLoading }: Me
           </p>
         </div>
       </div>
-      {template && (
+      {(template || imageUrl) && (
         <Button variant="outline" size="sm" onClick={handleShare}>
           {copied ? '✅ Copied!' : '🔗 Share meme'}
         </Button>

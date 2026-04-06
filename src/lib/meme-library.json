@@ -1,0 +1,206 @@
+{
+  "photosynthesis": [
+    {
+      "id": "photo_1",
+      "template": "drake",
+      "topText": "Respiration",
+      "bottomText": "Photosynthesis",
+      "imageUrl": "https://i.imgflip.com/1ur9b0.jpg",
+      "source": "Drake meme"
+    },
+    {
+      "id": "photo_2",
+      "template": "confused_math_lady",
+      "topText": "Me trying to understand photosynthesis",
+      "bottomText": "My brain: 🤷",
+      "imageUrl": "https://i.imgflip.com/1tsjbo.jpg",
+      "source": "Woman yelling at cat"
+    },
+    {
+      "id": "photo_3",
+      "template": "surprised_pikachu",
+      "topText": "Thinks photosynthesis is complicated",
+      "bottomText": "Realises it's literally just: sun + water = food",
+      "imageUrl": "https://i.imgflip.com/36y55q.jpg",
+      "source": "Surprised Pikachu"
+    }
+  ],
+  "newtons_laws": [
+    {
+      "id": "newton_1",
+      "template": "drake",
+      "topText": "Something stays moving without force",
+      "bottomText": "Newton: Actually, friction exists",
+      "imageUrl": "https://i.imgflip.com/1ur9b0.jpg",
+      "source": "Drake meme"
+    },
+    {
+      "id": "newton_2",
+      "template": "this_is_fine",
+      "topText": "Learning Newton's Laws",
+      "bottomText": "Everything suddenly makes sense",
+      "imageUrl": "https://i.imgflip.com/1bkmf4.jpg",
+      "source": "This is fine dog"
+    },
+    {
+      "id": "newton_3",
+      "template": "expanding_brain",
+      "topText": "Force = mass × acceleration",
+      "bottomText": "I finally understand physics",
+      "imageUrl": "https://i.imgflip.com/3ohzv4.jpg",
+      "source": "Expanding brain"
+    }
+  ],
+  "french_conjugation": [
+    {
+      "id": "french_1",
+      "template": "confused_math_lady",
+      "topText": "Memorizing je/tu/il/elle conjugations",
+      "bottomText": "Forgetting them 5 seconds later",
+      "imageUrl": "https://i.imgflip.com/1tsjbo.jpg",
+      "source": "Woman yelling at cat"
+    },
+    {
+      "id": "french_2",
+      "template": "distracted_boyfriend",
+      "topText": "Teacher: Learn French verbs | Me: Looking at something else",
+      "bottomText": "",
+      "imageUrl": "https://i.imgflip.com/1ur9b0.jpg",
+      "source": "Distracted boyfriend"
+    },
+    {
+      "id": "french_3",
+      "template": "drake",
+      "topText": "Remembering the conjugation",
+      "bottomText": "Actually using it in a sentence",
+      "imageUrl": "https://i.imgflip.com/1ur9b0.jpg",
+      "source": "Drake meme"
+    }
+  ],
+  "mitochondria": [
+    {
+      "id": "mito_1",
+      "template": "drake",
+      "topText": "Powerhouse of the cell",
+      "bottomText": "Actually understanding what that means",
+      "imageUrl": "https://i.imgflip.com/1ur9b0.jpg",
+      "source": "Drake meme"
+    },
+    {
+      "id": "mito_2",
+      "template": "surprised_pikachu",
+      "topText": "Every biology teacher: The mitochondria is the powerhouse of the cell",
+      "bottomText": "Me: But what does it actually DO??",
+      "imageUrl": "https://i.imgflip.com/36y55q.jpg",
+      "source": "Surprised Pikachu"
+    }
+  ],
+  "gravity": [
+    {
+      "id": "gravity_1",
+      "template": "surprised_pikachu",
+      "topText": "Gravity pulls things down",
+      "bottomText": "Wait, what about things in space??",
+      "imageUrl": "https://i.imgflip.com/36y55q.jpg",
+      "source": "Surprised Pikachu"
+    },
+    {
+      "id": "gravity_2",
+      "template": "drake",
+      "topText": "Thinking gravity only works on Earth",
+      "bottomText": "Gravity literally holds galaxies together",
+      "imageUrl": "https://i.imgflip.com/1ur9b0.jpg",
+      "source": "Drake meme"
+    }
+  ],
+  "algebra": [
+    {
+      "id": "algebra_1",
+      "template": "confused_math_lady",
+      "topText": "Solving for X",
+      "bottomText": "X could be literally anything",
+      "imageUrl": "https://i.imgflip.com/1tsjbo.jpg",
+      "source": "Woman yelling at cat"
+    },
+    {
+      "id": "algebra_2",
+      "template": "drake",
+      "topText": "Using letters in English",
+      "bottomText": "Using letters in maths",
+      "imageUrl": "https://i.imgflip.com/1ur9b0.jpg",
+      "source": "Drake meme"
+    },
+    {
+      "id": "algebra_3",
+      "template": "expanding_brain",
+      "topText": "2 + 2 = 4",
+      "bottomText": "x + y = z (and x could be 🍕)",
+      "imageUrl": "https://i.imgflip.com/3ohzv4.jpg",
+      "source": "Expanding brain"
+    }
+  ],
+  "cell_division": [
+    {
+      "id": "cell_1",
+      "template": "drake",
+      "topText": "One cell doing its thing",
+      "bottomText": "One cell becoming two cells (mitosis speedrun)",
+      "imageUrl": "https://i.imgflip.com/1ur9b0.jpg",
+      "source": "Drake meme"
+    },
+    {
+      "id": "cell_2",
+      "template": "expanding_brain",
+      "topText": "Cells divide",
+      "bottomText": "But dividing makes MORE cells??? Math is broken",
+      "imageUrl": "https://i.imgflip.com/3ohzv4.jpg",
+      "source": "Expanding brain"
+    }
+  ],
+  "world_war_2": [
+    {
+      "id": "ww2_1",
+      "template": "drake",
+      "topText": "Reading the textbook about WW2",
+      "bottomText": "Watching one YouTube video and suddenly an expert",
+      "imageUrl": "https://i.imgflip.com/1ur9b0.jpg",
+      "source": "Drake meme"
+    }
+  ],
+  "climate_change": [
+    {
+      "id": "climate_1",
+      "template": "this_is_fine",
+      "topText": "The planet is literally on fire",
+      "bottomText": "Scientists: We have been saying this for 50 years",
+      "imageUrl": "https://i.imgflip.com/1bkmf4.jpg",
+      "source": "This is fine dog"
+    },
+    {
+      "id": "climate_2",
+      "template": "surprised_pikachu",
+      "topText": "Humans burning fossil fuels for 200 years",
+      "bottomText": "The climate changed??",
+      "imageUrl": "https://i.imgflip.com/36y55q.jpg",
+      "source": "Surprised Pikachu"
+    }
+  ],
+  "fractions": [
+    {
+      "id": "fraction_1",
+      "template": "confused_math_lady",
+      "topText": "1/2 + 1/3",
+      "bottomText": "It's NOT 2/5. It's NEVER 2/5.",
+      "imageUrl": "https://i.imgflip.com/1tsjbo.jpg",
+      "source": "Woman yelling at cat"
+    },
+    {
+      "id": "fraction_2",
+      "template": "drake",
+      "topText": "Adding the numerators AND denominators",
+      "bottomText": "Finding a common denominator like an adult",
+      "imageUrl": "https://i.imgflip.com/1ur9b0.jpg",
+      "source": "Drake meme"
+    }
+  ]
+}
