@@ -20,7 +20,7 @@ import { MEME_TEMPLATES } from '@/lib/meme-templates';
 import type { MemeTemplate } from '@/lib/meme-templates';
 
 // Cogniti AI tutor URL — key loaded server-side; this is just the public embed URL
-const COGNITI_URL = process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ?? 'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat';
+const COGNITI_URL = process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ?? 'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat?k=_dJhhHwkvb2wLQdZAKlCSzp45MjspMhjK9ZCsCNqlh4';
 
 type TutorMode = 'curricullm' | 'cogniti' | 'both';
 
@@ -208,20 +208,30 @@ export function LearnContent() {
     </>
   );
 
-  /** Shared inner content for the Cogniti AI Tutor pane */
+  /** Cogniti AI Tutor — opens in popup (Google OAuth blocked in iframes) */
   const cognitiInner = (
     <>
       <div className="px-4 py-3 border-b">
         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Cogniti AI Tutor</p>
         <p className="text-xs text-muted-foreground">Ask Cogniti anything about this topic</p>
       </div>
-      <div className="flex-1 relative">
-        <iframe
-          src={COGNITI_URL}
-          className="absolute inset-0 w-full h-full border-0"
-          allow="microphone; camera"
-          title="Cogniti AI Tutor"
-        />
+      <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6 text-center">
+        <span className="text-5xl">🤖</span>
+        <div>
+          <p className="text-sm font-medium mb-1">Cogniti AI Tutor</p>
+          <p className="text-xs text-muted-foreground max-w-[220px]">
+            Opens in a new window — sign in once with Google, then chat freely.
+          </p>
+        </div>
+        <button
+          onClick={() => window.open(COGNITI_URL, 'cogniti-tutor', 'width=480,height=700,left=100,top=100')}
+          className="px-4 py-2 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+        >
+          Open Cogniti Tutor →
+        </button>
+        <p className="text-xs text-muted-foreground opacity-60">
+          Tip: Sign in once and the window stays open for the session.
+        </p>
       </div>
     </>
   );
@@ -376,13 +386,6 @@ export function LearnContent() {
                   className={`text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'cogniti' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
                 >
                   Cogniti
-                </button>
-                {/* "Both" button hidden on mobile */}
-                <button
-                  onClick={() => setTutorMode('both')}
-                  className={`hidden md:inline-flex text-xs px-3 py-1 rounded-full border transition-all ${tutorMode === 'both' ? 'bg-primary text-primary-foreground border-primary' : 'border-border hover:border-primary/50 text-muted-foreground'}`}
-                >
-                  Both
                 </button>
               </div>
 
