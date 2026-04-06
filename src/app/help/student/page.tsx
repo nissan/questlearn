@@ -71,11 +71,14 @@ export default function StudentHelpPage() {
           </p>
           <img src="/format-selector.png" alt="Format selector screen" style={{ width: '100%', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', marginBottom: '1.5rem' }} />
           {[
-            { label: 'Quiz', text: "QuestLearn fires questions at you and you have to pull answers from memory. That retrieval effort is the whole point: forcing your brain to remember something strengthens the memory far more than re-reading ever could. Hard? Yes. Worth it? Absolutely." },
-            { label: 'Flashcard', text: "Cards space themselves out so you revisit things just before you'd forget them. It feels almost too simple, but spaced repetition is one of the most researched study techniques out there." },
-            { label: 'Story', text: "Your topic becomes a narrative. When information is embedded in a story with context, characters, and consequences, your brain files it differently — and finds it more easily later. Good for topics that have cause and effect." },
             { label: 'Meme', text: "Sounds like a joke, but it isn't. Compressing a concept into a meme forces you to understand it well enough to explain it in a few words. If you can make it funny, you really get it." },
-            { label: 'Debate', text: "You're asked to argue a position, then defend it. Having to construct an argument deepens your understanding of a topic in ways that passively reading about it simply doesn't." },
+            { label: 'Game', text: "Your topic becomes a playable scenario. Learning through decisions and consequences is surprisingly sticky — especially when the stakes are fictional but the ideas are real." },
+            { label: 'Story', text: "Your topic becomes a narrative. When information is embedded in a story with context, characters, and consequences, your brain files it differently — and finds it more easily later. Good for topics with cause and effect." },
+            { label: 'Puzzle', text: "You solve your way to understanding. Reconstructing the pieces of a concept forces active engagement in a way that passively reading about it never does." },
+            { label: 'Short Film', text: "Your topic becomes a cinematic micro-scene. Visual storytelling helps you see ideas in action — great for historical events, scientific processes, or anything with drama." },
+            { label: 'Flashcards', text: "AI-powered cards test your recall and adapt to how you're going. After 3 attempts, you see the answer — so you always move forward, and the AI tracks your confidence and accuracy over time." },
+            { label: 'Concept Map', text: "You build a visual web of connected ideas. Seeing how concepts link to each other is one of the best ways to check whether you actually understand a topic — or just recognise it." },
+            { label: 'Debate', text: "You're asked to argue a position, then defend it against the AI. Having to construct an argument deepens your understanding of a topic in ways that passively reading about it simply doesn't." },
           ].map(({ label, text }) => (
             <div key={label} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '10px', padding: '1rem 1.25rem', marginBottom: '0.75rem' }}>
               <span style={{ color: '#f59e0b', fontWeight: 600, fontSize: '0.9375rem' }}>{label}</span>
@@ -108,6 +111,9 @@ export default function StudentHelpPage() {
             <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '2.25rem', height: '2.25rem', borderRadius: '50%', background: 'rgba(245,158,11,0.15)', color: '#f59e0b', fontWeight: 700, fontSize: '1rem', flexShrink: 0 }}>5</span>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#f59e0b', margin: 0 }}>Your Progress</h2>
           </div>
+          <p style={{ fontSize: '0.9375rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.85)', marginBottom: '1rem' }}>
+            QuestLearn tracks your <strong style={{ color: '#f59e0b' }}>confidence</strong> — not grades. After Flashcard sessions, you rate how well you felt you knew each card, and the AI keeps a running picture of where you&apos;re strong and where you need more practice. No points, no leaderboards. Just honest signal about where you actually are.
+          </p>
           <p style={{ fontSize: '0.9375rem', lineHeight: 1.75, color: 'rgba(255,255,255,0.85)' }}>
             As you work through sessions, your teacher gets a picture of how the class is engaging overall — which topics are being explored, how often, and with what energy. They won&apos;t see your individual answers or what you typed. It&apos;s about patterns, not surveillance.
           </p>

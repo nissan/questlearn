@@ -2,6 +2,19 @@
 import { useEffect, useState } from 'react'
 import { WindowId, useWindowManager } from './WindowManager'
 
+function getUserRole(): 'student' | 'teacher' | null {
+  try {
+    const stored = localStorage.getItem('lumina_user')
+    if (stored) {
+      const user = JSON.parse(stored)
+      return user.role ?? null
+    }
+  } catch {
+    return null
+  }
+  return null
+}
+
 const LAUNCHER_APPS = [
   // Live
   {
@@ -104,6 +117,11 @@ export function AppLauncher() {
   const setLauncher = useWindowManager((s) => s.setLauncher)
   const openWindow = useWindowManager((s) => s.openWindow)
   const [query, setQuery] = useState('')
+  const [role, setRole] = useState<'student' | 'teacher' | null>(null)
+
+  useEffect(() => {
+    setRole(getUserRole())
+  }, [launcherOpen])
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -115,7 +133,22 @@ export function AppLauncher() {
 
   if (!launcherOpen) return null
 
-  const filteredApps = LAUNCHER_APPS.filter(
+  const roleFilteredApps = LAUNCHER_APPS.filter((app) => {
+    // Non-live apps (v2/v3) always show as "Coming soon"
+    if (app.status !== 'live') return true
+    if (role === 'student') {
+      const studentApps = ['questlearn', 'student-dashboard', 'student-help', 'mini-apps', 'pitch']
+      return studentApps.includes(app.id)
+    }
+    if (role === 'teacher') {
+      const teacherApps = ['teacher', 'teacher-help', 'pitch']
+      return teacherApps.includes(app.id)
+    }
+    // No role detected — show all
+    return true
+  })
+
+  const filteredApps = roleFilteredApps.filter(
     (app) =>
       app.label.toLowerCase().includes(query.toLowerCase()) ||
       app.desc.toLowerCase().includes(query.toLowerCase())
