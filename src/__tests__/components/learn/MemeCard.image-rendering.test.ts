@@ -9,7 +9,7 @@ describe('MemeCard Image Rendering — Critical Regression', () => {
   describe('1. API response includes imageUrl', () => {
     it('meme library response has imageUrl field', () => {
       const apiResponse = {
-        imageUrl: 'https://i.imgflip.com/1ur9b0.jpg',
+        imageUrl: '/images/memes/drake.jpg',
         topText: 'When you understand photosynthesis',
         bottomText: 'But forget where it happens',
         templateId: 'drake',
@@ -19,9 +19,9 @@ describe('MemeCard Image Rendering — Critical Regression', () => {
       expect(apiResponse.imageUrl).not.toBe('');
     });
 
-    it('imageUrl is a valid imgflip URL', () => {
-      const imageUrl = 'https://i.imgflip.com/1ur9b0.jpg';
-      expect(imageUrl).toMatch(/^https:\/\/i\.imgflip\.com\//);
+    it('imageUrl is a valid local image path', () => {
+      const imageUrl = '/images/memes/drake.jpg';
+      expect(imageUrl).toMatch(/^\/images\/memes\//);
     });
 
     it('meme library photosynthesis entries have imageUrl', async () => {
@@ -54,7 +54,7 @@ describe('MemeCard Image Rendering — Critical Regression', () => {
       const memeData = {
         topText: 'top',
         bottomText: 'bottom',
-        imageUrl: 'https://i.imgflip.com/1ur9b0.jpg',
+        imageUrl: '/images/memes/drake.jpg',
         templateId: 'drake',
       };
       // Old bug: only checked templateId+topText+bottomText — never read imageUrl
@@ -63,7 +63,7 @@ describe('MemeCard Image Rendering — Critical Regression', () => {
       if (memeData.topText && memeData.bottomText) {
         if (memeData.imageUrl) memeImageUrl = memeData.imageUrl;
       }
-      expect(memeImageUrl).toBe('https://i.imgflip.com/1ur9b0.jpg');
+      expect(memeImageUrl).toBe('/images/memes/drake.jpg');
     });
 
     it('missing imageUrl in memeData does NOT set memeImageUrl (stays null)', () => {
@@ -85,20 +85,20 @@ describe('MemeCard Image Rendering — Critical Regression', () => {
     it('MemeCard receives imageUrl as prop', () => {
       // Verifies prop interface accepts imageUrl
       const props: { imageUrl?: string; topText: string; bottomText: string; template: null; topic: string } = {
-        imageUrl: 'https://i.imgflip.com/1ur9b0.jpg',
+        imageUrl: '/images/memes/drake.jpg',
         topText: 'When you',
         bottomText: 'understand',
         template: null,
         topic: 'photosynthesis',
       };
       expect(props.imageUrl).toBeTruthy();
-      expect(props.imageUrl).toMatch(/^https:\/\/i\.imgflip\.com\//);
+      expect(props.imageUrl).toMatch(/^\/images\/memes\//);
     });
   });
 
   describe('3. Component renders img tag with imageUrl', () => {
     it('when imageUrl present, <img> should be rendered (not gradient)', () => {
-      const imageUrl = 'https://i.imgflip.com/1ur9b0.jpg';
+      const imageUrl = '/images/memes/drake.jpg';
       const template = null;
       // MemeCard conditional: if imageUrl → img; else if template → img; else → div
       const shouldRenderImg = !!imageUrl;
@@ -106,22 +106,22 @@ describe('MemeCard Image Rendering — Critical Regression', () => {
     });
 
     it('img src is set to imageUrl (not template.file)', () => {
-      const imageUrl = 'https://i.imgflip.com/1ur9b0.jpg';
+      const imageUrl = '/images/memes/drake.jpg';
       const template = { file: '/memes/181913649.jpg' };
       // When imageUrl is present, img.src = imageUrl (takes precedence over template)
       const imgSrc = imageUrl ?? template.file;
-      expect(imgSrc).toBe('https://i.imgflip.com/1ur9b0.jpg');
+      expect(imgSrc).toBe('/images/memes/drake.jpg');
       expect(imgSrc).not.toBe('/memes/181913649.jpg');
     });
 
     it('img src is NOT an empty string when imageUrl is valid', () => {
-      const imageUrl = 'https://i.imgflip.com/1ur9b0.jpg';
+      const imageUrl = '/images/memes/drake.jpg';
       expect(imageUrl.trim().length).toBeGreaterThan(0);
     });
 
-    it('img src matches valid imgflip URL pattern', () => {
-      const imageUrl = 'https://i.imgflip.com/1ur9b0.jpg';
-      expect(imageUrl).toMatch(/^https:\/\/i\.imgflip\.com\/[a-zA-Z0-9]+\.(jpg|png|gif)$/);
+    it('img src matches valid local image path pattern', () => {
+      const imageUrl = '/images/memes/drake.jpg';
+      expect(imageUrl).toMatch(/^\/images\/memes\/[a-zA-Z0-9-]+\.(jpg|png|gif)$/);
     });
   });
 
@@ -147,7 +147,7 @@ describe('MemeCard Image Rendering — Critical Regression', () => {
 
   describe('5. Text overlay works alongside image', () => {
     it('topText and bottomText render on top of image', () => {
-      const imageUrl = 'https://i.imgflip.com/1ur9b0.jpg';
+      const imageUrl = '/images/memes/drake.jpg';
       const topText = 'When you understand photosynthesis';
       const bottomText = 'But forget where it happens';
       expect(imageUrl).toBeTruthy();
@@ -179,21 +179,20 @@ describe('MemeCard Image Rendering — Critical Regression', () => {
     });
   });
 
-  describe('7. Next.js config allows imgflip.com images', async () => {
-    it('next.config.ts img-src CSP header allows https: sources', async () => {
+  describe('7. Next.js config serves local meme images', async () => {
+    it('next.config.ts img-src CSP header allows self: sources', async () => {
       const fs = await import('fs/promises');
       const config = await fs.readFile('/Users/loki/projects/questlearn/next.config.ts', 'utf-8');
-      // CSP header should allow img-src from https: or specifically imgflip
-      expect(config).toMatch(/img-src.*https:/);
+      // CSP header should allow img-src (local images served directly)
+      expect(config).toMatch(/img-src/);
     });
 
-    it('no domains restriction blocking i.imgflip.com', async () => {
+    it('local meme images exist in public/images/memes/', async () => {
       const fs = await import('fs/promises');
-      const config = await fs.readFile('/Users/loki/projects/questlearn/next.config.ts', 'utf-8');
-      // Using plain <img> (not Next.js <Image>), so no remotePatterns needed
-      // Confirm: no `remotePatterns` that would EXCLUDE imgflip
-      // (absence of restrictive list is fine)
-      expect(typeof config).toBe('string');
+      // Local images in /public/images/memes/ are served directly by Next.js
+      const files = await fs.readdir('/Users/loki/projects/questlearn/public/images/memes');
+      expect(files.length).toBeGreaterThan(0);
+      expect(files.some((f: string) => f.endsWith('.jpg') || f.endsWith('.png'))).toBe(true);
     });
   });
 });
