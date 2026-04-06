@@ -12,9 +12,9 @@ export interface SocraticFollowUpResponse {
 }
 
 const SOCRATIC_FOLLOWUPS = [
-  "Interesting — you mentioned energy. Can you be more specific about what form that energy takes, and how it gets stored?",
-  "You're on the right track. Now think about it from the subject's perspective: why would it need this process? What does it actually use it for?",
-  "Good thinking. One more push: what would happen to everything that depends on this if the process stopped? Walk me through the chain of effects.",
+  "Right. What form though — is it like electricity, heat, or something else?",
+  "Yeah, good. So why would it need that process — like what does it actually get out of it?",
+  "Exactly. What do you reckon would break down first if that stopped happening?",
 ];
 
 export function generateStubContent(topic: string, format: string): CurricuLLMResponse {
