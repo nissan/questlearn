@@ -11,16 +11,16 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { StubBadge } from '@/components/StubBadge';
 import { FORMATS } from '@/lib/formats';
 import { QuestBanner } from '@/components/learn/QuestBanner';
-import { CognitiFlashcards } from '@/components/learn/CognitiFlashcards';
-import { CognitiConceptMap } from '@/components/learn/CognitiConceptMap';
+import { Flashcards } from '@/components/interactive/Flashcards';
+import { ConceptMap } from '@/components/interactive/ConceptMap';
+import { Debate } from '@/components/interactive/Debate';
 import { MemeCard } from '@/components/learn/MemeCard';
 import { pickMemeTemplate } from '@/lib/pick-meme-template';
 import { MEME_TEMPLATES } from '@/lib/meme-templates';
 import type { MemeTemplate } from '@/lib/meme-templates';
 
-const COGNITI_URL =
-  process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ??
-  'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat?k=_dJhhHwkvb2wLQdZAKlCSzp45MjspMhjK9ZCsCNqlh4';
+// Cogniti AI tutor URL — key loaded server-side; this is just the public embed URL
+const COGNITI_URL = process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ?? 'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat';
 
 type TutorMode = 'curricullm' | 'cogniti' | 'both';
 
@@ -270,7 +270,7 @@ export function LearnContent() {
               <CardContent className="pt-6 pb-6 flex flex-col items-center justify-center text-center gap-3">
                 <span className="text-4xl">🃏</span>
                 <p className="text-sm font-medium">Flashcard Mode</p>
-                <p className="text-xs text-muted-foreground">Your topic is loaded in the Cogniti panel →</p>
+                <p className="text-xs text-muted-foreground">Flashcards loaded in the panel →</p>
               </CardContent>
             </Card></div>
           ) : format === 'concept_map' ? (
@@ -278,7 +278,15 @@ export function LearnContent() {
               <CardContent className="pt-6 pb-6 flex flex-col items-center justify-center text-center gap-3">
                 <span className="text-4xl">🗺️</span>
                 <p className="text-sm font-medium">Concept Map Mode</p>
-                <p className="text-xs text-muted-foreground">Build your concept map in the Cogniti panel →</p>
+                <p className="text-xs text-muted-foreground">Build your concept map in the panel →</p>
+              </CardContent>
+            </Card></div>
+          ) : format === 'debate' ? (
+            <div className="px-4 pb-4"><Card className="border-2 border-dashed border-purple-500/40 bg-purple-500/5">
+              <CardContent className="pt-6 pb-6 flex flex-col items-center justify-center text-center gap-3">
+                <span className="text-4xl">⚖️</span>
+                <p className="text-sm font-medium">Debate Mode</p>
+                <p className="text-xs text-muted-foreground">Your debate is loaded in the panel →</p>
               </CardContent>
             </Card></div>
           ) : format === 'meme' && loadingContent ? (
@@ -316,22 +324,29 @@ export function LearnContent() {
 
         {/* Right: tutor panel */}
         <div className="flex flex-col h-full overflow-hidden">
-          {/* Flashcards format: full-panel Cogniti embed */}
+          {/* Flashcards format: full-panel native app */}
           {format === 'flashcards' && (
             <div className="flex flex-col flex-1 min-h-0">
-              <CognitiFlashcards topic={topic} />
+              <Flashcards topic={topic} />
             </div>
           )}
 
-          {/* Concept Map format: full-panel Cogniti embed */}
+          {/* Concept Map format: full-panel native app */}
           {format === 'concept_map' && (
             <div className="flex flex-col flex-1 min-h-0">
-              <CognitiConceptMap topic={topic} />
+              <ConceptMap topic={topic} />
             </div>
           )}
 
-          {/* Standard tutor modes — hidden when flashcards or concept_map active */}
-          {format !== 'flashcards' && format !== 'concept_map' && (
+          {/* Debate format: full-panel native app */}
+          {format === 'debate' && (
+            <div className="flex flex-col flex-1 min-h-0">
+              <Debate topic={topic} />
+            </div>
+          )}
+
+          {/* Standard tutor modes — hidden when flashcards, concept_map, or debate active */}
+          {format !== 'flashcards' && format !== 'concept_map' && format !== 'debate' && (
             <>
               <div className="px-4 py-2 border-b flex items-center gap-2 shrink-0">
                 <span className="text-xs text-muted-foreground mr-1">Tutor:</span>
