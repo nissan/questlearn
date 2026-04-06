@@ -1,7 +1,7 @@
 'use client'
 import { create } from 'zustand'
 
-export type WindowId = 'questlearn' | 'teacher' | 'showcase' | 'student-dashboard' | 'pitch' | 'student-help' | 'teacher-help' | 'mini-apps'
+export type WindowId = 'questlearn' | 'teacher' | 'showcase' | 'student-dashboard' | 'pitch' | 'student-help' | 'teacher-help' | 'mini-apps' | 'demo-assets' | 'judge-cheatsheet' | 'demo-script' | 'value-prop' | 'student-journey' | 'judge-faq' | 'backup-demo'
 
 export interface WindowState {
   id: WindowId
@@ -108,6 +108,76 @@ const INITIAL_WINDOWS: WindowState[] = [
     zIndex: 10,
     position: { x: 100, y: 40 },
     size: { width: 900, height: 640 },
+  },
+  {
+    id: 'demo-assets',
+    title: 'Demo Assets',
+    src: '/demo-assets',
+    open: false,
+    minimised: false,
+    zIndex: 10,
+    position: { x: 120, y: 256 },
+    size: { width: 900, height: 640 },
+  },
+  {
+    id: 'judge-cheatsheet',
+    title: 'The QuestLearn Story',
+    src: '/judge-cheatsheet',
+    open: false,
+    minimised: false,
+    zIndex: 10,
+    position: { x: 200, y: 120 },
+    size: { width: 920, height: 680 },
+  },
+  {
+    id: 'demo-script',
+    title: 'Demo Guide',
+    src: '/demo-script',
+    open: false,
+    minimised: false,
+    zIndex: 10,
+    position: { x: 180, y: 100 },
+    size: { width: 1000, height: 700 },
+  },
+  {
+    id: 'value-prop',
+    title: 'Why QuestLearn',
+    src: '/value-prop',
+    open: false,
+    minimised: false,
+    zIndex: 10,
+    position: { x: 160, y: 140 },
+    size: { width: 920, height: 680 },
+  },
+  {
+    id: 'student-journey',
+    title: 'Student Journey',
+    src: '/student-journey',
+    open: false,
+    minimised: false,
+    zIndex: 10,
+    position: { x: 140, y: 160 },
+    size: { width: 1000, height: 700 },
+  },
+  {
+    id: 'judge-faq',
+    title: 'Judge FAQ',
+    src: '/judge-faq',
+    open: false,
+    minimised: false,
+    zIndex: 10,
+    position: { x: 220, y: 110 },
+    size: { width: 920, height: 720 },
+  },
+  {
+    id: 'backup-demo',
+    title: 'Backup Demo',
+    src: '/backup-demo',
+    open: false,
+    minimised: false,
+    zIndex: 10,
+    position: { x: 210, y: 130 },
+    size: { width: 900, height: 650 },
   },
 ]
 
