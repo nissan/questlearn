@@ -38,7 +38,7 @@ export function MemeCard({ topText, bottomText, template, topic, isLoading, imag
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-gray-900 shadow-2xl">
+      <div className="relative w-full rounded-xl overflow-hidden bg-gray-900 shadow-2xl" style={{ maxHeight: '280px', aspectRatio: '1/1' }}>
         {imageUrl ? (
           <img
             src={imageUrl}
