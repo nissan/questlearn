@@ -63,8 +63,8 @@ const LAUNCHER_APPS = [
     id: 'mini-apps',
     icon: '🧩',
     label: 'Mini Apps',
-    desc: 'Cogniti interactive learning modules',
-    status: 'live' as const,
+    desc: 'Direct Cogniti embeds (integration pending)',
+    status: 'v2' as const,
   },
   // v2
   {
@@ -137,7 +137,7 @@ export function AppLauncher() {
     // Non-live apps (v2/v3) always show as "Coming soon"
     if (app.status !== 'live') return true
     if (role === 'student') {
-      const studentApps = ['questlearn', 'student-dashboard', 'student-help', 'mini-apps', 'pitch']
+      const studentApps = ['questlearn', 'student-dashboard', 'student-help', 'pitch']
       return studentApps.includes(app.id)
     }
     if (role === 'teacher') {

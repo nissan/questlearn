@@ -1,27 +1,11 @@
 'use client'
 import { useState, useEffect } from 'react'
 
-type MobileView = 'home' | 'learn' | 'teacher' | 'mini-apps'
+type MobileView = 'home' | 'learn' | 'teacher'
 
 const MOBILE_APPS = [
   { id: 'questlearn', icon: '🎓', label: 'QuestLearn', view: 'learn' as MobileView },
   { id: 'teacher', icon: '📊', label: 'Teacher Hub', view: 'teacher' as MobileView },
-  { id: 'mini-apps', icon: '🧩', label: 'Mini Apps', view: 'mini-apps' as MobileView },
-]
-
-const MINI_APPS = [
-  {
-    id: 'socratic-tutor',
-    title: 'QuestLearn Socratic Tutor',
-    src: 'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat?k=_dJhhHwkvb2wLQdZAKlCSzp45MjspMhjK9ZCsCNqlh4',
-    icon: '🎓',
-  },
-  {
-    id: 'concept-map',
-    title: 'Concept Map Mini App',
-    src: 'https://app.cogniti.ai/interactives/69d0609388709ae18201f7d4/run',
-    icon: '🗺️',
-  },
 ]
 
 export function MobileLauncher() {
@@ -106,65 +90,6 @@ export function MobileLauncher() {
     )
   }
 
-  if (activeView === 'mini-apps') {
-    return (
-      <div className="fixed inset-0 z-50 flex flex-col" style={{ background: '#0f172a' }}>
-        <div
-          className="flex items-center gap-3 px-4 py-3 shrink-0"
-          style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}
-        >
-          <button
-            onClick={() => setActiveView('home')}
-            className="text-amber-400 text-sm font-medium"
-          >
-            ← Home
-          </button>
-          <span className="text-white font-medium">Mini Apps</span>
-        </div>
-        <div className="flex-1 overflow-y-auto" style={{ padding: '12px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '12px' }}>
-            {MINI_APPS.map((app) => (
-              <div
-                key={app.id}
-                className="flex flex-col overflow-hidden rounded-lg transition-all"
-                style={{
-                  minHeight: '320px',
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                }}
-              >
-                {/* Card title bar */}
-                <div
-                  className="flex items-center gap-2 px-3 py-2 shrink-0"
-                  style={{
-                    background: '#111827',
-                    borderBottom: '1px solid rgba(255,255,255,0.06)',
-                  }}
-                >
-                  <span className="text-base">{app.icon}</span>
-                  <span className="text-xs font-medium text-white flex-1 truncate">{app.title}</span>
-                </div>
-
-                {/* iframe */}
-                <iframe
-                  src={app.src}
-                  title={app.title}
-                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
-                  loading="lazy"
-                  className="w-full flex-1 border-0 rounded-b-lg"
-                  style={{
-                    display: 'block',
-                    minHeight: '280px',
-                  }}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div
       className="fixed inset-0 flex flex-col"
@@ -218,7 +143,7 @@ export function MobileLauncher() {
       {/* v2/v3 teaser */}
       <div className="px-6 pb-4 text-center">
         <p className="text-white/30 text-xs">
-          Study Rooms · Quiz Rooms · Regional Insights — coming soon
+          Mini Apps (direct Cogniti) · Study Rooms · Quiz Rooms — coming soon
         </p>
       </div>
 
@@ -237,7 +162,6 @@ export function MobileLauncher() {
           [
             { label: 'Home', icon: '🏠', view: 'home' as MobileView },
             { label: 'Learn', icon: '🎓', view: 'learn' as MobileView },
-            { label: 'Mini Apps', icon: '🧩', view: 'mini-apps' as MobileView },
             { label: 'Teacher', icon: '📊', view: 'teacher' as MobileView },
           ] as const
         ).map((tab) => (

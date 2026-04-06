@@ -9,6 +9,8 @@ interface DesktopIconProps {
   label: string
   defaultPosition: { x: number; y: number }
   accentColor?: string
+  disabled?: boolean
+  badge?: string
 }
 
 export function DesktopIcon({
@@ -17,6 +19,8 @@ export function DesktopIcon({
   label,
   defaultPosition,
   accentColor = '#f59e0b',
+  disabled = false,
+  badge,
 }: DesktopIconProps) {
   const openWindow = useWindowManager((s) => s.openWindow)
   const [selected, setSelected] = useState(false)
@@ -24,6 +28,10 @@ export function DesktopIcon({
   const nodeRef = useRef<HTMLDivElement>(null)
 
   const handleClick = () => {
+    if (disabled) {
+      setSelected(true)
+      return
+    }
     setSelected(true)
     if (clickTimer.current) {
       clearTimeout(clickTimer.current)
@@ -47,7 +55,8 @@ export function DesktopIcon({
           onClick={handleClick}
           onBlur={() => setSelected(false)}
           tabIndex={0}
-          className="flex flex-col items-center gap-1 cursor-default"
+          className="flex flex-col items-center gap-1"
+          style={{ cursor: disabled ? 'not-allowed' : 'default', opacity: disabled ? 0.75 : 1 }}
         >
           {/* Icon box */}
           <div
@@ -76,6 +85,18 @@ export function DesktopIcon({
           >
             {label}
           </span>
+          {badge && (
+            <span
+              className="text-[10px] px-1.5 py-0.5 rounded-full"
+              style={{
+                background: 'rgba(245,158,11,0.2)',
+                color: '#f59e0b',
+                border: '1px solid rgba(245,158,11,0.35)',
+              }}
+            >
+              {badge}
+            </span>
+          )}
         </div>
       </div>
     </Draggable>
