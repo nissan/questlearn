@@ -75,6 +75,7 @@ export function Desktop({ children }: { children: React.ReactNode }) {
             {/* Col 2 — secondary */}
             <DesktopIcon id="pitch"             icon="📋" label="Pitch Deck"    defaultPosition={{ x: 120, y: 0   }} accentColor="#f59e0b" />
             <DesktopIcon id="showcase"          icon="🎬" label="Showcase"      defaultPosition={{ x: 120, y: 128 }} accentColor="#a78bfa" />
+            <DesktopIcon id="demo-assets"       icon="📁" label="Demo Assets"   defaultPosition={{ x: 120, y: 256 }} accentColor="#a78bfa" />
           </>
         )}
 
@@ -87,6 +88,7 @@ export function Desktop({ children }: { children: React.ReactNode }) {
             {/* Col 2 — secondary */}
             <DesktopIcon id="pitch"        icon="📋" label="Pitch Deck"    defaultPosition={{ x: 120, y: 0   }} accentColor="#f59e0b" />
             <DesktopIcon id="showcase"     icon="🎬" label="Showcase"      defaultPosition={{ x: 120, y: 128 }} accentColor="#a78bfa" />
+            <DesktopIcon id="demo-assets"  icon="📁" label="Demo Assets"   defaultPosition={{ x: 120, y: 256 }} accentColor="#a78bfa" />
           </>
         )}
 
