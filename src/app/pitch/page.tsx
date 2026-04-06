@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const TOTAL_SLIDES = 10;
+const TOTAL_SLIDES = 11;
 
 export default function PitchDeck() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -69,6 +69,7 @@ export default function PitchDeck() {
         <Slide5 />
         <Slide6 />
         <Slide7 />
+        <SlideCoGniti />
         <Slide8 />
         <Slide9 />
         <Slide10 />
@@ -643,12 +644,86 @@ function Slide7() {
   );
 }
 
+// ─── Slide 7b: Cogniti Mini Apps ────────────────────────────────────────────
+
+function SlideCoGniti() {
+  const miniApps = [
+    {
+      icon: '🃏',
+      name: 'Flashcard App',
+      color: '#f59e0b',
+      prompt: 'Build an interactive flashcard app for Years 8–10 students. Topic is passed as a URL parameter. Students flip cards, rate confidence (1–3), and type their own explanation to get AI feedback. Track telemetry: card_flipped, confidence_rated, answer_submitted.',
+    },
+    {
+      icon: '🗺️',
+      name: 'Concept Map',
+      color: '#10b981',
+      prompt: 'Build an interactive concept map for Years 8–10 students. The topic is passed as a URL parameter. Show a central node with the topic name. Students add connected nodes (key concepts) and draw relationships between them by typing the connection label (e.g. \'causes\', \'leads to\', \'is a type of\'). When the student clicks \'Check my map\', AI evaluates whether the connections are accurate and meaningful, gives 1–2 sentences of feedback, and suggests one missing connection they haven\'t made yet. Track telemetry: node_added, connection_drawn, map_submitted.',
+    },
+    {
+      icon: '🎤',
+      name: 'Debate Challenge',
+      color: '#ec4899',
+      prompt: 'Build a debate challenge app for Years 8–10 students. The topic is passed as a URL parameter. The student chooses their position (For / Against). The AI takes the opposite position. Run 3 rounds: each round the student types their argument (max 100 words), the AI responds with a counter-argument, then asks \'Can you strengthen that?\' After round 3, the AI gives a 2-sentence verdict on who argued more effectively and what the student could improve. Keep the AI\'s arguments challenging but age-appropriate for Australian high school. Track telemetry: position_chosen, argument_submitted, debate_completed.',
+    },
+  ];
+
+  return (
+    <div style={{ ...slideBase }}>
+      <div style={{ maxWidth: '960px', width: '100%' }}>
+        <div style={{ color: amber, fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.75rem', fontWeight: 600 }}>
+          Powered by Cogniti
+        </div>
+        <h2 style={{ fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', fontWeight: 800, margin: '0 0 0.4em', color: '#f1f5f9', lineHeight: 1.2 }}>
+          Mini Apps — AI learning tools, built with a single prompt
+        </h2>
+        <div style={{ width: '60px', height: '3px', background: amber, marginBottom: '0.75rem', borderRadius: '2px' }} />
+        <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.95rem', marginBottom: '2rem', maxWidth: '680px' }}>
+          Each mini app was generated in Cogniti using a single natural-language prompt — no custom code, no deployment. The prompt encodes the pedagogy; Cogniti handles the rest.
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          {miniApps.map((app, i) => (
+            <div key={i} style={{
+              background: 'rgba(255,255,255,0.03)',
+              border: `1px solid rgba(255,255,255,0.07)`,
+              borderLeft: `4px solid ${app.color}`,
+              borderRadius: '0.75rem',
+              padding: '1rem 1.25rem',
+              display: 'grid',
+              gridTemplateColumns: '2.5rem 1fr',
+              gap: '0 1rem',
+              alignItems: 'start',
+            }}>
+              <span style={{ fontSize: '1.6rem', lineHeight: 1, paddingTop: '2px' }}>{app.icon}</span>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
+                  <span style={{ color: app.color, fontWeight: 700, fontSize: '0.95rem' }}>{app.name}</span>
+                  <span style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)', fontSize: '0.65rem', padding: '0.15rem 0.5rem', borderRadius: '4px', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Cogniti prompt</span>
+                </div>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', lineHeight: 1.6, margin: 0, fontFamily: 'ui-monospace, monospace' }}>
+                  &ldquo;{app.prompt}&rdquo;
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.78rem', marginTop: '1.5rem' }}>
+          Each app tracks student telemetry (interactions, confidence ratings, submissions) and integrates into QuestLearn&apos;s teacher dashboard.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 // ─── Slide 8: The Stack ───────────────────────────────────────────────────────
 
 function Slide8() {
   const tech = [
     { label: 'Next.js 16.2 + shadcn/ui', icon: '⚡' },
     { label: 'CurricuLLM-AU — AC v9 native', icon: '🧠' },
+    { label: 'Cogniti — AI mini apps (no-code)', icon: '🧩' },
     { label: 'Turso — libSQL at the edge', icon: '🗄️' },
     { label: 'Vercel — zero-config deploy', icon: '🚀' },
     { label: '57/57 Playwright E2E tests ✅', icon: '🧪' },
