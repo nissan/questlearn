@@ -104,7 +104,8 @@ export function Flashcards({ topic, cards }: FlashcardsProps) {
     );
   }
 
-  const current = flashcards[currentIndex];
+  const current = flashcards[currentIndex] ?? flashcards[0];
+  if (!current) return null;
 
   const handleFlip = () => {
     setIsFlipped(f => !f);
