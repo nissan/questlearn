@@ -5,6 +5,14 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // Force re-validation of showcase mp4s — no long-term CDN cache
+        source: "/showcase/:path*",
+        headers: [
+          { key: "Cache-Control", value: "no-cache, no-store, must-revalidate" },
+          { key: "Pragma", value: "no-cache" },
+        ],
+      },
+      {
         source: "/(.*)",
         headers: [
           {
