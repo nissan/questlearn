@@ -14,7 +14,7 @@ Feature: Native Debate learning flow
     Then I see "Debate Challenge"
     And I see a debate motion
     When I choose FOR or AGAINST
-    Then the debate starts
+    Then the debate starts for the selected side
 
   Scenario: Submitting an argument advances rounds
     Given a debate is in progress
@@ -26,3 +26,10 @@ Feature: Native Debate learning flow
     Given debate start API fails
     When I choose FOR or AGAINST
     Then I see a friendly start error message
+
+  Scenario: Send failure restores draft safely
+    Given a debate is in progress
+    And send-argument API fails
+    When I submit my round argument
+    Then I see a friendly send error message
+    And my draft argument is restored

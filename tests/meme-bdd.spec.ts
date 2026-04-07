@@ -33,5 +33,16 @@ test.describe('Meme mini app BDD coverage', () => {
     await page.goto('/mini/meme?topic=Photosynthesis')
     await expect(page.getByText(/Photosynthesis when the sunlight hits/i)).toBeVisible()
     await expect(page.getByText(/Time to turn light into learning/i)).toBeVisible()
+    await expect(page.getByRole('button', { name: /Share meme/i })).toBeVisible()
+  })
+
+  test('malformed success payload falls back safely', async ({ page }) => {
+    await page.route('/api/generate/meme-text', async route => {
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ topText: '', bottomText: '' }) })
+    })
+
+    await page.goto('/mini/meme?topic=Photosynthesis')
+    await expect(page.getByText(/Photosynthesis when the sunlight hits/i)).toBeVisible()
+    await expect(page.getByText(/Time to turn light into learning/i)).toBeVisible()
   })
 })

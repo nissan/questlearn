@@ -17,3 +17,8 @@ Feature: Meme learning format
   Scenario: Meme generation fallback still renders readable meme text
     Given meme-text API fails
     Then fallback top/bottom meme text is shown from generated content body
+
+  Scenario: Malformed meme API response still degrades gracefully
+    Given meme-text API returns success but missing top/bottom text
+    Then fallback top/bottom meme text is shown from generated content body
+    And share action remains usable

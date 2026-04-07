@@ -14,7 +14,7 @@ Feature: Native Flashcards learning flow
     Then I see a flashcard question
     And I see hint text "Tap to reveal answer"
     When I flip the card
-    Then I see the answer side
+    Then I see the answer side content
     And confidence rating options are visible
 
   Scenario: AI feedback requires explanation text
@@ -27,3 +27,9 @@ Feature: Native Flashcards learning flow
     Given I have completed all cards with confidence ratings
     Then I see "Session Complete!"
     And I can restart the session
+
+  Scenario: Feedback API failure shows safe fallback message
+    Given the card answer side is visible
+    And feedback API fails
+    When I submit an explanation
+    Then I see a friendly fallback feedback message
