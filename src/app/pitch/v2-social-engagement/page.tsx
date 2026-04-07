@@ -236,7 +236,7 @@ function SlideLearningPattern() {
   return (
     <section style={slideBase}>
       <div style={{ maxWidth: 1020, width: '100%' }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Learning pattern flow (visual)</h2>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Learning pattern flow</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '0.9rem' }}>
           {steps.map((s, i) => (
             <div key={s.title} style={{ background: 'rgba(15,23,42,0.84)', border: '1px solid rgba(148,163,184,0.22)', borderRadius: '0.8rem', padding: '0.9rem' }}>
@@ -299,7 +299,7 @@ function SlideMiniAppsDemo() {
   return (
     <section style={slideBase}>
       <div style={{ maxWidth: '960px', width: '100%' }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Mini Apps demos (pitch 1 card UI style)</h2>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Mini Apps demos</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {miniApps.map((app) => (
             <div
@@ -352,7 +352,7 @@ function SlideTeacherLoop() {
   return (
     <section style={slideBase}>
       <div style={{ maxWidth: 1000, width: '100%' }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Teacher dashboard (visual)</h2>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Teacher dashboard</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', alignItems: 'start' }}>
           <div style={{ display: 'grid', gap: '0.8rem' }}>
             <Card title="Live visibility">See where students are engaged or stuck.</Card>
