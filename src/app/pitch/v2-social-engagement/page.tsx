@@ -111,13 +111,22 @@ function SlideTitle() {
 function SlideSocialStats() {
   return (
     <section style={slideBase}>
-      <div style={{ maxWidth: 950, width: '100%' }}>
+      <div style={{ maxWidth: 980, width: '100%' }}>
         <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Students are already highly engaged online</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-          <Card title="Reality">Teen attention is captured by short, visual, interactive content.</Card>
-          <Card title="Challenge">Traditional one-way learning competes with this attention economy.</Card>
-          <Card title="Opportunity">Bring that same engagement energy into education outcomes.</Card>
+          <Card title="46% online almost constantly">
+            Nearly half of teens report being online almost constantly (up from 24% in 2014-15).
+          </Card>
+          <Card title="90% use YouTube">
+            Platform usage is massive: YouTube 90%, TikTok 63%, Instagram 61%, Snapchat 55% among teens.
+          </Card>
+          <Card title="Australia sample: n=1,504">
+            eSafety’s 2024 national study tracked social/media messaging use among Australian children aged 8-15.
+          </Card>
         </div>
+        <p style={{ marginTop: '0.9rem', color: 'rgba(148,163,184,0.9)', fontSize: '0.78rem', lineHeight: 1.5 }}>
+          Sources: Pew Research Center teen fact sheets (U.S., Sept-Oct 2024); eSafety Commissioner Children and Social Media Survey (Australia, Sept 2024).
+        </p>
       </div>
     </section>
   );
