@@ -290,16 +290,6 @@ export function LearnContent() {
                 topic={topic}
                 imageUrl={memeImageUrl ?? undefined}
               />
-              {content.body && (
-                <div className="text-xs text-muted-foreground space-y-1 border-t pt-2">
-                  {content.body.match(/^CAPTION:\s*(.+)/im)?.[1] && (
-                    <p className="text-center italic">{content.body.match(/^CAPTION:\s*(.+)/im)?.[1]}</p>
-                  )}
-                  {content.body.split('\n').filter((l: string) => l.trim() && !l.match(/^CAPTION:/i)).slice(0, 4).map((line: string, i: number) => (
-                    <p key={i}>{line.trim()}</p>
-                  ))}
-                </div>
-              )}
             </div>
           ) : format === 'flashcards' ? (
             <div className="px-4 pb-4"><Card className="border-2 border-dashed border-amber-500/40 bg-amber-500/5">
