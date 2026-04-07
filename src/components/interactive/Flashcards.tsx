@@ -1,7 +1,7 @@
 // Built upon Cogniti Interactive source code. Refactored for QuestLearn.
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
@@ -114,7 +114,7 @@ export function Flashcards({ topic, cards }: FlashcardsProps) {
     }
   };
 
-  const handleExplainSubmit = useCallback(async () => {
+  const handleExplainSubmit = async () => {
     if (!explanation.trim()) return;
     setLoadingFeedback(true);
     setAiFeedback(null);
@@ -139,7 +139,7 @@ export function Flashcards({ topic, cards }: FlashcardsProps) {
     } finally {
       setLoadingFeedback(false);
     }
-  }, [explanation, topic, current]);
+  };
 
   const handleRate = (level: ConfidenceLevel) => {
     setRatings(r => ({ ...r, [currentIndex]: level }));
