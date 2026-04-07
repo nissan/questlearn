@@ -48,14 +48,14 @@ export default function SocialEngagementDeck() {
       <div ref={containerRef} style={{ height: '100%', overflowY: 'auto', scrollSnapType: 'y mandatory' }}>
         <SlideTitle />
         <SlideStatsGraphics />
+        <SlideAustraliaGraphDeepDive />
         <SlideAttentionShift />
         <SlideLearningPattern />
         <SlideSocraticEnhancement />
         <SlideMiniAppsDemo />
         <SlideTeacherLoop />
         <SlideAISides />
-        <SlideTodayBuild />
-        <SlideFutureScope />
+        <SlideTodayAndNext />
         <SlideClose />
       </div>
 
@@ -166,6 +166,52 @@ function SlideStatsGraphics() {
   );
 }
 
+function SlideAustraliaGraphDeepDive() {
+  const points = [
+    { year: '2017', value: 12 },
+    { year: '2018', value: 20 },
+    { year: '2019', value: 28 },
+    { year: '2020', value: 38 },
+  ];
+
+  return (
+    <section style={slideBase}>
+      <div style={{ maxWidth: 980, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Australia statistics, explained clearly</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '1rem' }}>
+          <div style={{ background: 'rgba(15,23,42,0.84)', border: '1px solid rgba(148,163,184,0.22)', borderRadius: '0.8rem', padding: '1rem' }}>
+            <div style={{ color: amber, fontWeight: 700, fontSize: '0.84rem', marginBottom: '0.4rem' }}>AU teen usage trend (TikTok share example)</div>
+            <svg viewBox="0 0 320 170" style={{ width: '100%', height: '170px' }}>
+              <line x1="30" y1="140" x2="300" y2="140" stroke="#334155" />
+              <line x1="30" y1="20" x2="30" y2="140" stroke="#334155" />
+              <polyline points="40,122 120,104 200,78 280,46" fill="none" stroke="#f59e0b" strokeWidth="4" />
+              {points.map((p, i) => (
+                <g key={p.year}>
+                  <circle cx={40 + i * 80} cy={122 - i * 26} r="5" fill="#f59e0b" />
+                  <text x={40 + i * 80} y={156} textAnchor="middle" fill="#94a3b8" fontSize="11">{p.year}</text>
+                  <text x={40 + i * 80} y={122 - i * 26 - 10} textAnchor="middle" fill="#e2e8f0" fontSize="11">{p.value}%</text>
+                </g>
+              ))}
+            </svg>
+          </div>
+
+          <div style={{ display: 'grid', gap: '0.75rem' }}>
+            <Card title="What this graph means">
+              The curve shows how fast youth platform behaviour changes, which is why static lesson formats lose attention quickly.
+            </Card>
+            <Card title="Why it matters for QuestLearn">
+              We design learning in the same interaction style students already prefer, then route that attention into curriculum learning outcomes.
+            </Card>
+            <Card title="Evidence anchor">
+              eSafety AU child sample n=1,504 (2024) + eSafety teen behavioural baseline (2020, n=627).
+            </Card>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function SlideAttentionShift() {
   return (
     <section style={slideBase}>
@@ -229,31 +275,59 @@ function SlideSocraticEnhancement() {
 }
 
 function SlideMiniAppsDemo() {
-  const apps = [
-    { icon: '🃏', title: 'Flashcard App', desc: 'Confidence scoring + AI explanation feedback' },
-    { icon: '🗺️', title: 'Concept Map', desc: 'Connections evaluated with AI suggestions' },
-    { icon: '🎤', title: 'Debate Challenge', desc: '3-round argument, counter, and verdict' },
+  const miniApps = [
+    {
+      icon: '🃏',
+      name: 'Flashcard App',
+      color: '#f59e0b',
+      prompt: 'Build an interactive flashcard app. Students flip cards, rate confidence, and type explanations for AI feedback.',
+    },
+    {
+      icon: '🗺️',
+      name: 'Concept Map',
+      color: '#10b981',
+      prompt: 'Build a concept map app where students add nodes, draw connections, and receive AI feedback + missing-link suggestions.',
+    },
+    {
+      icon: '🎤',
+      name: 'Debate Challenge',
+      color: '#ec4899',
+      prompt: 'Build a 3-round debate app where AI counters student arguments and gives an improvement verdict.',
+    },
   ];
 
   return (
     <section style={slideBase}>
-      <div style={{ maxWidth: 980, width: '100%' }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Mini Apps demos (from pitch v1 style)</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '0.9rem' }}>
-          {apps.map((a) => (
-            <div key={a.title} style={{ background: 'rgba(15,23,42,0.84)', border: '1px solid rgba(148,163,184,0.22)', borderRadius: '0.8rem', padding: '0.95rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                <span style={{ fontSize: '1.15rem' }}>{a.icon}</span>
-                <strong style={{ color: amber, fontSize: '0.9rem' }}>{a.title}</strong>
+      <div style={{ maxWidth: '960px', width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Mini Apps demos (pitch 1 card UI style)</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {miniApps.map((app) => (
+            <div
+              key={app.name}
+              style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderLeft: `4px solid ${app.color}`,
+                borderRadius: '0.75rem',
+                padding: '0.95rem 1.15rem',
+                display: 'grid',
+                gridTemplateColumns: '2.2rem 1fr',
+                gap: '0 0.9rem',
+              }}
+            >
+              <span style={{ fontSize: '1.45rem', lineHeight: 1 }}>{app.icon}</span>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.35rem' }}>
+                  <span style={{ color: app.color, fontWeight: 700, fontSize: '0.92rem' }}>{app.name}</span>
+                  <span style={{ background: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.45)', fontSize: '0.64rem', padding: '0.12rem 0.45rem', borderRadius: '4px', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Cogniti prompt</span>
+                </div>
+                <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: '0.81rem', lineHeight: 1.6, margin: 0, fontFamily: 'ui-monospace, monospace' }}>
+                  &ldquo;{app.prompt}&rdquo;
+                </p>
               </div>
-              <div style={{ color: '#cbd5e1', fontSize: '0.9rem', lineHeight: 1.55 }}>{a.desc}</div>
-              <div style={{ marginTop: '0.55rem', fontSize: '0.72rem', color: '#64748b' }}>Cogniti-generated learning app</div>
             </div>
           ))}
         </div>
-        <p style={{ marginTop: '0.8rem', color: '#94a3b8', fontSize: '0.8rem' }}>
-          Demo routes: /demo/mini-apps, /demo/student-1, /demo/teacher-1
-        </p>
       </div>
     </section>
   );
@@ -339,30 +413,52 @@ function SlideAISides() {
   );
 }
 
-function SlideTodayBuild() {
-  return (
-    <section style={slideBase}>
-      <div style={{ maxWidth: 980, width: '100%' }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>What QuestLearn does today</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
-          <Card title="Interactive formats live">Memes, stories, flashcards, concept maps, and debate are integrated today.</Card>
-          <Card title="Teacher visibility live">Teachers can monitor class engagement patterns and act quickly.</Card>
-          <Card title="Socratic feedback live">Students receive guided reasoning prompts, not just final answers.</Card>
-        </div>
-      </div>
-    </section>
-  );
-}
+function SlideTodayAndNext() {
+  const roadmap = [
+    {
+      phase: 'v1 — Live now',
+      color: '#22c55e',
+      items: [
+        'QuestLearn student journey + teacher dashboard live',
+        '5 AI-powered learning formats are working now',
+      ],
+    },
+    {
+      phase: 'v2 — Coming soon',
+      color: '#f59e0b',
+      items: [
+        'Study Rooms + Quiz Rooms for collaboration',
+        'Open Threads + Syllabus Browser (AC v9)',
+      ],
+    },
+    {
+      phase: 'v3 — Future scope',
+      color: '#818cf8',
+      items: [
+        'Cross-school learning nationally',
+        'Regional equity insights and intervention support',
+      ],
+    },
+  ];
 
-function SlideFutureScope() {
   return (
     <section style={slideBase}>
-      <div style={{ maxWidth: 980, width: '100%' }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.8rem, 4.5vw, 3rem)' }}>11th Slide · Future scope</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-          <Card title="Geographic equity">Deliver high-quality learning support to students regardless of location.</Card>
-          <Card title="Teacher augmentation">AI co-pilot for planning, intervention, and differentiated support.</Card>
-          <Card title="Evidence loop">Continuous improvement from classroom telemetry and outcomes data.</Card>
+      <div style={{ maxWidth: 1020, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>What QuestLearn does today, and what comes next</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '0.9rem', marginBottom: '0.9rem' }}>
+          {roadmap.map((r) => (
+            <div key={r.phase} style={{ background: 'rgba(15,23,42,0.84)', border: `1px solid ${r.color}55`, borderTop: `3px solid ${r.color}`, borderRadius: '0.8rem', padding: '0.95rem 1rem' }}>
+              <div style={{ color: r.color, fontWeight: 800, fontSize: '0.8rem', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.55rem' }}>{r.phase}</div>
+              <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: '0.45rem' }}>
+                {r.items.map((item) => (
+                  <li key={item} style={{ color: '#cbd5e1', fontSize: '0.87rem', display: 'flex', gap: '0.4rem' }}>
+                    <span style={{ color: r.color }}>›</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </section>
