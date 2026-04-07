@@ -112,20 +112,20 @@ function SlideSocialStats() {
   return (
     <section style={slideBase}>
       <div style={{ maxWidth: 980, width: '100%' }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Students are already highly engaged online</h2>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Australia first, global context second</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-          <Card title="46% online almost constantly">
-            Nearly half of teens report being online almost constantly (up from 24% in 2014-15).
+          <Card title="Australia now: eSafety n=1,504 (ages 8-15)">
+            Nationally representative Australian study confirms social and messaging usage is already mainstream before senior high school.
           </Card>
-          <Card title="90% use YouTube">
-            Platform usage is massive: YouTube 90%, TikTok 63%, Instagram 61%, Snapchat 55% among teens.
+          <Card title="Australia teens: 14.4 hours/week online">
+            eSafety teen study (12-17, n=627) shows high weekly online time and average use of 4 social platforms.
           </Card>
-          <Card title="Australia sample: n=1,504">
-            eSafety’s 2024 national study tracked social/media messaging use among Australian children aged 8-15.
+          <Card title="Global benchmark">
+            Pew: YouTube 90%, TikTok 63%, Snapchat 60%, Instagram 59%. OECD: ~3 in 4 students spend over 1 hour weekday on social networks.
           </Card>
         </div>
         <p style={{ marginTop: '0.9rem', color: 'rgba(148,163,184,0.9)', fontSize: '0.78rem', lineHeight: 1.5 }}>
-          Sources: Pew Research Center teen fact sheets (U.S., Sept-Oct 2024); eSafety Commissioner Children and Social Media Survey (Australia, Sept 2024).
+          Sources: eSafety (Australia, 2024 and 2020), Pew (U.S. teens, 2023), OECD PISA 2022 analysis.
         </p>
       </div>
     </section>
