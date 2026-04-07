@@ -104,7 +104,18 @@ export function LearnContent() {
       setChat([{ role: 'ai', text: contentData.socraticPrompt }]);
       setLoadingContent(false);
       if (format === 'meme' && contentData?.body) {
-        // Attempt two-LLM meme: GPT-4o-mini picks template + writes humour
+        // Canonical meme copy comes from content body pipeline when available.
+        const bodyTop = contentData.body.match(/^TOP:\s*(.+)/im)?.[1]?.trim() ?? '';
+        const bodyBottom = contentData.body.match(/^BOTTOM:\s*(.+)/im)?.[1]?.trim() ?? '';
+        const hasBodyCopy = Boolean(bodyTop && bodyBottom);
+
+        const parsed = parseMemeBody(contentData.body);
+        setMemeTopText(hasBodyCopy ? bodyTop : parsed.topText);
+        setMemeBottomText(hasBodyCopy ? bodyBottom : parsed.bottomText);
+        setMemeTemplate(pickMemeTemplate(topic, hasBodyCopy ? bodyTop : parsed.topText, hasBodyCopy ? bodyBottom : parsed.bottomText));
+
+        // Meme API now enriches template/image selection. If body copy is missing,
+        // API top/bottom can still be used as fallback copy.
         try {
           const memeRes = await fetch('/api/generate/meme-text', {
             method: 'POST',
@@ -112,24 +123,20 @@ export function LearnContent() {
             body: JSON.stringify({ topic, curriculumFact: contentData.body }),
           });
           const memeData = await memeRes.json();
-          if (memeData.topText && memeData.bottomText) {
-            const pickedTemplate = memeData.templateId
-              ? (MEME_TEMPLATES.find((t) => t.id === memeData.templateId) ?? null)
-              : null;
+
+          const pickedTemplate = memeData.templateId
+            ? (MEME_TEMPLATES.find((t) => t.id === memeData.templateId) ?? null)
+            : null;
+          if (pickedTemplate) setMemeTemplate(pickedTemplate);
+          if (memeData.imageUrl) setMemeImageUrl(memeData.imageUrl);
+
+          if (!hasBodyCopy && memeData.topText && memeData.bottomText) {
             setMemeTopText(memeData.topText);
             setMemeBottomText(memeData.bottomText);
-            setMemeTemplate(pickedTemplate);
-            if (memeData.imageUrl) setMemeImageUrl(memeData.imageUrl);
-            return;
           }
         } catch {
-          // Fall through to keyword-match fallback
+          // Keep body-derived copy/template fallback already set above.
         }
-        // Fallback: keyword match + parse body
-        const { topText, bottomText } = parseMemeBody(contentData.body);
-        setMemeTopText(topText);
-        setMemeBottomText(bottomText);
-        setMemeTemplate(pickMemeTemplate(topic, topText, bottomText));
       }
     }
     load();
@@ -290,16 +297,6 @@ export function LearnContent() {
                 topic={topic}
                 imageUrl={memeImageUrl ?? undefined}
               />
-              {content.body && (
-                <div className="text-xs text-muted-foreground space-y-1 border-t pt-2">
-                  {content.body.match(/^CAPTION:\s*(.+)/im)?.[1] && (
-                    <p className="text-center italic">{content.body.match(/^CAPTION:\s*(.+)/im)?.[1]}</p>
-                  )}
-                  {content.body.split('\n').filter((l: string) => l.trim() && !l.match(/^CAPTION:/i)).slice(0, 4).map((line: string, i: number) => (
-                    <p key={i}>{line.trim()}</p>
-                  ))}
-                </div>
-              )}
             </div>
           ) : format === 'flashcards' ? (
             <div className="px-4 pb-4"><Card className="border-2 border-dashed border-amber-500/40 bg-amber-500/5">

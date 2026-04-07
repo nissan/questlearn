@@ -44,4 +44,14 @@ test.describe('Mini app API contracts (basic)', () => {
     const res = await request.post('/api/questlearn/debate/start-conversation', { data: {} })
     expect(res.status()).toBe(400)
   })
+
+  test('meme-text missing topic is currently gated by auth first (returns 401 unauthenticated)', async ({ request }) => {
+    const res = await request.post('/api/generate/meme-text', { data: {} })
+    expect(res.status()).toBe(401)
+  })
+
+  test('meme-text returns 401 when unauthenticated', async ({ request }) => {
+    const res = await request.post('/api/generate/meme-text', { data: { topic: 'Photosynthesis' } })
+    expect(res.status()).toBe(401)
+  })
 })

@@ -3,6 +3,7 @@ export default function MiniAppsIndexPage() {
     { href: '/mini/flashcards?topic=Photosynthesis', label: 'Flashcards' },
     { href: '/mini/concept-map?topic=Photosynthesis', label: 'Concept Map' },
     { href: '/mini/debate?topic=Photosynthesis', label: 'Debate' },
+    { href: '/mini/meme?topic=Photosynthesis', label: 'Meme' },
   ];
 
   return (
