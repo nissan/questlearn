@@ -84,6 +84,7 @@ export function ConceptMap({ topic }: ConceptMapProps) {
       // If connecting mode, clicking a node completes the connection
       if (connecting !== id) {
         setPendingConnection({ source: connecting, target: id });
+        setRelationshipInput('related to');
         setConnecting(null);
       } else {
         setConnecting(null);
@@ -226,14 +227,23 @@ export function ConceptMap({ topic }: ConceptMapProps) {
           size="sm"
           variant={connecting ? 'default' : 'outline'}
           className="text-xs h-7"
-          onClick={() => { setConnecting(selected); setFeedback(null); }}
+          onClick={() => { if (selected) { setConnecting(selected); setFeedback(null); } }}
           disabled={!selected || !!connecting}
+          title={!selected ? 'Select a concept node first' : undefined}
         >
           {connecting ? '⚡ Click target…' : '🔗 Connect'}
         </Button>
+        {selected && !connecting && (
+          <span className="text-[11px] text-muted-foreground">Selected: {getConceptById(selected)?.label}</span>
+        )}
         {connecting && (
           <Button size="sm" variant="ghost" className="text-xs h-7 text-muted-foreground" onClick={() => setConnecting(null)}>
             Cancel
+          </Button>
+        )}
+        {selected && (
+          <Button size="sm" variant="ghost" className="text-xs h-7 text-muted-foreground" onClick={() => setSelected(null)}>
+            Clear selection
           </Button>
         )}
         <Button
@@ -242,6 +252,7 @@ export function ConceptMap({ topic }: ConceptMapProps) {
           className="text-xs h-7 ml-auto"
           onClick={handleEvaluateMap}
           disabled={loadingMapFeedback || connections.length === 0}
+          title={connections.length === 0 ? 'Add at least one connection first' : undefined}
         >
           {loadingMapFeedback ? 'Evaluating…' : '🧠 Evaluate Map'}
         </Button>
@@ -260,7 +271,6 @@ export function ConceptMap({ topic }: ConceptMapProps) {
           height="100%"
           viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
           className="cursor-default"
-          onClick={() => { if (!dragging && !connecting) setSelected(null); }}
         >
           <defs>
             <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
