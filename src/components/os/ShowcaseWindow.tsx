@@ -38,6 +38,14 @@ const VIDEOS = [
     src: '/showcase/questlearn-pitch-backup-2026-04-08.mp4',
   },
   {
+    id: 'd2',
+    label: 'QuestLearn — Mini Apps Demo',
+    subtitle: 'Flashcards · Concept Map · Debate · Meme · real app',
+    icon: '🧩',
+    color: '#22c55e',
+    src: '/showcase/D-mini-apps.mp4',
+  },
+  {
     id: 'd3',
     label: 'QuestLearn — CurricuLLM vs Cogniti',
     subtitle: 'Technical comparison · AI tutor modes',
