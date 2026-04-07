@@ -26,8 +26,8 @@ interface ConceptMapProps {
 let idCounter = 100;
 function genId() { return `n${++idCounter}`; }
 
-const CANVAS_W = 800;
-const CANVAS_H = 520;
+const CANVAS_W = 900;
+const CANVAS_H = 560;
 
 const FALLBACK_CONCEPTS = (topic: string) => [topic, 'Concept 1', 'Concept 2', 'Concept 3'];
 
@@ -78,8 +78,9 @@ export function ConceptMap({ topic }: ConceptMapProps) {
 
   // ── Drag handling ─────────────────────────────────────────────────────────
   const handleNodeMouseDown = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+
     if (connecting) {
-      e.stopPropagation();
       // If connecting mode, clicking a node completes the connection
       if (connecting !== id) {
         setPendingConnection({ source: connecting, target: id });
@@ -89,6 +90,7 @@ export function ConceptMap({ topic }: ConceptMapProps) {
       }
       return;
     }
+
     e.preventDefault();
     const svg = svgRef.current;
     if (!svg) return;
@@ -105,8 +107,8 @@ export function ConceptMap({ topic }: ConceptMapProps) {
       const svg = svgRef.current;
       if (!svg) return;
       const rect = svg.getBoundingClientRect();
-      const x = Math.max(60, Math.min(CANVAS_W - 60, e.clientX - rect.left - dragging.offsetX));
-      const y = Math.max(30, Math.min(CANVAS_H - 30, e.clientY - rect.top - dragging.offsetY));
+      const x = Math.max(88, Math.min(CANVAS_W - 88, e.clientX - rect.left - dragging.offsetX));
+      const y = Math.max(32, Math.min(CANVAS_H - 32, e.clientY - rect.top - dragging.offsetY));
       setConcepts(cs => cs.map(c => c.id === dragging.id ? { ...c, x, y } : c));
     };
     const handleUp = () => setDragging(null);
@@ -292,13 +294,13 @@ export function ConceptMap({ topic }: ConceptMapProps) {
           {concepts.map(concept => (
             <g key={concept.id} onMouseDown={e => handleNodeMouseDown(e, concept.id)} style={{ cursor: 'grab' }}>
               <ellipse
-                cx={concept.x} cy={concept.y} rx={70} ry={26}
+                cx={concept.x} cy={concept.y} rx={88} ry={32}
                 fill={selected === concept.id ? '#064e3b' : '#111827'}
                 stroke={selected === concept.id ? '#10b981' : connecting === concept.id ? '#a78bfa' : '#374151'}
                 strokeWidth={selected === concept.id || connecting === concept.id ? 2 : 1}
               />
-              <text x={concept.x} y={concept.y + 5} textAnchor="middle" fontSize="12" fill="#f3f4f6" className="select-none pointer-events-none">
-                {concept.label.length > 14 ? concept.label.slice(0, 13) + '…' : concept.label}
+              <text x={concept.x} y={concept.y + 5} textAnchor="middle" fontSize="14" fill="#f3f4f6" className="select-none pointer-events-none" fontWeight="600">
+                {concept.label.length > 20 ? concept.label.slice(0, 19) + '…' : concept.label}
               </text>
             </g>
           ))}
