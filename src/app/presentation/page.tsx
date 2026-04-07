@@ -170,7 +170,7 @@ export default function PresentationPage() {
                 title="Mini Apps Walkthrough"
                 icon="🧩"
                 color="#f59e0b"
-                video="/showcase/questlearn-mini-apps-walkthrough-FINAL.mp4"
+                video="/showcase/questlearn-pitch-backup-2026-04-08.mp4"
                 href="/demo/mini-apps"
               />
             </div>
