@@ -146,15 +146,31 @@ function SlideAttentionShift() {
 }
 
 function SlideStudentLearning() {
+  const modes = [
+    { icon: '😂', title: 'Meme mode', desc: 'High recall through visual hooks and humour.' },
+    { icon: '📖', title: 'Story + dialogue', desc: 'Socratic prompts turn answers into reasoning.' },
+    { icon: '🃏', title: 'Flashcards + concept maps', desc: 'From memory to connections.' },
+    { icon: '🎙️', title: 'Debate flow', desc: 'Students explain, defend, and refine ideas.' },
+  ];
+
   return (
     <section style={slideBase}>
       <div style={{ maxWidth: 980, width: '100%' }}>
         <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>How students learn in QuestLearn</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-          <Card title="Meme mode">High recall through visual hooks and humour.</Card>
-          <Card title="Story + dialogue">Socratic prompts turn answers into reasoning.</Card>
-          <Card title="Flashcards + concept maps">From memory to connections.</Card>
-          <Card title="Debate flow">Students explain, defend, and refine ideas.</Card>
+          {modes.map((m) => (
+            <div key={m.title} style={{ background: 'rgba(15,23,42,0.82)', border: '1px solid rgba(148,163,184,0.22)', borderRadius: '0.75rem', padding: '0.95rem 1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                <span style={{ fontSize: '1.05rem' }}>{m.icon}</span>
+                <div style={{ color: amber, fontWeight: 700, fontSize: '0.88rem' }}>{m.title}</div>
+              </div>
+              <div style={{ color: '#cbd5e1', lineHeight: 1.55, fontSize: '0.92rem' }}>{m.desc}</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop: '1rem', background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.22)', borderRadius: '0.75rem', padding: '0.8rem 1rem', color: '#cbd5e1', fontSize: '0.88rem' }}>
+          Visual-first + interaction-first learning flow is designed to match how students already engage with digital content.
         </div>
       </div>
     </section>
@@ -175,14 +191,66 @@ function SlideStudentPride() {
 }
 
 function SlideTeacherLoop() {
+  const topics = ['Photosynthesis', 'Fractions', 'WW1 Causes'];
+  const formats = ['Meme', 'Story', 'Puzzle'];
+  const heat = [
+    [0.82, 0.56, 0.41],
+    [0.48, 0.77, 0.63],
+    [0.39, 0.58, 0.85],
+  ];
+
+  const heatColor = (v: number) => {
+    if (v > 0.75) return '#22c55e';
+    if (v > 0.55) return '#f59e0b';
+    if (v > 0.4) return '#f97316';
+    return '#ef4444';
+  };
+
   return (
     <section style={slideBase}>
-      <div style={{ maxWidth: 980, width: '100%' }}>
+      <div style={{ maxWidth: 1000, width: '100%' }}>
         <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Teachers stay in the loop</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-          <Card title="Live visibility">See where students are engaged or stuck.</Card>
-          <Card title="Lesson planning">Use real learning signals for the next lesson.</Card>
-          <Card title="Quick quiz setup">Generate targeted checks based on class gaps.</Card>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', alignItems: 'start' }}>
+          <div style={{ display: 'grid', gap: '0.8rem' }}>
+            <Card title="Live visibility">See where students are engaged or stuck.</Card>
+            <Card title="Lesson planning">Use real learning signals for the next lesson.</Card>
+            <Card title="Quick quiz setup">Generate targeted checks based on class gaps.</Card>
+          </div>
+
+          <div style={{ background: 'rgba(15,23,42,0.82)', border: '1px solid rgba(245,158,11,0.25)', borderRadius: '0.9rem', padding: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.45rem', marginBottom: '0.75rem' }}>
+              <div style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.35)', borderRadius: '0.55rem', padding: '0.45rem' }}>
+                <div style={{ fontSize: '0.64rem', color: 'rgba(203,213,225,0.7)' }}>Engagement</div>
+                <div style={{ fontSize: '1rem', fontWeight: 800, color: '#22c55e' }}>78%</div>
+              </div>
+              <div style={{ background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.35)', borderRadius: '0.55rem', padding: '0.45rem' }}>
+                <div style={{ fontSize: '0.64rem', color: 'rgba(203,213,225,0.7)' }}>At-risk topics</div>
+                <div style={{ fontSize: '1rem', fontWeight: 800, color: '#f59e0b' }}>2</div>
+              </div>
+              <div style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.35)', borderRadius: '0.55rem', padding: '0.45rem' }}>
+                <div style={{ fontSize: '0.64rem', color: 'rgba(203,213,225,0.7)' }}>Quizzes ready</div>
+                <div style={{ fontSize: '1rem', fontWeight: 800, color: '#a5b4fc' }}>3</div>
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '90px repeat(3, 1fr)', gap: '4px', marginBottom: '4px' }}>
+              <div />
+              {formats.map((f, i) => (
+                <div key={i} style={{ fontSize: '0.64rem', color: '#64748b', textAlign: 'center', fontWeight: 600 }}>{f}</div>
+              ))}
+            </div>
+            {topics.map((topic, row) => (
+              <div key={row} style={{ display: 'grid', gridTemplateColumns: '90px repeat(3, 1fr)', gap: '4px', marginBottom: '4px' }}>
+                <div style={{ fontSize: '0.64rem', color: '#94a3b8', display: 'flex', alignItems: 'center' }}>{topic}</div>
+                {heat[row].map((v, col) => (
+                  <div key={col} style={{ height: '24px', borderRadius: '4px', backgroundColor: heatColor(v), opacity: 0.82, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.58rem', color: 'rgba(0,0,0,0.62)', fontWeight: 700 }}>
+                    {Math.round(v * 100)}%
+                  </div>
+                ))}
+              </div>
+            ))}
+            <div style={{ marginTop: '0.5rem', fontSize: '0.66rem', color: '#64748b' }}>Teacher dashboard visual: class-level aggregate only</div>
+          </div>
         </div>
       </div>
     </section>
