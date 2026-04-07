@@ -1,0 +1,66 @@
+{
+  "deckUrl": "https://questlearn-nu.vercel.app/pitch/v2-social-engagement",
+  "voice": "af_nova",
+  "takes": [
+    {
+      "id": "T01",
+      "slug": "title",
+      "slide": 1,
+      "text": "QuestLearn turns student engagement into active learning. We built it for Years eight to ten, aligned to Australian Curriculum version nine, so students actively think, not just passively consume content. In this short walkthrough, we will show the problem we are solving, how our AI learning loop works in practice, what students experience in each mode, and how teachers can act on the learning signal in real time."
+    },
+    {
+      "id": "T02",
+      "slug": "problem",
+      "slide": 2,
+      "text": "Today, student attention is high online but often low in traditional instruction. The gap is not motivation alone, it is learning design. Many students can scroll for hours, but struggle to stay engaged when learning feels passive. QuestLearn is designed to convert existing attention patterns into structured cognitive activity, where students retrieve, explain, test assumptions, and build confidence through repeated active practice."
+    },
+    {
+      "id": "T03",
+      "slug": "au-evidence",
+      "slide": 3,
+      "text": "Our framing is Australia-first. We use current youth digital behavior context to justify why active, format-flexible learning matters now, and why engagement should be redirected into deliberate practice. Instead of fighting where students already spend time, we build a bridge from familiar interaction styles into curriculum-aligned learning tasks that require reasoning, not just recognition, and that can be reinforced by teachers in class."
+    },
+    {
+      "id": "T04",
+      "slug": "attention-shift",
+      "slide": 4,
+      "text": "The key shift is from content delivery to learning behavior. QuestLearn guides students to respond, compare, explain, and refine. That is how curiosity becomes durable understanding. Every interaction is designed to nudge productive effort, so learners are not rewarded for passive watching, they are rewarded for thinking clearly, testing ideas, and returning to concepts until they can explain them in their own words."
+    },
+    {
+      "id": "T05",
+      "slug": "socratic-loop",
+      "slide": 5,
+      "text": "At the core is a Socratic loop. The AI does not just give answers, it asks better questions. Students articulate thinking, receive prompts, and iterate. This creates active recall and metacognitive reflection. Over time, the system reinforces habits of explanation and self-correction, so students do not just memorize outcomes, they understand why those outcomes are true and how to defend their reasoning with evidence."
+    },
+    {
+      "id": "T06",
+      "slug": "mini-apps",
+      "slide": 6,
+      "text": "Students can learn through meme, flashcards, concept map, and debate modes. Each mode targets a different cognitive pathway, from memory to structure to argumentation, while staying tied to the same topic goal. The student keeps agency by choosing a mode that feels natural, while teachers still get consistent progression data because each activity is grounded in the same curriculum intent and topic context."
+    },
+    {
+      "id": "T07",
+      "slug": "teacher-loop",
+      "slide": 7,
+      "text": "Teachers get visibility into engagement and can act quickly. They can spot weak areas, assign targeted quests, and close the loop between student activity and classroom intervention. Instead of waiting for delayed assessments, teachers can see where students are struggling by format or topic and respond early with focused support, making the platform useful not only for students but for day-to-day teaching decisions."
+    },
+    {
+      "id": "T08",
+      "slug": "ai-both-sides",
+      "slide": 8,
+      "text": "AI supports both sides of the learning equation, student growth and teacher decision-making. Students get adaptive prompts, and teachers get practical signal instead of noisy dashboards. This dual design matters because engagement without teaching action has limited classroom impact, and analytics without student motivation also fails. QuestLearn is built to keep those two sides connected in one operating loop."
+    },
+    {
+      "id": "T09",
+      "slug": "today-next",
+      "slide": 10,
+      "text": "Today, QuestLearn delivers production-ready active learning flows. Next, we extend into collaborative study pathways and deeper teacher orchestration, while preserving student agency and psychological safety. The roadmap builds on what already works in this demo, adding social learning and stronger intervention tooling without compromising the core principle that wrong answers should lead to encouragement, guidance, and growth."
+    },
+    {
+      "id": "T10",
+      "slug": "close",
+      "slide": 11,
+      "text": "QuestLearn is built for AI-incorporated active learning, combining engagement, curriculum alignment, and measurable teaching feedback. It helps students think more deeply, gives teachers actionable insight, and stays practical for real classroom use. Thank you for reviewing our solution. We are ready for demo day, and we also have a technical backup recording so the product can still be fully showcased if any live runtime issue appears."
+    }
+  ]
+}

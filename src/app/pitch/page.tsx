@@ -21,6 +21,16 @@ const decks = [
     badge: 'New',
     color: '#22c55e',
   },
+  {
+    id: 'v3-backup-package',
+    title: 'Version 3 · Demo-Day Backup Package',
+    subtitle: 'Take-based 4–6 min narration pack + final stitched backup cut for technical fallback',
+    href: '/pitch/v3-backup-package',
+    duration: '4-6 min',
+    tone: 'Technical backup / exhibition safe',
+    badge: 'Backup',
+    color: '#38bdf8',
+  },
 ];
 
 export default function PitchDeckFolder() {
