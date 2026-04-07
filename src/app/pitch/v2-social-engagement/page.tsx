@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const TOTAL_SLIDES = 9;
+const TOTAL_SLIDES = 11;
 const amber = '#f59e0b';
 const navy = '#0f172a';
 
@@ -47,13 +47,15 @@ export default function SocialEngagementDeck() {
     <div style={{ position: 'relative', height: '100vh', width: '100vw', overflow: 'hidden' }}>
       <div ref={containerRef} style={{ height: '100%', overflowY: 'auto', scrollSnapType: 'y mandatory' }}>
         <SlideTitle />
-        <SlideSocialStats />
+        <SlideStatsGraphics />
         <SlideAttentionShift />
-        <SlideStudentLearning />
-        <SlideStudentPride />
+        <SlideLearningPattern />
+        <SlideSocraticEnhancement />
+        <SlideMiniAppsDemo />
         <SlideTeacherLoop />
         <SlideAISides />
-        <SlideTodayFuture />
+        <SlideTodayBuild />
+        <SlideFutureScope />
         <SlideClose />
       </div>
 
@@ -101,31 +103,63 @@ function SlideTitle() {
         </div>
         <h1 style={{ margin: 0, fontSize: 'clamp(2.4rem, 7vw, 4.6rem)', lineHeight: 1.1 }}>From Social Scroll to Learning Flow</h1>
         <p style={{ color: 'rgba(226,232,240,0.75)', fontSize: '1.1rem', lineHeight: 1.7, marginTop: '1rem' }}>
-          A student-engagement-first story for EduX Demo Day.
+          Australia-first evidence, interactive pedagogy, and teacher intelligence.
         </p>
       </div>
     </section>
   );
 }
 
-function SlideSocialStats() {
+function SlideStatsGraphics() {
+  const globalPlatforms = [
+    { name: 'YouTube', value: 90, color: '#ef4444' },
+    { name: 'TikTok', value: 63, color: '#22c55e' },
+    { name: 'Snapchat', value: 60, color: '#f59e0b' },
+    { name: 'Instagram', value: 59, color: '#a78bfa' },
+  ];
+
+  const tiktokGrowth = [12, 20, 28, 38];
+
   return (
     <section style={slideBase}>
-      <div style={{ maxWidth: 980, width: '100%' }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Australia first, global context second</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-          <Card title="Australia now: eSafety n=1,504 (ages 8-15)">
-            Nationally representative Australian study confirms social and messaging usage is already mainstream before senior high school.
-          </Card>
-          <Card title="Australia teens: 14.4 hours/week online">
-            eSafety teen study (12-17, n=627) shows high weekly online time and average use of 4 social platforms.
-          </Card>
-          <Card title="Global benchmark">
-            Pew: YouTube 90%, TikTok 63%, Snapchat 60%, Instagram 59%. OECD: ~3 in 4 students spend over 1 hour weekday on social networks.
-          </Card>
+      <div style={{ maxWidth: 1020, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Statistics snapshot (AU-first + global)</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '1rem' }}>
+          <div style={{ background: 'rgba(15,23,42,0.82)', border: '1px solid rgba(148,163,184,0.22)', borderRadius: '0.8rem', padding: '1rem' }}>
+            <div style={{ color: amber, fontWeight: 700, marginBottom: '0.5rem', fontSize: '0.85rem' }}>Global platform usage (bar graph)</div>
+            {globalPlatforms.map((p) => (
+              <div key={p.name} style={{ marginBottom: '0.45rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#cbd5e1', marginBottom: '0.18rem' }}>
+                  <span>{p.name}</span>
+                  <span>{p.value}%</span>
+                </div>
+                <div style={{ background: 'rgba(148,163,184,0.2)', borderRadius: '999px', height: '10px' }}>
+                  <div style={{ width: `${p.value}%`, height: '10px', borderRadius: '999px', background: p.color }} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ background: 'rgba(15,23,42,0.82)', border: '1px solid rgba(148,163,184,0.22)', borderRadius: '0.8rem', padding: '1rem' }}>
+            <div style={{ color: amber, fontWeight: 700, marginBottom: '0.45rem', fontSize: '0.85rem' }}>Australia trend visual (curve)</div>
+            <svg viewBox="0 0 240 120" style={{ width: '100%', height: '120px', marginBottom: '0.45rem' }}>
+              <polyline points="20,95 85,80 150,60 215,35" fill="none" stroke="#f59e0b" strokeWidth="3" />
+              {tiktokGrowth.map((v, i) => (
+                <g key={i}>
+                  <circle cx={20 + i * 65} cy={95 - i * 20} r="4" fill="#f59e0b" />
+                  <text x={20 + i * 65} y={110} textAnchor="middle" fill="#94a3b8" fontSize="10">Y{i + 1}</text>
+                  <text x={20 + i * 65} y={95 - i * 20 - 8} textAnchor="middle" fill="#e2e8f0" fontSize="10">{v}%</text>
+                </g>
+              ))}
+            </svg>
+            <div style={{ color: '#cbd5e1', fontSize: '0.84rem', lineHeight: 1.55 }}>
+              AU context: eSafety national sample <strong>n=1,504</strong> (ages 8-15), plus teen study baseline.
+            </div>
+          </div>
         </div>
-        <p style={{ marginTop: '0.9rem', color: 'rgba(148,163,184,0.9)', fontSize: '0.78rem', lineHeight: 1.5 }}>
-          Sources: eSafety (Australia, 2024 and 2020), Pew (U.S. teens, 2023), OECD PISA 2022 analysis.
+
+        <p style={{ marginTop: '0.8rem', color: 'rgba(148,163,184,0.9)', fontSize: '0.76rem', lineHeight: 1.5 }}>
+          Sources: eSafety (AU 2024/2020), Pew (US teens 2023), OECD PISA 2022 analysis.
         </p>
       </div>
     </section>
@@ -135,55 +169,90 @@ function SlideSocialStats() {
 function SlideAttentionShift() {
   return (
     <section style={slideBase}>
-      <div style={{ maxWidth: 880 }}>
+      <div style={{ maxWidth: 900 }}>
         <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>What if content consumption became active learning?</h2>
         <p style={{ color: '#cbd5e1', lineHeight: 1.8, fontSize: '1.06rem' }}>
-          QuestLearn redirects student attention from passive scrolling to active thinking, with the same level of interest and engagement, but focused on mastery.
+          QuestLearn redirects passive scroll behavior into structured cognitive engagement, with the same emotional pull but better educational outcomes.
         </p>
       </div>
     </section>
   );
 }
 
-function SlideStudentLearning() {
-  const modes = [
-    { icon: '😂', title: 'Meme mode', desc: 'High recall through visual hooks and humour.' },
-    { icon: '📖', title: 'Story + dialogue', desc: 'Socratic prompts turn answers into reasoning.' },
-    { icon: '🃏', title: 'Flashcards + concept maps', desc: 'From memory to connections.' },
-    { icon: '🎙️', title: 'Debate flow', desc: 'Students explain, defend, and refine ideas.' },
+function SlideLearningPattern() {
+  const steps = [
+    { icon: '👀', title: 'Hook', desc: 'Meme/story hook captures attention fast.' },
+    { icon: '🧠', title: 'Think', desc: 'Student responds, reasons, and reflects.' },
+    { icon: '🔁', title: 'Practice', desc: 'Flashcards, maps, and debate reinforce memory.' },
+    { icon: '📈', title: 'Improve', desc: 'Teacher sees patterns and adapts lesson plans.' },
   ];
 
   return (
     <section style={slideBase}>
-      <div style={{ maxWidth: 980, width: '100%' }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>How students learn in QuestLearn</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-          {modes.map((m) => (
-            <div key={m.title} style={{ background: 'rgba(15,23,42,0.82)', border: '1px solid rgba(148,163,184,0.22)', borderRadius: '0.75rem', padding: '0.95rem 1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                <span style={{ fontSize: '1.05rem' }}>{m.icon}</span>
-                <div style={{ color: amber, fontWeight: 700, fontSize: '0.88rem' }}>{m.title}</div>
+      <div style={{ maxWidth: 1020, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Learning pattern flow (visual)</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '0.9rem' }}>
+          {steps.map((s, i) => (
+            <div key={s.title} style={{ background: 'rgba(15,23,42,0.84)', border: '1px solid rgba(148,163,184,0.22)', borderRadius: '0.8rem', padding: '0.9rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.35rem' }}>
+                <span style={{ fontSize: '1.05rem' }}>{s.icon}</span>
+                <strong style={{ color: amber, fontSize: '0.88rem' }}>Step {i + 1} · {s.title}</strong>
               </div>
-              <div style={{ color: '#cbd5e1', lineHeight: 1.55, fontSize: '0.92rem' }}>{m.desc}</div>
+              <div style={{ color: '#cbd5e1', fontSize: '0.9rem', lineHeight: 1.55 }}>{s.desc}</div>
             </div>
           ))}
-        </div>
-
-        <div style={{ marginTop: '1rem', background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.22)', borderRadius: '0.75rem', padding: '0.8rem 1rem', color: '#cbd5e1', fontSize: '0.88rem' }}>
-          Visual-first + interaction-first learning flow is designed to match how students already engage with digital content.
         </div>
       </div>
     </section>
   );
 }
 
-function SlideStudentPride() {
+function SlideSocraticEnhancement() {
   return (
     <section style={slideBase}>
-      <div style={{ maxWidth: 850 }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Learning students can share with pride</h2>
-        <p style={{ color: '#cbd5e1', lineHeight: 1.8, fontSize: '1.06rem' }}>
-          Students create visible outputs and progress moments they can show to peers, turning "I finished" into "Look what I learned".
+      <div style={{ maxWidth: 980, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>How QuestLearn enhances Socratic learning</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <Card title="Traditional limitation">One teacher, many students, limited time for deep individual questioning.</Card>
+          <Card title="QuestLearn enhancement">AI creates Socratic follow-ups at scale, with context-aware questions and immediate feedback loops.</Card>
+        </div>
+
+        <div style={{ marginTop: '1rem', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.25)', borderRadius: '0.75rem', padding: '0.9rem 1rem' }}>
+          <div style={{ color: '#c7d2fe', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.84rem' }}>Example Socratic sequence</div>
+          <div style={{ color: '#e2e8f0', fontSize: '0.9rem', lineHeight: 1.65 }}>
+            Explain your answer → Why do you think that? → Can you defend it with evidence? → What changes if this assumption is wrong?
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SlideMiniAppsDemo() {
+  const apps = [
+    { icon: '🃏', title: 'Flashcard App', desc: 'Confidence scoring + AI explanation feedback' },
+    { icon: '🗺️', title: 'Concept Map', desc: 'Connections evaluated with AI suggestions' },
+    { icon: '🎤', title: 'Debate Challenge', desc: '3-round argument, counter, and verdict' },
+  ];
+
+  return (
+    <section style={slideBase}>
+      <div style={{ maxWidth: 980, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Mini Apps demos (from pitch v1 style)</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '0.9rem' }}>
+          {apps.map((a) => (
+            <div key={a.title} style={{ background: 'rgba(15,23,42,0.84)', border: '1px solid rgba(148,163,184,0.22)', borderRadius: '0.8rem', padding: '0.95rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                <span style={{ fontSize: '1.15rem' }}>{a.icon}</span>
+                <strong style={{ color: amber, fontSize: '0.9rem' }}>{a.title}</strong>
+              </div>
+              <div style={{ color: '#cbd5e1', fontSize: '0.9rem', lineHeight: 1.55 }}>{a.desc}</div>
+              <div style={{ marginTop: '0.55rem', fontSize: '0.72rem', color: '#64748b' }}>Cogniti-generated learning app</div>
+            </div>
+          ))}
+        </div>
+        <p style={{ marginTop: '0.8rem', color: '#94a3b8', fontSize: '0.8rem' }}>
+          Demo routes: /demo/mini-apps, /demo/student-1, /demo/teacher-1
         </p>
       </div>
     </section>
@@ -209,7 +278,7 @@ function SlideTeacherLoop() {
   return (
     <section style={slideBase}>
       <div style={{ maxWidth: 1000, width: '100%' }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Teachers stay in the loop</h2>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Teacher dashboard (visual)</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', alignItems: 'start' }}>
           <div style={{ display: 'grid', gap: '0.8rem' }}>
             <Card title="Live visibility">See where students are engaged or stuck.</Card>
@@ -249,7 +318,7 @@ function SlideTeacherLoop() {
                 ))}
               </div>
             ))}
-            <div style={{ marginTop: '0.5rem', fontSize: '0.66rem', color: '#64748b' }}>Teacher dashboard visual: class-level aggregate only</div>
+            <div style={{ marginTop: '0.5rem', fontSize: '0.66rem', color: '#64748b' }}>Class-level aggregate only</div>
           </div>
         </div>
       </div>
@@ -263,21 +332,37 @@ function SlideAISides() {
       <div style={{ maxWidth: 900 }}>
         <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>AI enhances both sides of the classroom</h2>
         <p style={{ color: '#cbd5e1', lineHeight: 1.8, fontSize: '1.06rem' }}>
-          For students: adaptive content and Socratic guidance. For teachers: insight, faster intervention, and informed planning. One loop, two beneficiaries.
+          For students: adaptive prompts, feedback, and scaffolding. For teachers: pattern detection, intervention signals, and lesson-planning acceleration.
         </p>
       </div>
     </section>
   );
 }
 
-function SlideTodayFuture() {
+function SlideTodayBuild() {
   return (
     <section style={slideBase}>
       <div style={{ maxWidth: 980, width: '100%' }}>
-        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>What QuestLearn does today, and where it goes next</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
-          <Card title="Today">Interactive learning formats, AI generation, Socratic follow-up, and teacher-side visibility are live in the current build.</Card>
-          <Card title="Future scope">Reduce geography-based learning gaps by delivering engaging AI-supported learning experiences to every student, anywhere.</Card>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>What QuestLearn does today</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+          <Card title="Interactive formats live">Memes, stories, flashcards, concept maps, and debate are integrated today.</Card>
+          <Card title="Teacher visibility live">Teachers can monitor class engagement patterns and act quickly.</Card>
+          <Card title="Socratic feedback live">Students receive guided reasoning prompts, not just final answers.</Card>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SlideFutureScope() {
+  return (
+    <section style={slideBase}>
+      <div style={{ maxWidth: 980, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.8rem, 4.5vw, 3rem)' }}>11th Slide · Future scope</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+          <Card title="Geographic equity">Deliver high-quality learning support to students regardless of location.</Card>
+          <Card title="Teacher augmentation">AI co-pilot for planning, intervention, and differentiated support.</Card>
+          <Card title="Evidence loop">Continuous improvement from classroom telemetry and outcomes data.</Card>
         </div>
       </div>
     </section>
