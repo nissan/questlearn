@@ -12,6 +12,7 @@ const VIDEOS = [
     icon: '🎬',
     color: '#f59e0b',
     src: '/showcase/A-cinematic.mp4',
+    scriptHref: '/recording-script?video=A-cinematic',
   },
   {
     id: 'b1',
@@ -20,6 +21,7 @@ const VIDEOS = [
     icon: '🎓',
     color: '#34d399',
     src: '/showcase/B-walkthrough.mp4',
+    scriptHref: '/recording-script?video=B-walkthrough',
   },
   {
     id: 'c1',
@@ -28,6 +30,7 @@ const VIDEOS = [
     icon: '🔬',
     color: '#60a5fa',
     src: '/showcase/C-explainer.mp4',
+    scriptHref: '/recording-script?video=C-explainer',
   },
   {
     id: 'd1',
@@ -36,6 +39,7 @@ const VIDEOS = [
     icon: '🛟',
     color: '#38bdf8',
     src: '/showcase/questlearn-pitch-backup-2026-04-08.mp4',
+    scriptHref: '/backup-demo',
   },
   {
     id: 'd2',
@@ -44,6 +48,7 @@ const VIDEOS = [
     icon: '🧩',
     color: '#22c55e',
     src: '/showcase/D-mini-apps.mp4',
+    scriptHref: '/recording-script?video=D-mini-apps',
   },
   {
     id: 'd3',
@@ -52,6 +57,7 @@ const VIDEOS = [
     icon: '⚙️',
     color: '#a78bfa',
     src: '/showcase/questlearn-curricullm-vs-cogniti-demo.mp4',
+    scriptHref: '/demo-script',
   },
   // ── Student Personas ──
   {
@@ -61,6 +67,7 @@ const VIDEOS = [
     icon: '📖',
     color: '#f59e0b',
     src: '/showcase/S1-narrated.mp4',
+    scriptHref: '/recording-script?video=S1-narrated',
   },
   {
     id: 's2',
@@ -69,6 +76,7 @@ const VIDEOS = [
     icon: '🎮',
     color: '#60a5fa',
     src: '/showcase/S2-narrated.mp4',
+    scriptHref: '/recording-script?video=S2-narrated',
   },
   {
     id: 's3',
@@ -77,6 +85,7 @@ const VIDEOS = [
     icon: '😂',
     color: '#a78bfa',
     src: '/showcase/S3-narrated.mp4',
+    scriptHref: '/recording-script?video=S3-narrated',
   },
   {
     id: 't1',
@@ -85,6 +94,7 @@ const VIDEOS = [
     icon: '🔬',
     color: '#34d399',
     src: '/showcase/T1-narrated.mp4',
+    scriptHref: '/recording-script?video=T1-narrated',
   },
   {
     id: 't2',
@@ -93,6 +103,7 @@ const VIDEOS = [
     icon: '📐',
     color: '#f472b6',
     src: '/showcase/T2-narrated.mp4',
+    scriptHref: '/recording-script?video=T2-narrated',
   },
 ]
 
@@ -230,13 +241,26 @@ export function ShowcaseWindow({
                     <p className="text-sm font-medium text-white">{currentVideo.label}</p>
                     <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{currentVideo.subtitle}</p>
                   </div>
-                  <button
-                    onClick={() => setActiveVideo(null)}
-                    className="text-xs px-3 py-1 rounded-md"
-                    style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)' }}
-                  >
-                    ← Back to folder
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {currentVideo.scriptHref && (
+                      <a
+                        href={currentVideo.scriptHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs px-3 py-1 rounded-md"
+                        style={{ background: 'rgba(245,158,11,0.14)', color: '#fbbf24' }}
+                      >
+                        📝 View script
+                      </a>
+                    )}
+                    <button
+                      onClick={() => setActiveVideo(null)}
+                      className="text-xs px-3 py-1 rounded-md"
+                      style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)' }}
+                    >
+                      ← Back to folder
+                    </button>
+                  </div>
                 </div>
               </div>
             ) : (
