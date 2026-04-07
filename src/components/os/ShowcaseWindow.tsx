@@ -29,6 +29,22 @@ const VIDEOS = [
     color: '#60a5fa',
     src: '/showcase/C-explainer.mp4',
   },
+  {
+    id: 'd1',
+    label: 'QuestLearn — Backup Submission Cut',
+    subtitle: 'Backup · 4m09s · Demo-day fallback',
+    icon: '🛟',
+    color: '#38bdf8',
+    src: '/showcase/questlearn-pitch-backup-2026-04-08.mp4',
+  },
+  {
+    id: 'd3',
+    label: 'QuestLearn — CurricuLLM vs Cogniti',
+    subtitle: 'Technical comparison · AI tutor modes',
+    icon: '⚙️',
+    color: '#a78bfa',
+    src: '/showcase/questlearn-curricullm-vs-cogniti-demo.mp4',
+  },
   // ── Student Personas ──
   {
     id: 's1',
@@ -153,7 +169,7 @@ export function ShowcaseWindow({
 
             {/* Full Demos */}
             <p className="text-xs px-2 py-1" style={{ color: 'rgba(255,255,255,0.2)' }}>📽️ Full Demos</p>
-            {VIDEOS.filter(v => ['a1','b1','c1'].includes(v.id)).map((v) => (
+            {VIDEOS.filter(v => !v.id.startsWith('s') && !v.id.startsWith('t')).map((v) => (
               <VideoListItem
                 key={v.id}
                 video={v}

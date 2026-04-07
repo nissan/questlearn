@@ -33,9 +33,9 @@ const DEMOS: Record<string, { title: string; description: string; video: string;
     icon: '📈',
   },
   'mini-apps': {
-    title: 'Mini Apps — Cogniti Interactive Tools',
-    description: 'Flashcard app, concept map, debate challenge. Built in Cogniti. Each integrates directly into QuestLearn with full telemetry.',
-    video: '/showcase/questlearn-mini-apps-walkthrough-FINAL.mp4',
+    title: 'Mini Apps — Flashcards, Concept Map, Debate, Meme',
+    description: 'Flashcards with AI feedback, Concept Map with evaluation, Debate with AI opponent. Watch a live recording coming tomorrow.',
+    video: '/showcase/questlearn-pitch-backup-2026-04-08.mp4',
     icon: '🧩',
   },
 };
