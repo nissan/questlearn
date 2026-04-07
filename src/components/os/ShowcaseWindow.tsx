@@ -8,7 +8,7 @@ const VIDEOS = [
   {
     id: 'a1',
     label: 'QuestLearn — Cinematic',
-    subtitle: 'Full demo · 77s · Judges cut',
+    subtitle: 'Full demo · 57s · Judges cut',
     icon: '🎬',
     color: '#f59e0b',
     src: '/showcase/A-cinematic.mp4',
@@ -16,7 +16,7 @@ const VIDEOS = [
   {
     id: 'b1',
     label: 'QuestLearn — Walkthrough',
-    subtitle: 'Full demo · 71s · General audience',
+    subtitle: 'Full demo · 60s · General audience',
     icon: '🎓',
     color: '#34d399',
     src: '/showcase/B-walkthrough.mp4',
@@ -24,7 +24,7 @@ const VIDEOS = [
   {
     id: 'c1',
     label: 'QuestLearn — Explainer',
-    subtitle: 'Technical · 108s · Judges panel',
+    subtitle: 'Technical · 98s · Judges panel',
     icon: '🔬',
     color: '#60a5fa',
     src: '/showcase/C-explainer.mp4',
