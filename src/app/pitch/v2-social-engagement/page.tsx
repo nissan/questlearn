@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const TOTAL_SLIDES = 11;
+const TOTAL_SLIDES = 13;
 const amber = '#f59e0b';
 const navy = '#0f172a';
 
@@ -55,6 +55,8 @@ export default function SocialEngagementDeck() {
         <SlideMiniAppsDemo />
         <SlideTeacherLoop />
         <SlideAISides />
+        <SlideCurricuLLMCallPath />
+        <SlideCurricuLLMResponsePath />
         <SlideTodayAndNext />
         <SlideClose />
       </div>
@@ -408,6 +410,79 @@ function SlideAISides() {
         <p style={{ color: '#cbd5e1', lineHeight: 1.8, fontSize: '1.06rem' }}>
           For students: adaptive prompts, feedback, and scaffolding. For teachers: pattern detection, intervention signals, and lesson-planning acceleration.
         </p>
+      </div>
+    </section>
+  );
+}
+
+function CodeBlock({ children }: { children: React.ReactNode }) {
+  return (
+    <pre
+      style={{
+        margin: 0,
+        background: 'rgba(2,6,23,0.86)',
+        border: '1px solid rgba(148,163,184,0.28)',
+        borderRadius: '0.7rem',
+        padding: '0.9rem',
+        overflowX: 'auto',
+        color: '#e2e8f0',
+        fontSize: '0.76rem',
+        lineHeight: 1.55,
+        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+      }}
+    >
+      <code>{children}</code>
+    </pre>
+  );
+}
+
+function SlideCurricuLLMCallPath() {
+  const code = `// src/lib/curricullm-client.ts\ncompletion = await curricullm.chat.completions.create({\n  model,\n  messages: [\n    { role: 'system', content: getSystemPrompt(format, yearLevel) },\n    { role: 'user', content: userPrompt },\n  ],\n  temperature: 0.8,\n  max_tokens: 800,\n});\n\n// src/app/api/learn/generate/route.ts\ncontent = await withLangfuseTrace({\n  name: 'content-generation',\n  fn: async () => generateContent(topic, format, yearLevel ?? 'Year 9'),\n});`;
+
+  return (
+    <section style={slideBase}>
+      <div style={{ maxWidth: 1040, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.6rem, 4vw, 2.8rem)' }}>How we call CurricuLLM in the app</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '1rem' }}>
+          <CodeBlock>{code}</CodeBlock>
+          <div style={{ display: 'grid', gap: '0.8rem' }}>
+            <Card title="Runtime path">
+              UI → <code>/api/learn/generate</code> → <code>generateContent()</code> → CurricuLLM chat completion.
+            </Card>
+            <Card title="Prompt strategy">
+              We send a format-specific system prompt (story/game/meme/puzzle/short-film) and a strict JSON-return user prompt.
+            </Card>
+            <Card title="Traceability">
+              Calls are wrapped in Langfuse tracing for latency and quality debugging during demo and classroom pilots.
+            </Card>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SlideCurricuLLMResponsePath() {
+  const code = `// src/lib/curricullm-client.ts\nconst raw = completion.choices[0]?.message?.content ?? '';\nconst cleaned = raw.replace(/^\`\`\`json?\\n?/i, '').replace(/\\n?\`\`\`$/i, '').trim();\nconst parsed = JSON.parse(cleaned);\nreturn { ...parsed, _stub: false };\n\n// src/app/api/learn/generate/route.ts\nawait db.execute({\n  sql: \`INSERT INTO content_cache (...) VALUES (?, ?, ?, ?, ?, ?, ?, ?)\`,\n  args: [uuidv4(), topicKey, format, variantCount + 1, content.title, content.body, content.socraticPrompt, content.curriculumRef],\n});\n\nreturn NextResponse.json({ ...content, _cached: cached });`;
+
+  return (
+    <section style={slideBase}>
+      <div style={{ maxWidth: 1040, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.6rem, 4vw, 2.8rem)' }}>How we process and return CurricuLLM data</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '1rem' }}>
+          <CodeBlock>{code}</CodeBlock>
+          <div style={{ display: 'grid', gap: '0.8rem' }}>
+            <Card title="Response parsing">
+              We normalize raw model output, remove markdown fences if present, parse JSON, and fail-safe to stubs on parsing errors.
+            </Card>
+            <Card title="Data contract">
+              Required fields carried through end-to-end: <code>title</code>, <code>body</code>, <code>socraticPrompt</code>, <code>curriculumRef</code>.
+            </Card>
+            <Card title="Delivery to UI">
+              Parsed content is cached, then returned as API JSON so LearnContent can render immediately and start the Socratic loop.
+            </Card>
+          </div>
+        </div>
       </div>
     </section>
   );

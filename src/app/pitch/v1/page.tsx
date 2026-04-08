@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const TOTAL_SLIDES = 11;
+const TOTAL_SLIDES = 13;
 
 export default function PitchDeck() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -72,6 +72,8 @@ export default function PitchDeck() {
         <SlideCoGniti />
         <Slide8 />
         <Slide9 />
+        <SlideCurricuLLMCallV1 />
+        <SlideCurricuLLMResponseV1 />
         <Slide10 />
       </div>
 
@@ -881,6 +883,88 @@ function Slide9() {
           <span style={{ display: 'block', marginTop: '0.25rem', color: '#64748b' }}>
             v2 completes the full Laurillard 6-type framework — adding Discussion + Collaboration
           </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CodePanel({ title, code }: { title: string; code: string }) {
+  return (
+    <div style={{ backgroundColor: 'rgba(2,6,23,0.86)', border: '1px solid rgba(148,163,184,0.26)', borderRadius: '0.75rem', padding: '1rem' }}>
+      <div style={{ color: amber, fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.6rem' }}>{title}</div>
+      <pre style={{ margin: 0, overflowX: 'auto', color: '#e2e8f0', fontSize: '0.74rem', lineHeight: 1.55, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' }}>
+        <code>{code}</code>
+      </pre>
+    </div>
+  );
+}
+
+function InsightPanel({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div style={{ backgroundColor: slate800, border: '1px solid rgba(148,163,184,0.22)', borderRadius: '0.75rem', padding: '0.9rem 1rem' }}>
+      <div style={{ color: amber, fontWeight: 700, fontSize: '0.8rem', marginBottom: '0.35rem' }}>{title}</div>
+      <div style={{ color: '#cbd5e1', fontSize: '0.88rem', lineHeight: 1.6 }}>{children}</div>
+    </div>
+  );
+}
+
+function SlideCurricuLLMCallV1() {
+  const callCode = `// src/lib/curricullm-client.ts\ncompletion = await curricullm.chat.completions.create({\n  model,\n  messages: [\n    { role: 'system', content: getSystemPrompt(format, yearLevel) },\n    { role: 'user', content: userPrompt },\n  ],\n  temperature: 0.8,\n  max_tokens: 800,\n});\n\n// src/app/api/learn/generate/route.ts\ncontent = await withLangfuseTrace({\n  name: 'content-generation',\n  fn: async () => generateContent(topic, format, yearLevel ?? 'Year 9'),\n});`;
+
+  return (
+    <div style={slideBase}>
+      <div style={{ maxWidth: '1020px', width: '100%' }}>
+        <div style={{ color: amber, fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.75rem', fontWeight: 600 }}>
+          Technical Slide
+        </div>
+        <h2 style={{ fontSize: 'clamp(1.8rem, 4.3vw, 2.9rem)', fontWeight: 800, margin: '0 0 1rem', color: '#f1f5f9' }}>
+          How QuestLearn calls CurricuLLM
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '1rem' }}>
+          <CodePanel title="Live code path" code={callCode} />
+          <div style={{ display: 'grid', gap: '0.75rem' }}>
+            <InsightPanel title="Flow">
+              Learn page sends topic + format + year level to <code>/api/learn/generate</code>, then <code>generateContent()</code> calls CurricuLLM.
+            </InsightPanel>
+            <InsightPanel title="Prompt design">
+              We pass a format-specific system prompt (Story, Game, Meme, Puzzle, Short Film) plus a strict JSON-output user prompt.
+            </InsightPanel>
+            <InsightPanel title="Observability">
+              Calls are wrapped with Langfuse tracing so we can inspect latency, failures, and quality during pilots.
+            </InsightPanel>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SlideCurricuLLMResponseV1() {
+  const processCode = `// src/lib/curricullm-client.ts\nconst raw = completion.choices[0]?.message?.content ?? '';\nconst cleaned = raw.replace(/^\`\`\`json?\\n?/i, '').replace(/\\n?\`\`\`$/i, '').trim();\nconst parsed = JSON.parse(cleaned);\nreturn { ...parsed, _stub: false };\n\n// src/app/api/learn/generate/route.ts\nawait db.execute({\n  sql: \`INSERT INTO content_cache (...) VALUES (?, ?, ?, ?, ?, ?, ?, ?)\`,\n  args: [uuidv4(), topicKey, format, variantCount + 1, content.title, content.body, content.socraticPrompt, content.curriculumRef],\n});\n\nreturn NextResponse.json({ ...content, _cached: cached });`;
+
+  return (
+    <div style={slideBase}>
+      <div style={{ maxWidth: '1020px', width: '100%' }}>
+        <div style={{ color: amber, fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.75rem', fontWeight: 600 }}>
+          Technical Slide
+        </div>
+        <h2 style={{ fontSize: 'clamp(1.8rem, 4.3vw, 2.9rem)', fontWeight: 800, margin: '0 0 1rem', color: '#f1f5f9' }}>
+          How we process CurricuLLM responses
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '1rem' }}>
+          <CodePanel title="Parsing + cache + API return" code={processCode} />
+          <div style={{ display: 'grid', gap: '0.75rem' }}>
+            <InsightPanel title="Data contract">
+              We enforce a stable payload: <code>title</code>, <code>body</code>, <code>socraticPrompt</code>, <code>curriculumRef</code>.
+            </InsightPanel>
+            <InsightPanel title="Reliability">
+              If parsing fails or key is missing, app falls back to stubs so demo flow still works.
+            </InsightPanel>
+            <InsightPanel title="UI ready">
+              API returns normalized JSON immediately, so the student can read content and continue into the Socratic loop.
+            </InsightPanel>
+          </div>
         </div>
       </div>
     </div>
