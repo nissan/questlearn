@@ -282,19 +282,19 @@ function SlideMiniAppsDemo() {
       icon: '🃏',
       name: 'Flashcard App',
       color: '#f59e0b',
-      prompt: 'Build an interactive flashcard app. Students flip cards, rate confidence, and type explanations for AI feedback.',
+      prompt: 'Build an interactive flashcard app for Years 8–10 students. Topic is passed as a URL parameter. Students flip cards, rate confidence (1–3), and type their own explanation to get AI feedback. Track telemetry: card_flipped, confidence_rated, answer_submitted.',
     },
     {
       icon: '🗺️',
       name: 'Concept Map',
       color: '#10b981',
-      prompt: 'Build a concept map app where students add nodes, draw connections, and receive AI feedback + missing-link suggestions.',
+      prompt: 'Build an interactive concept map for Years 8–10 students. The topic is passed as a URL parameter. Show a central node with the topic name. Students add connected nodes (key concepts) and draw relationships between them by typing the connection label (e.g. \'causes\', \'leads to\', \'is a type of\'). When the student clicks \'Check my map\', AI evaluates whether the connections are accurate and meaningful, gives 1–2 sentences of feedback, and suggests one missing connection they haven\'t made yet. Track telemetry: node_added, connection_drawn, map_submitted.',
     },
     {
       icon: '🎤',
       name: 'Debate Challenge',
       color: '#ec4899',
-      prompt: 'Build a 3-round debate app where AI counters student arguments and gives an improvement verdict.',
+      prompt: 'Build a debate challenge app for Years 8–10 students. The topic is passed as a URL parameter. The student chooses their position (For / Against). The AI takes the opposite position. Run 3 rounds: each round the student types their argument (max 100 words), the AI responds with a counter-argument, then asks \'Can you strengthen that?\' After round 3, the AI gives a 2-sentence verdict on who argued more effectively and what the student could improve. Keep the AI\'s arguments challenging but age-appropriate for Australian high school. Track telemetry: position_chosen, argument_submitted, debate_completed.',
     },
   ];
 
