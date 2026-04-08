@@ -3,110 +3,117 @@ import { useState } from 'react'
 import { Rnd } from 'react-rnd'
 import { useWindowManager } from './WindowManager'
 
+// ─── Video registry ────────────────────────────────────────────────────────────
+// IMPORTANT: use versioned filenames so Vercel CDN never serves stale cached
+// copies. When you re-render videos, update the filename version suffix here.
+const V = 'v20260408'
+
 const VIDEOS = [
   // ── Full Demos ──
   {
     id: 'a1',
     label: 'QuestLearn — Cinematic',
-    subtitle: 'Full demo · 57s · Judges cut',
+    subtitle: `Full demo · 57s · Judges cut`,
     icon: '🎬',
     color: '#f59e0b',
-    src: '/showcase/A-cinematic.mp4',
-    scriptHref: '/recording-script?video=A-cinematic',
+    src: `/showcase/A-cinematic.mp4`,
+    scriptHref: '/recording-script',
   },
   {
     id: 'b1',
     label: 'QuestLearn — Walkthrough',
-    subtitle: 'Full demo · 60s · General audience',
+    subtitle: `Full demo · 60s · General audience`,
     icon: '🎓',
     color: '#34d399',
-    src: '/showcase/B-walkthrough.mp4',
-    scriptHref: '/recording-script?video=B-walkthrough',
+    src: `/showcase/B-walkthrough.mp4`,
+    scriptHref: '/recording-script',
   },
   {
     id: 'c1',
     label: 'QuestLearn — Explainer',
-    subtitle: 'Technical · 98s · Judges panel',
+    subtitle: `Technical · 98s · Judges panel`,
     icon: '🔬',
     color: '#60a5fa',
-    src: '/showcase/C-explainer.mp4',
-    scriptHref: '/recording-script?video=C-explainer',
+    src: `/showcase/C-explainer.mp4`,
+    scriptHref: '/recording-script',
   },
   {
     id: 'd1',
     label: 'QuestLearn — Backup Submission Cut',
-    subtitle: 'Backup · 4m09s · Demo-day fallback',
+    subtitle: `Backup · 4m09s · Demo-day fallback`,
     icon: '🛟',
     color: '#38bdf8',
-    src: '/showcase/questlearn-pitch-backup-2026-04-08.mp4',
+    src: `/showcase/questlearn-pitch-backup-2026-04-08.mp4`,
     scriptHref: '/backup-demo',
   },
   {
     id: 'd2',
     label: 'QuestLearn — Mini Apps Demo',
-    subtitle: 'Flashcards · Concept Map · Debate · Meme · real app',
+    subtitle: `Flashcards · Concept Map · Debate · Meme`,
     icon: '🧩',
     color: '#22c55e',
-    src: '/showcase/D-mini-apps.mp4',
-    scriptHref: '/recording-script?video=D-mini-apps',
+    src: `/showcase/D-mini-apps-${V}.mp4`,
+    scriptHref: '/recording-script',
   },
   {
     id: 'd3',
     label: 'QuestLearn — CurricuLLM vs Cogniti',
-    subtitle: 'Technical comparison · AI tutor modes',
+    subtitle: `Technical comparison · AI tutor modes`,
     icon: '⚙️',
     color: '#a78bfa',
-    src: '/showcase/questlearn-curricullm-vs-cogniti-demo.mp4',
+    src: `/showcase/questlearn-curricullm-vs-cogniti-demo.mp4`,
     scriptHref: '/demo-script',
   },
   // ── Student Personas ──
   {
     id: 's1',
     label: 'Zara Osei',
-    subtitle: 'Year 10 · Photosynthesis · Story',
+    subtitle: `Year 10 · Photosynthesis · Meme + Flashcards`,
     icon: '📖',
     color: '#f59e0b',
-    src: '/showcase/S1-narrated.mp4',
-    scriptHref: '/recording-script?video=S1-narrated',
+    src: `/showcase/S1-narrated-${V}.mp4`,
+    scriptHref: '/recording-script',
   },
   {
     id: 's2',
     label: 'Kai Nguyen',
-    subtitle: "Year 9 · Newton's Laws · Game",
+    subtitle: `Year 9 · Newton's Laws · Debate + Concept Map`,
     icon: '🎮',
     color: '#60a5fa',
-    src: '/showcase/S2-narrated.mp4',
-    scriptHref: '/recording-script?video=S2-narrated',
+    src: `/showcase/S2-narrated-${V}.mp4`,
+    scriptHref: '/recording-script',
   },
   {
     id: 's3',
     label: 'Priya Sharma',
-    subtitle: 'Year 8 · Water Cycle · Meme',
+    subtitle: `Year 8 · Water Cycle · Meme + Concept Map`,
     icon: '😂',
     color: '#a78bfa',
-    src: '/showcase/S3-narrated.mp4',
-    scriptHref: '/recording-script?video=S3-narrated',
+    src: `/showcase/S3-narrated-${V}.mp4`,
+    scriptHref: '/recording-script',
   },
+  // ── Teacher Personas ──
   {
     id: 't1',
     label: 'Ms. Rachel Chen',
-    subtitle: 'Teacher · Science · Dashboard',
+    subtitle: `Teacher · Science · Dashboard`,
     icon: '🔬',
     color: '#34d399',
-    src: '/showcase/T1-narrated.mp4',
-    scriptHref: '/recording-script?video=T1-narrated',
+    src: `/showcase/T1-narrated-${V}.mp4`,
+    scriptHref: '/recording-script',
   },
   {
     id: 't2',
     label: 'Mr. David Okafor',
-    subtitle: 'Teacher · Mathematics · Dashboard',
+    subtitle: `Teacher · Mathematics · Dashboard`,
     icon: '📐',
     color: '#f472b6',
-    src: '/showcase/T2-narrated.mp4',
-    scriptHref: '/recording-script?video=T2-narrated',
+    src: `/showcase/T2-narrated-${V}.mp4`,
+    scriptHref: '/recording-script',
   },
 ]
 
+// ─── Component ────────────────────────────────────────────────────────────────
 export function ShowcaseWindow({
   zIndex,
   position,
@@ -123,9 +130,8 @@ export function ShowcaseWindow({
   const activeWindow = useWindowManager((s) => s.activeWindow)
   const isActive = activeWindow === 'showcase'
 
-  const [activeVideo, setActiveVideo] = useState<string | null>(null)
-
-  const currentVideo = VIDEOS.find((v) => v.id === activeVideo)
+  const [activeId, setActiveId] = useState<string | null>(null)
+  const current = VIDEOS.find((v) => v.id === activeId) ?? null
 
   return (
     <Rnd
@@ -140,20 +146,18 @@ export function ShowcaseWindow({
       <div
         className="flex flex-col overflow-hidden"
         style={{
-          width: '100%',
-          height: '100%',
+          width: '100%', height: '100%',
           borderRadius: '12px',
           background: '#1e2d45',
           border: '1px solid rgba(255,255,255,0.08)',
-          boxShadow: '0 32px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(245,158,11,0.05)',
+          boxShadow: '0 32px 64px rgba(0,0,0,0.5)',
         }}
       >
         {/* Title bar */}
         <div
           className="title-bar flex items-center px-3 shrink-0 select-none cursor-move"
           style={{
-            height: '36px',
-            background: '#0f172a',
+            height: '36px', background: '#0f172a',
             borderRadius: '12px 12px 0 0',
             borderBottom: '1px solid rgba(255,255,255,0.06)',
           }}
@@ -164,72 +168,41 @@ export function ShowcaseWindow({
             <TrafficLight color="#22c55e" hoverSymbol="⤢" isActive={isActive} onClick={() => {}} />
           </div>
           <span className="flex-1 text-center text-xs" style={{ color: 'rgba(255,255,255,0.6)', letterSpacing: '0.5px' }}>
-            {currentVideo ? `▶ ${currentVideo.label} — ${currentVideo.subtitle}` : '📁 Showcase'}
+            {current ? `▶ ${current.label} — ${current.subtitle}` : '📁 Showcase'}
           </span>
           <div style={{ width: '60px' }} />
         </div>
 
-        {/* Content */}
+        {/* Body */}
         <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar — video list */}
+          {/* Sidebar */}
           <div
             className="flex flex-col shrink-0 overflow-y-auto"
             style={{
-              width: '220px',
-              background: '#0f172a',
+              width: '220px', background: '#0f172a',
               borderRight: '1px solid rgba(255,255,255,0.06)',
-              padding: '12px 8px',
-              gap: '4px',
+              padding: '12px 8px', gap: '4px',
             }}
           >
             <p className="text-xs font-semibold px-2 pb-2" style={{ color: 'rgba(255,255,255,0.3)', letterSpacing: '0.8px' }}>
               DEMO RECORDINGS
             </p>
 
-            {/* Full Demos */}
-            <p className="text-xs px-2 py-1" style={{ color: 'rgba(255,255,255,0.2)' }}>📽️ Full Demos</p>
-            {VIDEOS.filter(v => !v.id.startsWith('s') && !v.id.startsWith('t')).map((v) => (
-              <VideoListItem
-                key={v.id}
-                video={v}
-                isActive={activeVideo === v.id}
-                onClick={() => setActiveVideo(v.id)}
-              />
-            ))}
-
-            {/* Students */}
-            <p className="text-xs px-2 py-1 mt-2" style={{ color: 'rgba(255,255,255,0.2)' }}>Students</p>
-            {VIDEOS.filter(v => v.id.startsWith('s')).map((v) => (
-              <VideoListItem
-                key={v.id}
-                video={v}
-                isActive={activeVideo === v.id}
-                onClick={() => setActiveVideo(v.id)}
-              />
-            ))}
-
-            {/* Teachers */}
-            <p className="text-xs px-2 py-1 mt-2" style={{ color: 'rgba(255,255,255,0.2)' }}>Teachers</p>
-            {VIDEOS.filter(v => v.id.startsWith('t')).map((v) => (
-              <VideoListItem
-                key={v.id}
-                video={v}
-                isActive={activeVideo === v.id}
-                onClick={() => setActiveVideo(v.id)}
-              />
-            ))}
+            <SidebarGroup label="📽️ Full Demos" videos={VIDEOS.filter(v => ['a1','b1','c1','d1','d2','d3'].includes(v.id))} activeId={activeId} onSelect={setActiveId} />
+            <SidebarGroup label="Students" videos={VIDEOS.filter(v => v.id.startsWith('s'))} activeId={activeId} onSelect={setActiveId} />
+            <SidebarGroup label="Teachers" videos={VIDEOS.filter(v => v.id.startsWith('t'))} activeId={activeId} onSelect={setActiveId} />
           </div>
 
-          {/* Main — video player or folder grid */}
+          {/* Main */}
           <div className="flex-1 flex flex-col overflow-hidden" style={{ background: '#111827' }}>
-            {currentVideo ? (
-              // Video player
+            {current ? (
               <div className="flex-1 flex flex-col">
                 <video
-                  key={currentVideo.src}
-                  src={currentVideo.src}
+                  key={current.src}
+                  src={current.src}
                   controls
                   autoPlay
+                  playsInline
                   className="flex-1 w-full"
                   style={{ background: '#000', maxHeight: 'calc(100% - 48px)' }}
                 />
@@ -238,23 +211,21 @@ export function ShowcaseWindow({
                   style={{ background: '#0f172a', borderTop: '1px solid rgba(255,255,255,0.06)' }}
                 >
                   <div>
-                    <p className="text-sm font-medium text-white">{currentVideo.label}</p>
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{currentVideo.subtitle}</p>
+                    <p className="text-sm font-medium text-white">{current.label}</p>
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{current.subtitle}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    {currentVideo.scriptHref && (
-                      <a
-                        href={currentVideo.scriptHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs px-3 py-1 rounded-md"
-                        style={{ background: 'rgba(245,158,11,0.14)', color: '#fbbf24' }}
-                      >
-                        📝 View script
-                      </a>
-                    )}
+                    <a
+                      href={current.scriptHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs px-3 py-1 rounded-md"
+                      style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.35)', textDecoration: 'none' }}
+                    >
+                      📝 View script
+                    </a>
                     <button
-                      onClick={() => setActiveVideo(null)}
+                      onClick={() => setActiveId(null)}
                       className="text-xs px-3 py-1 rounded-md"
                       style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)' }}
                     >
@@ -264,26 +235,18 @@ export function ShowcaseWindow({
                 </div>
               </div>
             ) : (
-              // Folder grid view
               <div className="flex-1 overflow-y-auto p-6">
                 <div className="grid grid-cols-3 gap-4">
                   {VIDEOS.map((v) => (
                     <button
                       key={v.id}
-                      onClick={() => setActiveVideo(v.id)}
+                      onClick={() => setActiveId(v.id)}
                       className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all hover:scale-105 group"
-                      style={{
-                        background: 'rgba(255,255,255,0.03)',
-                        border: `1px solid rgba(255,255,255,0.06)`,
-                      }}
+                      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
                     >
-                      {/* Thumbnail placeholder */}
                       <div
                         className="w-full aspect-video rounded-lg flex items-center justify-center text-3xl"
-                        style={{
-                          background: `linear-gradient(135deg, ${v.color}22, ${v.color}11)`,
-                          border: `1px solid ${v.color}33`,
-                        }}
+                        style={{ background: `linear-gradient(135deg, ${v.color}22, ${v.color}11)`, border: `1px solid ${v.color}33` }}
                       >
                         {v.icon}
                       </div>
@@ -291,11 +254,7 @@ export function ShowcaseWindow({
                         <p className="text-xs font-medium text-white">{v.label}</p>
                         <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>{v.subtitle}</p>
                       </div>
-                      {/* Play hint */}
-                      <div
-                        className="text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                        style={{ color: v.color }}
-                      >
+                      <div className="text-xs opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: v.color }}>
                         ▶ Play
                       </div>
                     </button>
@@ -310,54 +269,46 @@ export function ShowcaseWindow({
   )
 }
 
-function VideoListItem({
-  video,
-  isActive,
-  onClick,
-}: {
-  video: (typeof VIDEOS)[0]
-  isActive: boolean
-  onClick: () => void
+// ─── Sidebar group ─────────────────────────────────────────────────────────────
+function SidebarGroup({ label, videos, activeId, onSelect }: {
+  label: string
+  videos: typeof VIDEOS
+  activeId: string | null
+  onSelect: (id: string) => void
 }) {
   return (
-    <button
-      onClick={onClick}
-      className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-left w-full transition-colors"
-      style={{
-        background: isActive ? `${video.color}22` : 'transparent',
-        border: isActive ? `1px solid ${video.color}44` : '1px solid transparent',
-      }}
-    >
-      <span className="text-base shrink-0">{video.icon}</span>
-      <div className="overflow-hidden">
-        <p className="text-xs font-medium text-white truncate">{video.label}</p>
-        <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.35)' }}>{video.subtitle}</p>
-      </div>
-    </button>
+    <>
+      <p className="text-xs px-2 py-1 mt-2" style={{ color: 'rgba(255,255,255,0.2)' }}>{label}</p>
+      {videos.map((v) => (
+        <button
+          key={v.id}
+          onClick={() => onSelect(v.id)}
+          className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-left w-full transition-colors"
+          style={{
+            background: activeId === v.id ? `${v.color}22` : 'transparent',
+            border: activeId === v.id ? `1px solid ${v.color}44` : '1px solid transparent',
+          }}
+        >
+          <span className="text-base shrink-0">{v.icon}</span>
+          <div className="overflow-hidden">
+            <p className="text-xs font-medium text-white truncate">{v.label}</p>
+            <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.35)' }}>{v.subtitle}</p>
+          </div>
+        </button>
+      ))}
+    </>
   )
 }
 
-function TrafficLight({
-  color,
-  hoverSymbol,
-  isActive,
-  onClick,
-}: {
-  color: string
-  hoverSymbol: string
-  isActive: boolean
-  onClick: () => void
+// ─── Traffic light ─────────────────────────────────────────────────────────────
+function TrafficLight({ color, hoverSymbol, isActive, onClick }: {
+  color: string; hoverSymbol: string; isActive: boolean; onClick: () => void
 }) {
   return (
     <button
       onClick={onClick}
       className="group flex items-center justify-center rounded-full text-transparent hover:text-black transition-colors text-[9px] font-bold leading-none"
-      style={{
-        width: '12px',
-        height: '12px',
-        background: isActive ? color : '#374151',
-        flexShrink: 0,
-      }}
+      style={{ width: '12px', height: '12px', background: isActive ? color : '#374151', flexShrink: 0 }}
     >
       <span className="hidden group-hover:inline">{hoverSymbol}</span>
     </button>
