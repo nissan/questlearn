@@ -302,6 +302,9 @@ function SlideMiniAppsDemo() {
     <section style={slideBase}>
       <div style={{ maxWidth: '960px', width: '100%' }}>
         <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Mini Apps demos</h2>
+        <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: '0.82rem', marginTop: '-0.25rem', marginBottom: '0.9rem', lineHeight: 1.5 }}>
+          These are the exact raw Cogniti prompts we used to prototype mini-app behavior.
+        </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {miniApps.map((app) => (
             <div
@@ -355,6 +358,9 @@ function SlideTeacherLoop() {
     <section style={slideBase}>
       <div style={{ maxWidth: 1000, width: '100%' }}>
         <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Teacher dashboard</h2>
+        <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', marginTop: '-0.35rem', marginBottom: '0.7rem' }}>
+          Demo data shown for walkthrough clarity.
+        </p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', alignItems: 'start' }}>
           <div style={{ display: 'grid', gap: '0.8rem' }}>
             <Card title="Live visibility">See where students are engaged or stuck.</Card>

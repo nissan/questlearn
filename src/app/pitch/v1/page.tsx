@@ -577,6 +577,9 @@ function Slide7() {
         <h2 style={{ fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', fontWeight: 800, margin: '0 0 0.5em', color: '#f1f5f9', lineHeight: 1.2 }}>
           Real-time insight. Zero surveillance.
         </h2>
+        <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: '0.82rem', margin: '-0.1rem 0 1rem' }}>
+          Demo data shown for walkthrough clarity.
+        </p>
         <div style={{ width: '60px', height: '3px', background: amber, marginBottom: '2rem', borderRadius: '2px' }} />
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start', flexWrap: 'wrap' }}>
@@ -637,7 +640,7 @@ function Slide7() {
               </div>
             ))}
             <div style={{ marginTop: '0.75rem', fontSize: '0.65rem', color: '#475569', textAlign: 'center' }}>
-              Engagement heatmap — class aggregate only
+              Engagement heatmap — class aggregate only (demo data)
             </div>
           </div>
         </div>
@@ -681,7 +684,7 @@ function SlideCoGniti() {
         </h2>
         <div style={{ width: '60px', height: '3px', background: amber, marginBottom: '0.75rem', borderRadius: '2px' }} />
         <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.95rem', marginBottom: '2rem', maxWidth: '680px' }}>
-          Each mini app was generated in Cogniti using a single natural-language prompt — no custom code, no deployment. The prompt encodes the pedagogy; Cogniti handles the rest.
+          These are the exact raw Cogniti prompts we used to prototype mini-app behavior.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
