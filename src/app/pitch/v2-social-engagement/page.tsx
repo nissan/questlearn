@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const TOTAL_SLIDES = 11;
+const TOTAL_SLIDES = 13;
 const amber = '#f59e0b';
 const navy = '#0f172a';
 
@@ -55,6 +55,8 @@ export default function SocialEngagementDeck() {
         <SlideMiniAppsDemo />
         <SlideTeacherLoop />
         <SlideAISides />
+        <SlideCurricuLLMCallPath />
+        <SlideCurricuLLMResponsePath />
         <SlideTodayAndNext />
         <SlideClose />
       </div>
@@ -280,19 +282,19 @@ function SlideMiniAppsDemo() {
       icon: '🃏',
       name: 'Flashcard App',
       color: '#f59e0b',
-      prompt: 'Build an interactive flashcard app. Students flip cards, rate confidence, and type explanations for AI feedback.',
+      prompt: 'Build an interactive flashcard app for Years 8–10 students. Topic is passed as a URL parameter. Students flip cards, rate confidence (1–3), and type their own explanation to get AI feedback. Track telemetry: card_flipped, confidence_rated, answer_submitted.',
     },
     {
       icon: '🗺️',
       name: 'Concept Map',
       color: '#10b981',
-      prompt: 'Build a concept map app where students add nodes, draw connections, and receive AI feedback + missing-link suggestions.',
+      prompt: 'Build an interactive concept map for Years 8–10 students. The topic is passed as a URL parameter. Show a central node with the topic name. Students add connected nodes (key concepts) and draw relationships between them by typing the connection label (e.g. \'causes\', \'leads to\', \'is a type of\'). When the student clicks \'Check my map\', AI evaluates whether the connections are accurate and meaningful, gives 1–2 sentences of feedback, and suggests one missing connection they haven\'t made yet. Track telemetry: node_added, connection_drawn, map_submitted.',
     },
     {
       icon: '🎤',
       name: 'Debate Challenge',
       color: '#ec4899',
-      prompt: 'Build a 3-round debate app where AI counters student arguments and gives an improvement verdict.',
+      prompt: 'Build a debate challenge app for Years 8–10 students. The topic is passed as a URL parameter. The student chooses their position (For / Against). The AI takes the opposite position. Run 3 rounds: each round the student types their argument (max 100 words), the AI responds with a counter-argument, then asks \'Can you strengthen that?\' After round 3, the AI gives a 2-sentence verdict on who argued more effectively and what the student could improve. Keep the AI\'s arguments challenging but age-appropriate for Australian high school. Track telemetry: position_chosen, argument_submitted, debate_completed.',
     },
   ];
 
@@ -300,6 +302,9 @@ function SlideMiniAppsDemo() {
     <section style={slideBase}>
       <div style={{ maxWidth: '960px', width: '100%' }}>
         <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Mini Apps demos</h2>
+        <p style={{ color: 'rgba(255,255,255,0.62)', fontSize: '0.82rem', marginTop: '-0.25rem', marginBottom: '0.9rem', lineHeight: 1.5 }}>
+          These are the exact raw Cogniti prompts we used to prototype mini-app behavior.
+        </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {miniApps.map((app) => (
             <div
@@ -353,6 +358,9 @@ function SlideTeacherLoop() {
     <section style={slideBase}>
       <div style={{ maxWidth: 1000, width: '100%' }}>
         <h2 style={{ marginTop: 0, fontSize: 'clamp(1.7rem, 4.5vw, 3rem)' }}>Teacher dashboard</h2>
+        <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', marginTop: '-0.35rem', marginBottom: '0.7rem' }}>
+          Demo data shown for walkthrough clarity.
+        </p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', alignItems: 'start' }}>
           <div style={{ display: 'grid', gap: '0.8rem' }}>
             <Card title="Live visibility">See where students are engaged or stuck.</Card>
@@ -408,6 +416,79 @@ function SlideAISides() {
         <p style={{ color: '#cbd5e1', lineHeight: 1.8, fontSize: '1.06rem' }}>
           For students: adaptive prompts, feedback, and scaffolding. For teachers: pattern detection, intervention signals, and lesson-planning acceleration.
         </p>
+      </div>
+    </section>
+  );
+}
+
+function CodeBlock({ children }: { children: React.ReactNode }) {
+  return (
+    <pre
+      style={{
+        margin: 0,
+        background: 'rgba(2,6,23,0.86)',
+        border: '1px solid rgba(148,163,184,0.28)',
+        borderRadius: '0.7rem',
+        padding: '0.9rem',
+        overflowX: 'auto',
+        color: '#e2e8f0',
+        fontSize: '0.76rem',
+        lineHeight: 1.55,
+        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+      }}
+    >
+      <code>{children}</code>
+    </pre>
+  );
+}
+
+function SlideCurricuLLMCallPath() {
+  const code = `// src/lib/curricullm-client.ts\ncompletion = await curricullm.chat.completions.create({\n  model,\n  messages: [\n    { role: 'system', content: getSystemPrompt(format, yearLevel) },\n    { role: 'user', content: userPrompt },\n  ],\n  temperature: 0.8,\n  max_tokens: 800,\n});\n\n// src/app/api/learn/generate/route.ts\ncontent = await withLangfuseTrace({\n  name: 'content-generation',\n  fn: async () => generateContent(topic, format, yearLevel ?? 'Year 9'),\n});`;
+
+  return (
+    <section style={slideBase}>
+      <div style={{ maxWidth: 1040, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.6rem, 4vw, 2.8rem)' }}>How we call CurricuLLM in the app</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '1rem' }}>
+          <CodeBlock>{code}</CodeBlock>
+          <div style={{ display: 'grid', gap: '0.8rem' }}>
+            <Card title="Runtime path">
+              UI → <code>/api/learn/generate</code> → <code>generateContent()</code> → CurricuLLM chat completion.
+            </Card>
+            <Card title="Prompt strategy">
+              We send a format-specific system prompt (story/game/meme/puzzle/short-film) and a strict JSON-return user prompt.
+            </Card>
+            <Card title="Traceability">
+              Calls are wrapped in Langfuse tracing for latency and quality debugging during demo and classroom pilots.
+            </Card>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SlideCurricuLLMResponsePath() {
+  const code = `// src/lib/curricullm-client.ts\nconst raw = completion.choices[0]?.message?.content ?? '';\nconst cleaned = raw.replace(/^\`\`\`json?\\n?/i, '').replace(/\\n?\`\`\`$/i, '').trim();\nconst parsed = JSON.parse(cleaned);\nreturn { ...parsed, _stub: false };\n\n// src/app/api/learn/generate/route.ts\nawait db.execute({\n  sql: \`INSERT INTO content_cache (...) VALUES (?, ?, ?, ?, ?, ?, ?, ?)\`,\n  args: [uuidv4(), topicKey, format, variantCount + 1, content.title, content.body, content.socraticPrompt, content.curriculumRef],\n});\n\nreturn NextResponse.json({ ...content, _cached: cached });`;
+
+  return (
+    <section style={slideBase}>
+      <div style={{ maxWidth: 1040, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.6rem, 4vw, 2.8rem)' }}>How we process and return CurricuLLM data</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '1rem' }}>
+          <CodeBlock>{code}</CodeBlock>
+          <div style={{ display: 'grid', gap: '0.8rem' }}>
+            <Card title="Response parsing">
+              We normalize raw model output, remove markdown fences if present, parse JSON, and fail-safe to stubs on parsing errors.
+            </Card>
+            <Card title="Data contract">
+              Required fields carried through end-to-end: <code>title</code>, <code>body</code>, <code>socraticPrompt</code>, <code>curriculumRef</code>.
+            </Card>
+            <Card title="Delivery to UI">
+              Parsed content is cached, then returned as API JSON so LearnContent can render immediately and start the Socratic loop.
+            </Card>
+          </div>
+        </div>
       </div>
     </section>
   );
