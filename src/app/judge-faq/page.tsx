@@ -4,6 +4,18 @@ import { useState } from 'react'
 
 const faqs = [
   {
+    q: 'Where exactly is CurricuLLM used in the product?',
+    a: 'CurricuLLM is used in two core backend paths: (1) `/api/learn/generate` for format-based content generation, and (2) `/api/learn/socratic` for follow-up questioning in the Socratic loop. The generated payload we process and return is `title`, `body`, `socraticPrompt`, and `curriculumRef`.',
+  },
+  {
+    q: 'What exactly did Cogniti contribute in this build?',
+    a: 'Cogniti is used for our mini-app and tutor workflow layer. The deck now shows the exact raw prompts we used in Cogniti for Flashcards, Concept Map, and Debate. In the app, Cogniti tutor mode is integrated as an external tutor flow (opens Cogniti with sign-in), while our core curriculum generation path remains CurricuLLM-native.',
+  },
+  {
+    q: 'What is live today versus roadmap?',
+    a: 'Live today: deployed QuestLearn app, topic+format AI generation, Socratic follow-up loop, and teacher-facing engagement views. Roadmap/next: collaborative Study Rooms + Quiz Rooms, deeper orchestration, and offline-first expansion. We separate shipped functionality from future scope explicitly in the deck.',
+  },
+  {
     q: 'How does QuestLearn avoid AI bias in learning?',
     a: 'The Socratic loop design itself mitigates bias. Instead of the AI making judgments ("you\'re wrong"), it asks questions ("can you rethink that?"). Bias in content generation is checked: prompts are curriculum-native (CurricuLLM-AU, AC v9), and we log all AI outputs for audit. Judges can request bias audits anytime.',
   },
