@@ -9,7 +9,7 @@
 
 import { describe, it, expect } from 'vitest'
 
-const COGNITI_API_KEY = process.env.COGNITI_API_KEY ?? '_dJhhHwkvb2wLQdZAKlCSzp45MjspMhjK9ZCsCNqlh4'
+const COGNITI_API_KEY = process.env.COGNITI_API_KEY ?? 'COGNITI_API_KEY_PLACEHOLDER'
 const COGNITI_AGENT_ID = '69d053d9324adcb67e01f97d'
 const COGNITI_MINIAPP_ID = process.env.COGNITI_MINIAPP_ID ?? '69d0575fbd12b7d70d8c1a2d'
 const COGNITI_BASE = 'https://app.cogniti.ai'

@@ -7,7 +7,7 @@ const MINI_APPS = [
   {
     id: 'socratic-tutor',
     title: 'QuestLearn Socratic Tutor',
-    src: 'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat?k=_dJhhHwkvb2wLQdZAKlCSzp45MjspMhjK9ZCsCNqlh4',
+    src: 'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat',
     icon: '🎓',
     color: '#3b82f6',
   },
