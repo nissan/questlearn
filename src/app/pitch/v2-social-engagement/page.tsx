@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const TOTAL_SLIDES = 13;
+const TOTAL_SLIDES = 14;
 const amber = '#f59e0b';
 const navy = '#0f172a';
 
@@ -58,6 +58,7 @@ export default function SocialEngagementDeck() {
         <SlideCurricuLLMCallPath />
         <SlideCurricuLLMResponsePath />
         <SlideTodayAndNext />
+        <SlideAgentTeam />
         <SlideClose />
       </div>
 
@@ -538,6 +539,37 @@ function SlideTodayAndNext() {
                   </li>
                 ))}
               </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SlideAgentTeam() {
+  const agents = [
+    { name: 'Loki', purpose: 'Orchestrator', example: 'Coordinated build, pitch, and final QA/security checks' },
+    { name: 'Kit', purpose: 'Builder', example: 'Implemented app features and deck/page updates' },
+    { name: 'Oli', purpose: 'QA gate', example: 'Hardened mini-app test coverage and acceptance checks' },
+    { name: 'Sara', purpose: 'Script writer', example: 'Wrote scene-by-scene demo script variants' },
+    { name: 'Finn', purpose: 'Video producer', example: 'Produced capture/edit pipeline and showcase cuts' },
+    { name: 'Firefly', purpose: 'Planner', example: 'Structured execution plans and review gates' },
+    { name: 'Belle', purpose: 'Design framing', example: 'Helped product/presentation framing (Lumina OS)' },
+  ];
+
+  return (
+    <section style={slideBase}>
+      <div style={{ maxWidth: 1040, width: '100%' }}>
+        <h2 style={{ marginTop: 0, fontSize: 'clamp(1.65rem, 4.2vw, 2.8rem)' }}>Agent Team Behind This Demo</h2>
+        <p style={{ color: 'rgba(226,232,240,0.72)', fontSize: '0.92rem', marginTop: '-0.25rem', marginBottom: '0.95rem' }}>
+          AI collaborators that supported Nissan and Anusha during build + submission sprint.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.7rem' }}>
+          {agents.map((a) => (
+            <div key={a.name} style={{ background: 'rgba(15,23,42,0.82)', border: '1px solid rgba(148,163,184,0.24)', borderRadius: '0.65rem', padding: '0.62rem 0.72rem' }}>
+              <div style={{ color: amber, fontWeight: 800, fontSize: '0.86rem' }}>{a.name} · {a.purpose}</div>
+              <div style={{ color: '#cbd5e1', fontSize: '0.78rem', lineHeight: 1.45 }}>{a.example}</div>
             </div>
           ))}
         </div>
