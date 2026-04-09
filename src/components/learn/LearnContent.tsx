@@ -20,7 +20,7 @@ import { MEME_TEMPLATES } from '@/lib/meme-templates';
 import type { MemeTemplate } from '@/lib/meme-templates';
 
 // Cogniti AI tutor URL — key loaded server-side; this is just the public embed URL
-const COGNITI_URL = process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ?? 'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat?k=_dJhhHwkvb2wLQdZAKlCSzp45MjspMhjK9ZCsCNqlh4';
+const COGNITI_URL = process.env.NEXT_PUBLIC_COGNITI_AGENT_URL ?? 'https://app.cogniti.ai/agents/69d053d9324adcb67e01f97d/chat';
 
 type TutorMode = 'curricullm' | 'cogniti' | 'both';
 
